@@ -4,6 +4,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement);
 
 // Position the camera
@@ -14,34 +15,64 @@ camera.lookAt(new THREE.Vector3(5, 0, 5));
 const groundTiles = [];
 const tileSize = 1;  // Adjust based on preferred scale
 const floorSize = 10;
+
+const sunLight = new THREE.DirectionalLight( 0xffffff, 1);
+sunLight.castShadow = true; // default false
+scene.add( sunLight );
+
+// Optionally, add ambient light to ensure basic visibility
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.1); 
+ambientLight.castShadow = true; // default false
+scene.add(ambientLight);
+
 for (let x = 0; x < floorSize; x++) {
     for (let z = 0; z < floorSize; z++) {
+        const tileMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x008000,              // base color of the material
+            roughness: 0.5,               // how rough the material is
+            metalness: 0,               // metallic quality
+        })
         const tile = new THREE.Mesh(
-            new THREE.BoxGeometry(tileSize, -1, tileSize),
-            new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
+            new THREE.BoxGeometry(tileSize, 1, tileSize),
+            tileMaterial
         );
-        tile.position.set(x, 0, z);
+        tile.castShadow = true
+        tile.receiveShadow = true
+        tile.position.set(x, -5, z);
         scene.add(tile);
         groundTiles.push(tile);
     }
 }
-for (let x = 0; x < 2; x++) {
-    for (let z = 0; z < 2; z++) {
+for (let x = 2; x < 4; x++) {
+    for (let z = 2; z < 4; z++) {
+        const tileMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x808000,              // base color of the material
+            roughness: 0.5,               // how rough the material is
+            metalness: 0,               // metallic quality
+        })
         const tile = new THREE.Mesh(
-            new THREE.BoxGeometry(tileSize, -1, tileSize),
-            new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
+            new THREE.BoxGeometry(tileSize, 1, tileSize),
+            tileMaterial
         );
-        tile.position.set(x, 1, z);
+        tile.castShadow = true
+        tile.receiveShadow = true
+        tile.position.set(x, -3, z);
         scene.add(tile);
         groundTiles.push(tile);
     }
 }
 
 // Create a simple character (a cube) and set initial position
+const characterMaterial = new THREE.MeshPhysicalMaterial({
+    color: 0x1b9400,              // base color of the material
+    roughness: 0.5,               // how rough the material is
+    metalness: 0,               // metallic quality
+})
 const character = new THREE.Mesh(
     new THREE.BoxGeometry(0.5, 1, 0.5),
-    new THREE.MeshBasicMaterial({ color: 0x1b9400 })
+    characterMaterial
 );
+character.castShadow = true
 character.position.set(5, 0.5, 5);  // Center character on grid
 scene.add(character);
 
