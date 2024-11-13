@@ -7,9 +7,11 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true
 document.body.appendChild(renderer.domElement);
 
+const defaultPosition = new THREE.Vector3(5, 0, 5);
+
 // Position the camera
 camera.position.set(5, 15, 5);  // Adjust to top-down view
-camera.lookAt(new THREE.Vector3(5, 0, 5));
+camera.lookAt(defaultPosition);
 
 // Create a tile-based floor (10x10 grid)
 const groundTiles = [];
@@ -24,6 +26,22 @@ scene.add( sunLight );
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.1); 
 ambientLight.castShadow = true; // default false
 scene.add(ambientLight);
+
+function resetGame() {
+    character.position.copy(defaultPosition);
+    character.position.y = 1;  
+    moveX = 0;
+    moveY = 0;  
+    moveZ = 0;
+    isOnGround = true;
+    keysPressed = {
+        w: false,
+        a: false,
+        s: false,
+        d: false,
+        space: false,
+    };
+}
 
 for (let x = 0; x < floorSize; x++) {
     for (let z = 0; z < floorSize; z++) {
@@ -148,6 +166,10 @@ function onKeyPress(event) {
             break;
         case "l":
             console.log("Action L");
+            break;
+        case "r":
+            console.log("Action reset game");
+            resetGame();
             break;
         case "Escape":
             console.log("Pause Game");
