@@ -79,6 +79,24 @@ for (let x = 2; x < 4; x++) {
         groundTiles.push(tile);
     }
 }
+for (let x = 3; x < 4; x++) {
+    for (let z = 2; z < 4; z++) {
+        const tileMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x808000,              // base color of the material
+            roughness: 0.5,               // how rough the material is
+            metalness: 0,               // metallic quality
+        })
+        const tile = new THREE.Mesh(
+            new THREE.BoxGeometry(tileSize, 1, tileSize),
+            tileMaterial
+        );
+        tile.castShadow = true
+        tile.receiveShadow = true
+        tile.position.set(x, 2, z);
+        scene.add(tile);
+        groundTiles.push(tile);
+    }
+}
 
 const tile1 = new THREE.Mesh(
     new THREE.BoxGeometry(tileSize, 1, tileSize),
@@ -113,7 +131,9 @@ scene.add(character);
 
 // Movement variables
 const moveSpeed = 0.1;
-const jumpStrength = 0.2;
+const jumpStrength = 0.15;
+const jumpCooldownTime = 400; // Cooldown duration in milliseconds (1 second)
+let lastJumpTime = 0; // Timestamp of the last jump
 const gravity = -0.01;
 let moveX = 0;
 let moveY = 0;
@@ -127,6 +147,22 @@ const leftVector = new THREE.Vector3(-2, 0, 0);
 const forwardVector = new THREE.Vector3(0, 0, -2);
 const backwardVector = new THREE.Vector3(0, 0, 2);
 const collisionDistance = 0.25;
+
+//collision visualizer
+// Create arrow helpers for each ray
+const arrowLength = 2.0;  // Length of arrows for visualization
+const forwardArrow = new THREE.ArrowHelper(forwardVector.clone().normalize(), character.position, arrowLength, 0xff0000); // Red
+const backwardArrow = new THREE.ArrowHelper(backwardVector.clone().normalize(), character.position, arrowLength, 0x00ff00); // Green
+const leftArrow = new THREE.ArrowHelper(leftVector.clone().normalize(), character.position, arrowLength, 0x0000ff); // Blue
+const rightArrow = new THREE.ArrowHelper(rightVector.clone().normalize(), character.position, arrowLength, 0xffff00); // Yellow
+const downArrow = new THREE.ArrowHelper(downVector.clone().normalize(), character.position, arrowLength, 0xff00ff); // Magenta
+
+// Add arrows to the scene
+scene.add(forwardArrow);
+scene.add(backwardArrow);
+scene.add(leftArrow);
+scene.add(rightArrow);
+scene.add(downArrow);
 
 // Event listener for keypresses
 window.addEventListener('keydown', onKeyPress);
@@ -239,6 +275,17 @@ function animate() {
     let canMoveLeft = true;
     let canMoveRight = true;
 
+    const currentTime = Date.now();
+    if(keysPressed.space && isOnGround && (currentTime - lastJumpTime >= jumpCooldownTime)){
+        isOnGround = false;
+        moveY = jumpStrength;
+        lastJumpTime = currentTime;
+    }
+
+    if(!isOnGround){
+        moveY += gravity;
+    }
+
     // Check collisions in each direction
     raycaster.set(character.position, forwardVector);
     const intersectsForward = raycaster.intersectObjects(groundTiles);
@@ -264,7 +311,11 @@ function animate() {
         canMoveRight = false;
     }
     
+    
+    
     // Apply movement only if no collision detected in that direction
+    let tempZ = moveZ;
+    let tempX = moveX;
     if (moveZ < 0 && !canMoveForward) moveZ = 0; // Forward
     if (moveZ > 0 && !canMoveBackward) moveZ = 0; // Backward
     if (moveX < 0 && !canMoveLeft) moveX = 0;     // Left
@@ -273,19 +324,19 @@ function animate() {
     // Update character position based on movement inputs
     const direction = new THREE.Vector2(moveX, moveZ);
     direction.normalize().multiplyScalar(moveSpeed);
+    moveZ = tempZ;
+    moveX = tempX;
 
-    if(keysPressed.space && isOnGround){
-        isOnGround = false;
-        moveY = jumpStrength;
-    }
-
-    if(!isOnGround){
-        moveY += gravity;
-    }
     // Update character position based on normalized movement vector
     character.position.x += direction.x;
     character.position.y += moveY;
     character.position.z += direction.y;
+
+    forwardArrow.position.copy(character.position);
+    backwardArrow.position.copy(character.position);
+    leftArrow.position.copy(character.position);
+    rightArrow.position.copy(character.position);
+    downArrow.position.copy(character.position);
 
     raycaster.set(character.position, downVector);
     const intersectsDown = raycaster.intersectObjects(groundTiles);
