@@ -37,6 +37,22 @@ for (let x = 0; x < 2; x++) {
     }
 }
 
+const tile1 = new THREE.Mesh(
+    new THREE.BoxGeometry(tileSize, -1, tileSize),
+    new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
+);
+tile1.position.set(0, 1, 10);
+scene.add(tile1);
+groundTiles.push(tile1);
+
+const tile2 = new THREE.Mesh(
+    new THREE.BoxGeometry(tileSize, -1, tileSize),
+    new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
+);
+tile2.position.set(10, 1, 0);
+scene.add(tile2);
+groundTiles.push(tile2);
+
 // Create a simple character (a cube) and set initial position
 const character = new THREE.Mesh(
     new THREE.BoxGeometry(0.5, 1, 0.5),
@@ -59,8 +75,9 @@ const downVector = new THREE.Vector3(0, -2, 0);
 const upVector = new THREE.Vector3(0, 2, 0);
 const rightVector = new THREE.Vector3(2, 0, 0);
 const leftVector = new THREE.Vector3(-2, 0, 0);
-const forwardVector = new THREE.Vector3(0, 0, 2);
-const backVector = new THREE.Vector3(0, 0, -2);
+const forwardVector = new THREE.Vector3(0, 0, -2);
+const backwardVector = new THREE.Vector3(0, 0, 2);
+const collisionDistance = 1.25;
 
 // Event listener for keypresses
 window.addEventListener('keydown', onKeyPress);
@@ -163,6 +180,43 @@ function onKeyRelease(event) {
 function animate() {
     requestAnimationFrame(animate);
 
+    // Initialize movement allowed flags
+    let canMoveForward = true;
+    let canMoveBackward = true;
+    let canMoveLeft = true;
+    let canMoveRight = true;
+
+    // Check collisions in each direction
+    raycaster.set(character.position, forwardVector);
+    const intersectsForward = raycaster.intersectObjects(groundTiles);
+    if (intersectsForward.length > 0 && intersectsForward[0].distance <= collisionDistance) {
+        canMoveForward = false;
+    }
+
+    raycaster.set(character.position, backwardVector);
+    const intersectsBackward = raycaster.intersectObjects(groundTiles);
+    if (intersectsBackward.length > 0 && intersectsBackward[0].distance <= collisionDistance) {
+        canMoveBackward = false;
+    }
+
+    raycaster.set(character.position, leftVector);
+    const intersectsLeft = raycaster.intersectObjects(groundTiles);
+    if (intersectsLeft.length > 0 && intersectsLeft[0].distance <= collisionDistance) {
+        canMoveLeft = false;
+    }
+
+    raycaster.set(character.position, rightVector);
+    const intersectsRight = raycaster.intersectObjects(groundTiles);
+    if (intersectsRight.length > 0 && intersectsRight[0].distance <= collisionDistance) {
+        canMoveRight = false;
+    }
+    
+    // Apply movement only if no collision detected in that direction
+    if (moveZ < 0 && !canMoveForward) moveZ = 0; // Forward
+    if (moveZ > 0 && !canMoveBackward) moveZ = 0; // Backward
+    if (moveX < 0 && !canMoveLeft) moveX = 0;     // Left
+    if (moveX > 0 && !canMoveRight) moveX = 0;    // Right
+
     // Update character position based on movement inputs
     const direction = new THREE.Vector2(moveX, moveZ);
     direction.normalize().multiplyScalar(moveSpeed);
@@ -181,10 +235,10 @@ function animate() {
     character.position.z += direction.y;
 
     raycaster.set(character.position, downVector);
-    const intersects = raycaster.intersectObjects(groundTiles);
+    const intersectsDown = raycaster.intersectObjects(groundTiles);
 
     // Check if there’s a ground tile directly below within a small distance
-    if (!isOnGround && intersects.length > 0 && intersects[0].distance <= 1.5) {
+    if (!isOnGround && intersectsDown.length > 0 && intersectsDown[0].distance <= 1.5) {
         character.position.y = Math.floor(character.position.y) + 1;  // Snap character to ground level
         moveY = 0;               // Reset vertical velocity
         isOnGround = true;           // Allow jumping again
