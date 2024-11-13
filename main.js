@@ -38,7 +38,7 @@ for (let x = 0; x < floorSize; x++) {
         );
         tile.castShadow = true
         tile.receiveShadow = true
-        tile.position.set(x, -5, z);
+        tile.position.set(x, 0, z);
         scene.add(tile);
         groundTiles.push(tile);
     }
@@ -56,14 +56,14 @@ for (let x = 2; x < 4; x++) {
         );
         tile.castShadow = true
         tile.receiveShadow = true
-        tile.position.set(x, -3, z);
+        tile.position.set(x, 1, z);
         scene.add(tile);
         groundTiles.push(tile);
     }
 }
 
 const tile1 = new THREE.Mesh(
-    new THREE.BoxGeometry(tileSize, -1, tileSize),
+    new THREE.BoxGeometry(tileSize, 1, tileSize),
     new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
 );
 tile1.position.set(0, 1, 10);
@@ -71,7 +71,7 @@ scene.add(tile1);
 groundTiles.push(tile1);
 
 const tile2 = new THREE.Mesh(
-    new THREE.BoxGeometry(tileSize, -1, tileSize),
+    new THREE.BoxGeometry(tileSize, 1, tileSize),
     new THREE.MeshBasicMaterial({ color: 0x4a3f3a })
 );
 tile2.position.set(10, 1, 0);
@@ -89,7 +89,7 @@ const character = new THREE.Mesh(
     characterMaterial
 );
 character.castShadow = true
-character.position.set(5, 0.5, 5);  // Center character on grid
+character.position.set(5, 1, 5);  // Center character on grid
 scene.add(character);
 
 
@@ -108,7 +108,7 @@ const rightVector = new THREE.Vector3(2, 0, 0);
 const leftVector = new THREE.Vector3(-2, 0, 0);
 const forwardVector = new THREE.Vector3(0, 0, -2);
 const backwardVector = new THREE.Vector3(0, 0, 2);
-const collisionDistance = 1.25;
+const collisionDistance = 0.25;
 
 // Event listener for keypresses
 window.addEventListener('keydown', onKeyPress);
@@ -269,7 +269,7 @@ function animate() {
     const intersectsDown = raycaster.intersectObjects(groundTiles);
 
     // Check if there’s a ground tile directly below within a small distance
-    if (!isOnGround && intersectsDown.length > 0 && intersectsDown[0].distance <= 1.5) {
+    if (!isOnGround && intersectsDown.length > 0 && intersectsDown[0].distance <= 0.5) {
         character.position.y = Math.floor(character.position.y) + 1;  // Snap character to ground level
         moveY = 0;               // Reset vertical velocity
         isOnGround = true;           // Allow jumping again
