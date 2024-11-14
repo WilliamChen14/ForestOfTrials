@@ -1,6 +1,12 @@
 // Level.js
 import * as THREE from 'three';
+
 import { loadModel } from '../Models.js';
+import { Sign } from '../entities/Sign';
+import { Slime } from '../entities/Slime';
+import { StoneFLoor } from '../entities/StoneFloor';
+import { Tree } from '../entities/Tree';
+import { InvisWall } from '../entities/InvisWall';
 
 export function StarterLevel(scene) {
     let MapLayout = [];
@@ -40,6 +46,20 @@ export function StarterLevel(scene) {
         scene.add(tile);
         MapLayout.push(tile);
     };
+
+    const addSign = (x, y, z) => {
+        const signMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x422522,
+            roughness: 0.5,
+            metalness: 0,
+        });
+        const sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
+        sign.castShadow = true;
+        sign.receiveShadow = true;
+        sign.position.set(x, y, z);
+        scene.add(sign);
+        Mobs.push(sign);
+    }
 
     const addExit = (x,y,z) => {
         const exitMaterial = new THREE.MeshPhysicalMaterial({
@@ -93,38 +113,47 @@ export function StarterLevel(scene) {
     }
 
     loadModel(scene);
-    // test
 
-    //addSign(5, 1, 5);
-    //const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
-    //Signs.push(signOne);
+    const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
+    Signs.push(signOne);
+    const slimeOne = new Slime(scene, 6, 1, 6);
+    Mobs.push(slimeOne);
 
-    //const slimeOne = new Slime(scene, 5, 1, 6);
-    //Mobs.push(slimeOne);
 
     addExit(10,1,9);
     
 
     // Add ground tiles (10x10 grid)
     for (let x = -1; x < floorSize + 1; x++) {
-        addTree(-1, 1, x);
-        addTree(10, 1, x);
-        addTree(x, 1, -1);
-        addTree(x, 1, 10);
-        addClearTile(x, 0, -1);
-        addClearTile(x, 1, -1);
-        addClearTile(x, 2, -1);
-        addClearTile(x, 0, floorSize);
-        addClearTile(x, 1, floorSize);
-        addClearTile(x, 2, floorSize);
-        addClearTile(-1, 0, x);
-        addClearTile(-1, 1, x);
-        addClearTile(-1, 2, x);
-        addClearTile(floorSize, 0, x);
-        addClearTile(floorSize, 1, x);
-        addClearTile(floorSize, 2, x);
+        const treeOne = new Tree(scene, -1, 1, x);
+        //MapLayout.push(treeOne.MapLayoutMesh);
+        const treeTwo = new Tree(scene, 10, 1, x);
+        //MapLayout.push(treeTwo.MapLayoutMesh);
+        const treeThree = new Tree(scene, x, 1, -1);
+        //MapLayout.push(treeThree.MapLayoutMesh);
+        const treeFour = new Tree(scene, x, 1, 10);
+        //MapLayout.push(treeFour.MapLayoutMesh);
+
+        const invisWallOne = new InvisWall(scene, x, 1, -1);
+        MapLayout.push(invisWallOne.MapLayoutMesh);
+        const invisWallTwo = new InvisWall(scene, x, 2, -1);
+        MapLayout.push(invisWallTwo.MapLayoutMesh);
+        const invisWallThree = new InvisWall(scene, x, 1, floorSize);
+        MapLayout.push(invisWallThree.MapLayoutMesh);
+        const invisWallFour = new InvisWall(scene, x, 2, floorSize);
+        MapLayout.push(invisWallFour.MapLayoutMesh);
+        const invisWallFive = new InvisWall(scene, -1, 1, x);
+        MapLayout.push(invisWallFive.MapLayoutMesh);
+        const invisWallSix = new InvisWall(scene, -1, 2, x);
+        MapLayout.push(invisWallSix.MapLayoutMesh);
+        const invisWallSeven = new InvisWall(scene, floorSize, 1, x);
+        MapLayout.push(invisWallSeven.MapLayoutMesh);
+        const invisWallEight = new InvisWall(scene, floorSize, 2, x);
+        MapLayout.push(invisWallEight.MapLayoutMesh);
+
         for (let z = -1; z < floorSize + 1; z++) {
-            addTile(x, 0, z, 0x4a403f);
+            const stoneFloor = new StoneFLoor(scene, x, 0, z);
+            MapLayout.push(stoneFloor.MapLayoutMesh);
         }
     }
 

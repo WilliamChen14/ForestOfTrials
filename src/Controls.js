@@ -14,6 +14,7 @@ export class Controls {
             space: false,
             escape: false
         };
+        this.lastKeyPressed = null;
         this.moveX = 0;
         this.moveY = 0;
         this.moveZ = 0;
@@ -34,18 +35,22 @@ export class Controls {
             case "w":  // Move up
                 this.moveZ = -moveSpeed;
                 this.keysPressed.w = true;
+                this.lastKeyPressed = "w";
                 break;
             case "a":  // Move left
                 this.moveX = -moveSpeed;
                 this.keysPressed.a = true;
+                this.lastKeyPressed = "a";
                 break;
             case "s":  // Move down
                 this.moveZ = moveSpeed;
                 this.keysPressed.s = true;
+                this.lastKeyPressed = "s";
                 break;
             case "d":  // Move right
                 this.moveX = moveSpeed;
                 this.keysPressed.d = true;
+                this.lastKeyPressed = "d";
                 break;
             case "j":
                 this.keysPressed.j = true;
@@ -119,6 +124,10 @@ export class Controls {
             default:
                 break;
         }
+    }
+
+    getLastKeyPresed(){
+        return this.lastKeyPressed;
     }
 
     // Method to get the state of a specific key

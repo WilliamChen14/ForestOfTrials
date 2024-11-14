@@ -46,6 +46,10 @@ export class Slime {
         return distance <= this.collisionDistance;
     }
 
+    checkWallCollision(levelData){
+        
+    }
+
     getLastCollisionTime(){
         return this.lastCollisionTime;
     }

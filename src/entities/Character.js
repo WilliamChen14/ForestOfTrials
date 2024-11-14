@@ -56,10 +56,17 @@ export class Character {
         this.createAttackHitbox = this.createAttackHitbox.bind(this);
     }
 
-    createAttackHitbox() {
+    createAttackHitbox(horizontalDirection) {
         // Create a visible hitbox with red color
         const hitboxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
-        const hitboxGeometry = new THREE.BoxGeometry(2, 1, 1);
+        let hitboxGeometry = null;
+        if(horizontalDirection == 1){
+            hitboxGeometry =  new THREE.BoxGeometry(1, 1, 2);
+        }
+        else{
+            hitboxGeometry =  new THREE.BoxGeometry(2, 1, 1);
+        }
+        
         const hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
         // Position the hitbox based on last direction
@@ -119,12 +126,26 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, MapLayout, Mobs, Signs, Exit, moveX, moveZ, changeLevel, stateManager) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, moveX, moveZ, changeLevel, stateManager) {
         const currentTime = Date.now();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
+
+        if(LastKeyPressed === "w"){
+            this.lastDirection = new THREE.Vector3(0, 0, -1);
+        }
+        else if(LastKeyPressed === "a"){
+            this.lastDirection = new THREE.Vector3(-1, 0, 0);
+        }
+        else if(LastKeyPressed === "d"){
+            this.lastDirection = new THREE.Vector3(1, 0, 0);
+        }
+        else {
+            this.lastDirection = new THREE.Vector3(0, 0, 1);
+        }
+            
 
         console.log(this.characterMesh.position.y);
 
@@ -133,7 +154,11 @@ export class Character {
 
         if (keysPressed.j === true && currentTime - this.lastAttackTime > 500) {
             this.lastAttackTime = currentTime;
-            this.createAttackHitbox();
+            if(LastKeyPressed === "d" || LastKeyPressed === "a")
+                this.createAttackHitbox(1);
+            else{
+                this.createAttackHitbox(0);
+            }
         }
 
         this.Mobs.forEach(obj=> {
@@ -231,6 +256,11 @@ export class Character {
         if (this.moveZ > 0 && !canMoveBackward) this.moveZ = 0; // Backward
         if (this.moveX < 0 && !canMoveLeft) this.moveX = 0;     // Left
         if (this.moveX > 0 && !canMoveRight) this.moveX = 0;    // Right
+
+        if(currentTime - this.lastAttackTime < 400){
+            this.moveX = 0;
+            this.moveZ = 0;
+        }
 
         const direction = new THREE.Vector2(this.moveX, this.moveZ);
         direction.normalize().multiplyScalar(this.moveSpeed);
