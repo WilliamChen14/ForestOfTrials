@@ -93,6 +93,7 @@ export function StarterLevel(scene) {
     }
 
     loadModel(scene);
+    // test
 
     //addSign(5, 1, 5);
     //const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
