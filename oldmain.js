@@ -37,7 +37,9 @@ ambientLight.castShadow = true; // default false
 scene.add(ambientLight);
 
 function resetGame() {
-    character.position.copy(new THREE.Vector3(5, 0, 5));
+
+    character.position.copy(defaultPosition);
+
     character.position.y = 1;  
     moveX = 0;
     moveY = 0;  
@@ -252,7 +254,7 @@ function onKeyRelease(event) {
             break;
         case "s":  // Move down
             if(keysPressed.w){
-                moveZ = -amoveSpeed;
+                moveZ = -moveSpeed;
             }
             else{
                 moveZ = 0

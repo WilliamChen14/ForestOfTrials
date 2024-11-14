@@ -94,7 +94,7 @@ export class Controls {
                 break;
             case "s":  // Move down
                 if(this.keysPressed.w){
-                    this.moveZ = -amoveSpeed;
+                    this.moveZ = -moveSpeed;
                 }
                 else{
                     this.moveZ = 0

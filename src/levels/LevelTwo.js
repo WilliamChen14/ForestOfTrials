@@ -1,7 +1,7 @@
 // Level.js
 import * as THREE from 'three';
 
-export function StarterLevel(scene) {
+export function LevelTwo(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
@@ -134,10 +134,10 @@ export function StarterLevel(scene) {
     // Add raised tiles to create platforms or obstacles
     addTile(2, 1, 2, 0x808000);
     addTile(2, 1, 3, 0x808000);
-    addTile(3, 1, 2, 0x808000);
-    addTile(3, 1, 3, 0x808000);
-    addTile(3, 2, 2, 0x808000);
-    addTile(3, 2, 3, 0x808000);
+    
+    
+
+
 
     return {MapLayout, Mobs, Exit};  // Return all tiles for collision detection
 }

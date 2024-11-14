@@ -16,7 +16,7 @@ export class Character {
             characterMaterial
         );
         this.characterMesh.castShadow = true;
-        this.characterMesh.position.set(5, 1, 5); // Initial position
+        this.characterMesh.position.set(0, 1, 0); // Initial position
 
         this.moveSpeed = 0.1;
         this.jumpStrength = 0.15;
@@ -44,8 +44,10 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, levelData) {
-        this.levelData = levelData
+    update(keysPressed, MapLayout, Mobs, Exit, moveX, moveZ, changeLevel, stateManager) {
+        this.levelData = MapLayout;
+        this.Mobs = Mobs;
+        this.Exit = Exit;
 
         // Initialize movement allowed flags
         let canMoveForward = true;
@@ -70,11 +72,21 @@ export class Character {
         if (intersectsForward.length > 0 && intersectsForward[0].distance <= this.collisionDistance) {
             canMoveForward = false;
         }
+        const intersectsExitForward = this.raycaster.intersectObjects(this.Exit);
+        if (intersectsExitForward.length > 0 && intersectsExitForward[0].distance <= this.collisionDistance) {
+            console.log("exit hit");
+            changeLevel();
+        }
 
         this.raycaster.set(this.characterMesh.position, this.backwardVector);
         const intersectsBackward = this.raycaster.intersectObjects(this.levelData);
         if (intersectsBackward.length > 0 && intersectsBackward[0].distance <= this.collisionDistance) {
             canMoveBackward = false;
+        }
+        const intersectsExitBack = this.raycaster.intersectObjects(this.Exit);
+        if (intersectsExitBack.length > 0 && intersectsExitBack[0].distance <= this.collisionDistance) {
+            console.log("exit hit");
+            changeLevel();
         }
 
         this.raycaster.set(this.characterMesh.position, this.leftVector);
@@ -82,16 +94,30 @@ export class Character {
         if (intersectsLeft.length > 0 && intersectsLeft[0].distance <= this.collisionDistance) {
             canMoveLeft = false;
         }
+        const intersectsExitLeft = this.raycaster.intersectObjects(this.Exit);
+        if (intersectsExitLeft.length > 0 && intersectsExitLeft[0].distance <= this.collisionDistance) {
+            console.log("exit hit");
+            changeLevel();
+        }
 
         this.raycaster.set(this.characterMesh.position, this.rightVector);
         const intersectsRight = this.raycaster.intersectObjects(this.levelData);
         if (intersectsRight.length > 0 && intersectsRight[0].distance <= this.collisionDistance) {
             canMoveRight = false;
         }
+        const intersectsExitRight = this.raycaster.intersectObjects(this.Exit);
+        if (intersectsExitRight.length > 0 && intersectsExitRight[0].distance <= this.collisionDistance) {
+            console.log("exit hit");
+            changeLevel();
+        }
 
         // Set movement based on key presses
+        this.moveX = moveX;
+        this.moveZ = moveZ;
+        /*
         this.moveZ = keysPressed.w ? -this.moveSpeed : keysPressed.s ? this.moveSpeed : 0;
         this.moveX = keysPressed.a ? -this.moveSpeed : keysPressed.d ? this.moveSpeed : 0;
+        */
 
         const tempZ = this.moveZ;
         const tempX = this.moveX;
