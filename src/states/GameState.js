@@ -5,7 +5,6 @@ import { LevelOne } from '../levels/LevelOne.js';
 import { LevelTwo } from '../levels/LevelTwo.js';
 
 
-
 import { StarterLevel } from '../levels/StarterLevel.js';
 
 import * as THREE from 'three';
@@ -132,5 +131,4 @@ export class GameState {
         console.log("Exiting Game State");
         this.controls.resetKeys(); // Reset keys when exiting the state
     }
-
 }

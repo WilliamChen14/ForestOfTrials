@@ -37,7 +37,9 @@ ambientLight.castShadow = true; // default false
 scene.add(ambientLight);
 
 function resetGame() {
+
     character.position.copy(defaultPosition);
+
     character.position.y = 1;  
     moveX = 0;
     moveY = 0;  

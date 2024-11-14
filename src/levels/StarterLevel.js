@@ -139,7 +139,5 @@ export function StarterLevel(scene) {
     addTile(3, 2, 2, 0x808000);
     addTile(3, 2, 3, 0x808000);
 
-
-
     return {MapLayout, Mobs, Exit};  // Return all tiles for collision detection
 }
