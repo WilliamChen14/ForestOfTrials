@@ -1,7 +1,7 @@
 // this file manages mesh and material loading
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import * as THREE from 'three';
-import MODEL from './treee.glb'
+import MODEL from '/assets/models/tree.glb'
 
 // instantiate a loader
 const loader = new GLTFLoader();
