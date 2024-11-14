@@ -45,7 +45,9 @@ export class GameState {
 
     enter() {
         console.log("Entering Game State");
+
     }
+
 
     changeLevel() {
         // Step 1: Remove all level objects from scene
@@ -116,7 +118,7 @@ export class GameState {
 
     update() {
         // Pass controls to the character's update method
-        this.character.update(this.controls.keysPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Exit, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
+        this.character.update(this.controls.keysPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exit, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
 
         
 

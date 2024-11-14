@@ -1,5 +1,7 @@
 // src/Character.js
 import * as THREE from 'three';
+import { Sign } from './Sign';
+
 
 export class Character {
     constructor(scene) {
@@ -38,16 +40,119 @@ export class Character {
         this.backwardVector = new THREE.Vector3(0, 0, 2);
         this.collisionDistance = 0.25;
 
+        //stats
+        this.health = 5;
+        this.updateHealthDisplay();
+        this.lastMobCollisionTime = 0;
+
+        this.lastDirection = new THREE.Vector3(0, 0, -1);
+        this.lastAttackTime = 0;
+        this.currentHitbox = 0;
+
 
         // Add the character to the scene
         this.scene.add(this.characterMesh);
+
+        this.createAttackHitbox = this.createAttackHitbox.bind(this);
+    }
+
+    createAttackHitbox() {
+        // Create a visible hitbox with red color
+        const hitboxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const hitboxGeometry = new THREE.BoxGeometry(2, 1, 1);
+        const hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+
+        // Position the hitbox based on last direction
+        hitboxMesh.position.copy(this.characterMesh.position);
+        hitboxMesh.position.add(this.lastDirection.clone().multiplyScalar(1));  // Offset from character position
+
+        // Add hitbox to the scene
+        this.scene.add(hitboxMesh);
+        this.currentHitbox = hitboxMesh;
+
+        // Remove hitbox after a short duration (e.g., 200ms)
+        setTimeout(() => {
+            this.scene.remove(hitboxMesh);
+            this.currentHitbox = null;
+        }, 200);
+        return hitboxMesh;
+    }
+
+    checkHitboxCollision(mob) {
+        if (!this.currentHitbox) return false; // No hitbox present
+
+        const hitboxBoundingBox = new THREE.Box3().setFromObject(this.currentHitbox);
+        const mobBoundingBox = new THREE.Box3().setFromObject(mob.mobMesh);
+        
+        return hitboxBoundingBox.intersectsBox(mobBoundingBox);
+    }
+
+     // Method to change the health value and update the health display
+     updateHealth(health) {
+        this.health = health;
+        this.updateHealthDisplay();  // Update the heart display
+    }
+
+    // Update the health display by adding/removing heart elements
+    updateHealthDisplay() {
+        const healthContainer = document.getElementById("health-container");
+
+        // Clear the existing hearts
+        healthContainer.innerHTML = "";
+
+        // Add hearts based on current health
+        for (let i = 0; i < this.health; i++) {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");  // Add the class for styling
+            healthContainer.appendChild(heart);
+        }
+    }
+
+    // Show the message container when collision with sign occurs
+    showMessage(message) {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.innerText = message;
+        messageContainer.style.display = "block"; // Show the message
+        setTimeout(() => {
+            messageContainer.style.display = "none"; // Hide the message after 3 seconds
+        }, 3000);
     }
 
     // Method to update character position each frame
-    update(keysPressed, MapLayout, Mobs, Exit, moveX, moveZ, changeLevel, stateManager) {
+    update(keysPressed, MapLayout, Mobs, Signs, Exit, moveX, moveZ, changeLevel, stateManager) {
+        const currentTime = Date.now();
         this.levelData = MapLayout;
+        this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
+
+
+        this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
+
+        if (keysPressed.j === true && currentTime - this.lastAttackTime > 500) {
+            this.lastAttackTime = currentTime;
+            this.createAttackHitbox();
+        }
+
+        this.Mobs.forEach(obj=> {
+            if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh)) {
+                this.updateHealth(this.health - 1);
+                console.log("collided with mob");
+            }
+
+
+            obj.update();
+
+            if(this.checkHitboxCollision(obj)){
+                obj.loseLife(1);
+            }
+                
+        });
+        
+
+        //this.showMessage("You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
+
+
 
         // Initialize movement allowed flags
         let canMoveForward = true;
@@ -56,7 +161,6 @@ export class Character {
         let canMoveRight = true;
 
         // Jump logic
-        const currentTime = Date.now();
         if (keysPressed.space && this.isOnGround && (currentTime - this.lastJumpTime >= this.jumpCooldownTime)) {
             this.isOnGround = false;
             this.moveY = this.jumpStrength;

@@ -1,10 +1,13 @@
 // Level.js
 import * as THREE from 'three';
+import { Sign } from '../entities/Sign';
+import { Slime } from '../entities/Slime';
 
 export function StarterLevel(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
+    let Signs = [];
     const tileSize = 1;
     const floorSize = 10;
 
@@ -38,20 +41,6 @@ export function StarterLevel(scene) {
         scene.add(tile);
         MapLayout.push(tile);
     };
-
-    const addSign = (x, y, z) => {
-        const signMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x422522,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
-        sign.castShadow = true;
-        sign.receiveShadow = true;
-        sign.position.set(x, y, z);
-        scene.add(sign);
-        Mobs.push(sign);
-    }
 
     const addExit = (x,y,z) => {
         const exitMaterial = new THREE.MeshPhysicalMaterial({
@@ -104,7 +93,12 @@ export function StarterLevel(scene) {
         MapLayout.push(treeTop);
     }
 
-    addSign(5, 1, 5);
+    const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
+    Signs.push(signOne);
+
+    const slimeOne = new Slime(scene, 5, 1, 6);
+    Mobs.push(slimeOne);
+
     addExit(10,1,9);
     
 
@@ -139,5 +133,5 @@ export function StarterLevel(scene) {
     addTile(3, 2, 2, 0x808000);
     addTile(3, 2, 3, 0x808000);
 
-    return {MapLayout, Mobs, Exit};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exit};  // Return all tiles for collision detection
 }

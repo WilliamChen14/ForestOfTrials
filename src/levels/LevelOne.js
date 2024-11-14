@@ -1,10 +1,13 @@
 // Level.js
 import * as THREE from 'three';
 
+import { Sign } from '../entities/Sign';
+
 export function LevelOne(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
+    let Signs = [];
     const tileSize = 1;
     const floorSize = 10;
 
@@ -39,19 +42,6 @@ export function LevelOne(scene) {
         MapLayout.push(tile);
     };
 
-    const addSign = (x, y, z) => {
-        const signMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x422522,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
-        sign.castShadow = true;
-        sign.receiveShadow = true;
-        sign.position.set(x, y, z);
-        scene.add(sign);
-        Mobs.push(sign);
-    }
 
     const addExit = (x,y,z) => {
         const exitMaterial = new THREE.MeshPhysicalMaterial({
@@ -104,7 +94,9 @@ export function LevelOne(scene) {
         MapLayout.push(treeTop);
     }
 
-    addSign(5, 1, 5);
+    const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
+    Signs.push(signOne);
+
     addExit(10,1,9);
     
 
@@ -140,5 +132,5 @@ export function LevelOne(scene) {
 
 
 
-    return {MapLayout, Mobs, Exit};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exit};  // Return all tiles for collision detection
 }
