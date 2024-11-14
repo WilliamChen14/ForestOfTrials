@@ -23,7 +23,7 @@ export class Character {
         this.moveSpeed = 0.1;
         this.jumpStrength = 0.15;
         this.gravity = -0.01;
-        this.isOnGround = true;
+        this.isOnGround = false;
         this.moveX = 0;
         this.moveY = 0;
         this.moveZ = 0;
@@ -125,6 +125,8 @@ export class Character {
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
+
+        console.log(this.characterMesh.position.y);
 
 
         this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
@@ -249,11 +251,13 @@ export class Character {
 
         // Check if there’s a ground tile directly below within a small distance
         if (!this.isOnGround && intersectsDown.length > 0 && intersectsDown[0].distance <= 0.5) {
-            this.characterMesh.position.y = Math.floor(this.characterMesh.position.y) + 1;  // Snap character to ground level
+            const groundY = intersectsDown[0].point.y;
+            this.characterMesh.position.y = groundY + 0.5;
             this.moveY = 0;               // Reset vertical velocity
             this.isOnGround = true;           // Allow jumping again
-        } else {
-            this.isOnGround = false;          // Character is in the air
+        }
+        else { 
+            this.isOnGround = false;
         }
     }
 }
