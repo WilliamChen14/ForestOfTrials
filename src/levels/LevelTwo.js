@@ -5,6 +5,7 @@ export function LevelTwo(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
+    let Signs = []
     const tileSize = 1;
     const floorSize = 10;
 
@@ -39,19 +40,6 @@ export function LevelTwo(scene) {
         MapLayout.push(tile);
     };
 
-    const addSign = (x, y, z) => {
-        const signMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x422522,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
-        sign.castShadow = true;
-        sign.receiveShadow = true;
-        sign.position.set(x, y, z);
-        scene.add(sign);
-        Mobs.push(sign);
-    }
 
     const addExit = (x,y,z) => {
         const exitMaterial = new THREE.MeshPhysicalMaterial({
@@ -104,7 +92,6 @@ export function LevelTwo(scene) {
         MapLayout.push(treeTop);
     }
 
-    addSign(5, 1, 5);
     addExit(10,1,9);
     
 
@@ -139,5 +126,5 @@ export function LevelTwo(scene) {
 
 
 
-    return {MapLayout, Mobs, Exit};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exit};  // Return all tiles for collision detection
 }

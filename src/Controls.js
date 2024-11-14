@@ -48,7 +48,7 @@ export class Controls {
                 this.keysPressed.d = true;
                 break;
             case "j":
-                console.log("Action J");
+                this.keysPressed.j = true;
                 break;
             case "k":
                 console.log("Action K");
@@ -109,6 +109,9 @@ export class Controls {
                     this.moveX = 0;
                 }
                 this.keysPressed.d = false;
+                break;
+            case "j":
+                this.keysPressed.j = false;
                 break;
             case " ":
                 this.keysPressed.space = false;
