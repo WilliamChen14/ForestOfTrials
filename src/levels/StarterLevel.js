@@ -1,5 +1,6 @@
 // Level.js
 import * as THREE from 'three';
+import { loadModel } from '../Models.js';
 
 export function StarterLevel(scene) {
     let MapLayout = [];
@@ -103,6 +104,8 @@ export function StarterLevel(scene) {
         scene.add(treeTop);
         MapLayout.push(treeTop);
     }
+
+    loadModel(scene);
 
     addSign(5, 1, 5);
     addExit(10,1,9);
