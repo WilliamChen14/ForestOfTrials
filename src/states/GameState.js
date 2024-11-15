@@ -10,6 +10,7 @@ import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
 
 export class GameState {
+
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.controls = new Controls();
@@ -18,29 +19,7 @@ export class GameState {
         this.currentLevel = 0;
 
         this.changeLevel = this.changeLevel.bind(this);
-
-
-         // Set up lights (adjust to your preference)
-         const sunLight = new THREE.DirectionalLight( 0xffffff, 5);
-         sunLight.castShadow = true; // default false
-         sunLight.position.set(-5,4,5);
- 
-         const target = new THREE.Object3D(); // Create a target object
-         target.position.set(0, 0, 0); // Set the target position, for example, the center of the scene
-         this.stateManager.scene.add(target);
- 
-         // Set the light to point towards the target
-         sunLight.target = target;
-         
-         this.stateManager.scene.add( sunLight );
- 
-         // Optionally, add ambient light to ensure basic visibility
-         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
-         ambientLight.castShadow = true; // default false
-         ambientLight.position.set(-5,5,5);
- 
-         ambientLight.target = target;
-         this.stateManager.scene.add(ambientLight);
+        this.setUpLevel();
     }
 
     enter() {
@@ -88,11 +67,16 @@ export class GameState {
 
         this.character = new Character(this.stateManager.scene);
 
+        this.setUpLevel();
+        console.log("Level changed successfully.");
+        
+    }
 
+    setUpLevel() {
         // Set up lights (adjust to your preference)
-        const sunLight = new THREE.DirectionalLight( 0xffffff, 5);
+        const sunLight = new THREE.DirectionalLight(0xffffff, 5);
         sunLight.castShadow = true; // default false
-        sunLight.position.set(-5,4,5);
+        sunLight.position.set(-2, 4, 2);
 
         const target = new THREE.Object3D(); // Create a target object
         target.position.set(0, 0, 0); // Set the target position, for example, the center of the scene
@@ -100,19 +84,27 @@ export class GameState {
 
         // Set the light to point towards the target
         sunLight.target = target;
-        
-        this.stateManager.scene.add( sunLight );
+
+        this.stateManager.scene.add(sunLight);
+        sunLight.shadow.mapSize.width = 4096;  // Increase width resolution
+        sunLight.shadow.mapSize.height = 4096; // Increase height resolution
+
+        // Configure the shadow camera to focus on the relevant area
+        const size = 50;
+        sunLight.shadow.camera.top = size;
+        sunLight.shadow.camera.bottom = -size;
+        sunLight.shadow.camera.left = -size;
+        sunLight.shadow.camera.right = size;
+        sunLight.shadow.camera.near = 0.5;  // Near clipping plane
+        sunLight.shadow.camera.far = size*3;   // Far clipping plane
+
 
         // Optionally, add ambient light to ensure basic visibility
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
-        ambientLight.castShadow = true; // default false
-        ambientLight.position.set(-5,5,5);
+        const ambientLight = new THREE.AmbientLight(0x5f5fff, 1.6);
+        ambientLight.position.set(-5, 5, 5);
 
         ambientLight.target = target;
         this.stateManager.scene.add(ambientLight);
-    
-        console.log("Level changed successfully.");
-        
     }
 
     update() {
