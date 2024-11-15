@@ -13,7 +13,7 @@ export class InvisWall {
             transparent: true,
             opacity: 0.0
         });
-        const inviseWallMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), inviseWallMaterial);
+        const inviseWallMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 5, 1), inviseWallMaterial);
         inviseWallMesh.castShadow = true;
         inviseWallMesh.receiveShadow = true;
         inviseWallMesh.position.set(x, y, z);

@@ -8,6 +8,7 @@ import { LevelTwo } from '../levels/LevelTwo.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 
 import * as THREE from 'three';
+import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
 
 export class GameState {
 
@@ -41,7 +42,7 @@ export class GameState {
     
         // Step 2: Load the new level
         if(this.currentLevel == 1){
-            this.levelData = LevelOne(this.stateManager.scene);
+            this.levelData = StarterLevelTwo(this.stateManager.scene);
         }
         else if(this.currentLevel == 2){
             this.levelData = LevelTwo(this.stateManager.scene);
@@ -109,7 +110,7 @@ export class GameState {
 
     update() {
         // Pass controls to the character's update method
-        this.character.update(this.controls.keysPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exit, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
+        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exits, this.levelData.Tools, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
 
         
 

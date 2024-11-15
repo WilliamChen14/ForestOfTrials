@@ -2,46 +2,35 @@
 import * as THREE from 'three';
 
 import { loadModel } from '../Models.js';
-import { Sign } from '../entities/Sign.js';
-import { Slime } from '../entities/Slime.js';
-import { StoneFLoor } from '../entities/StoneFloor.js';
-import { Tree } from '../entities/Tree.js';
-import { InvisWall } from '../entities/InvisWall.js';
+import { Sign } from '../entities/Sign';
+import { Slime } from '../entities/Slime';
+import { StoneFLoor } from '../entities/StoneFloor';
+import { Tree } from '../entities/Tree';
+import { InvisWall } from '../entities/InvisWall';
 import { Exit } from '../entities/Exit.js';
 
-export function StarterLevel(scene) {
+export function TemplateLevel(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exits = [];
     let Signs = [];
     let Tools = [];
-    
+
     const floorSize = 10;
 
 
-    const addExit = (x,y,z) => {
-        const exitMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xfffc63,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const exit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2, 1.2), exitMaterial);
-        exit.castShadow = true;
-        exit.receiveShadow = true;
-        exit.position.set(x, y, z);
-        scene.add(exit);
-        Exit.push(exit);
-    }
 
 
     loadModel(scene);
 
     const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);
+    const slimeOne = new Slime(scene, 6, 1, 6);
+    Mobs.push(slimeOne);
 
-    const exit = new Exit(scene, 10, 1, 9);
+
+    const exit = new Exit(scene, 10, 1,9);
     Exits.push(exit.MapLayoutMesh);
-    
     
 
     // Add ground tiles (10x10 grid)

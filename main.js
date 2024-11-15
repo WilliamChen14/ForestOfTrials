@@ -25,7 +25,7 @@ camera.lookAt(defaultPosition);
 
 // Initialize the state manager and start with the HomeState
 const stateManager = new StateManager(scene, camera, renderer);
-stateManager.changeState(GameState);  // Start in the home state
+stateManager.changeState(HomeState);  // Start in the home state
 
 // Pass stateManager to index.js to handle updates
 import { animate } from './src/index.js';
