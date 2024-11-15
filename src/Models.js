@@ -14,6 +14,7 @@ export class Model {
         this.scene = scene;
         this.initialized = false;
         this.mixer = null;
+        this.sceneObject = null;
     }
 
     loadModel(path) {
@@ -46,7 +47,8 @@ export class Model {
             } );
         }).then((results) => {
             this.mixer = results.mixer;
-            this.scene.add(results.sceneObject);
+            this.sceneObject = results.sceneObject;
+            this.scene.add(this.sceneObject);
             console.log("Character loaded with mixer:", this.mixer);
         })
         .catch((error) => {

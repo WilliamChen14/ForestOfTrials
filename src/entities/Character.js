@@ -9,7 +9,7 @@ export class Character {
     constructor(scene) {
         this.scene = scene;
         this.model = new Model(this.scene);
-        this.model.loadModel(CHARACTER);
+        //this.model.loadModel(CHARACTER);
 
         // Create a group to hold all parts of the character
         this.characterMesh = new THREE.Group();
@@ -437,6 +437,12 @@ export class Character {
         this.characterMesh.position.x += direction.x;
         this.characterMesh.position.y += this.moveY;
         this.characterMesh.position.z += direction.y;
+        /*
+        this.model.sceneObject.position.x = this.characterMesh.position.x;
+        this.model.sceneObject.position.y = this.characterMesh.position.y;
+        this.model.sceneObject.position.z = this.characterMesh.position.z;
+        this.model.mixer.update(0.3);
+        */
 
         if(this.heldItem){
             this.heldItem.MapLayoutMesh.position.x = this.characterMesh.position.x;
