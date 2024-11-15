@@ -287,10 +287,11 @@ export class HomeState {
     }
 
     update() {
-        // Update logic if needed
+        //maybe later
     }
 
     exit() {
+        //cleanup
         if (this.homeScreenElement) {
             // Remove event listeners
             const mushrooms = this.homeScreenElement.querySelectorAll('.mushroom');
