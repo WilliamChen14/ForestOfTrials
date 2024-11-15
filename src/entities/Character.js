@@ -271,6 +271,9 @@ export class Character {
         this.Exit = Exit;
         this.Tools = Tools;
 
+        const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
+        this.characterMesh.rotation.y = angle;
+
         if(LastKeyPressed === "w"){
             this.lastDirection = new THREE.Vector3(0, 0, -1);
         }

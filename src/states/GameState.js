@@ -77,7 +77,7 @@ export class GameState {
         // Set up lights (adjust to your preference)
         const sunLight = new THREE.DirectionalLight(0xffffff, 5);
         sunLight.castShadow = true; // default false
-        sunLight.position.set(-2, 4, 2);
+        sunLight.position.set(2, 10, 2);
 
         const target = new THREE.Object3D(); // Create a target object
         target.position.set(0, 0, 0); // Set the target position, for example, the center of the scene
