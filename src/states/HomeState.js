@@ -303,10 +303,12 @@ export class HomeState {
             this.homeScreenElement = null;
 
             // Remove the style element
+            /*
             const style = document.querySelector('style');
             if (style) {
                 document.head.removeChild(style);
             }
+            */
         }
     }
 }

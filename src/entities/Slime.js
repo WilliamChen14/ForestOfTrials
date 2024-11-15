@@ -36,6 +36,15 @@ export class Slime {
 
         this.health = 1;
 
+        // Collision raycaster
+        this.raycaster = new THREE.Raycaster();
+        this.collisionVectors = [
+            new THREE.Vector3(1, 0, 0),    // Right
+            new THREE.Vector3(-1, 0, 0),   // Left
+            new THREE.Vector3(0, 0, 1),    // Forward
+            new THREE.Vector3(0, 0, -1)    // Backward
+        ];
+
     }
 
     // Method to check collision with the character, called every 500ms
@@ -48,7 +57,18 @@ export class Slime {
     }
 
     checkWallCollision(levelData){
-        
+        const collisionDetected = this.collisionVectors.some(direction => {
+            this.raycaster.set(this.mobMesh.position, direction);
+            const intersects = this.raycaster.intersectObjects(levelData);
+
+            // Check if any wall is within the collision distance
+            return intersects.length > 0 && intersects[0].distance <= this.collisionDistance;
+        });
+
+        if (collisionDetected) {
+            // Reverse direction or pick a new random direction
+            this.direction.negate(); // Invert direction for a simple bounce effect
+        }
     }
 
     getLastCollisionTime(){
@@ -61,7 +81,7 @@ export class Slime {
     }
 
     // Update method to move the slime randomly
-    update() {
+    update(levelData) {
         // Randomly change direction every 100 frames
         if (Math.random() < 0.02) {
             this.direction = new THREE.Vector3(
@@ -70,6 +90,8 @@ export class Slime {
                 (Math.random() - 0.5) * 2
             ).normalize();
         }
+
+        this.checkWallCollision(levelData);
 
         // Update slime position based on direction and speed
         this.mobMesh.position.add(this.direction.clone().multiplyScalar(this.moveSpeed));

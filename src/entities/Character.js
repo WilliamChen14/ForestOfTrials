@@ -167,7 +167,7 @@ export class Character {
             }
 
 
-            obj.update();
+            obj.update(this.levelData);
 
             if(this.checkHitboxCollision(obj)){
                 if(currentTime - obj.lastLostLife > 500){
