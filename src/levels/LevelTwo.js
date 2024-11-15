@@ -25,7 +25,7 @@ export function LevelTwo(scene) {
     const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);
 
-    const exit = new Exit(scene, 10, 1, 9);
+    const exit = new Exit(scene, 9, 1, 8);
     Exits.push(exit.MapLayoutMesh);
     
     
