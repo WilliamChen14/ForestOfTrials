@@ -44,7 +44,7 @@ export function StarterLevelTwo(scene) {
     MapLayout.push(Box1.MapLayoutMesh);
 
 
-    const exit = new Exit(scene, 20, 1, 6);
+    const exit = new Exit(scene, 19, 1, 5);
     Exits.push(exit.MapLayoutMesh);
 
     for(let x = -1; x < floorDepth + 1; x++){

@@ -111,7 +111,7 @@ export function loadModel(scene) {
                 node.material = MATERIALS[node.material.name];
             }
         });
-        gltf.scene.position.set(0,1,0)
+        gltf.scene.position.set(-2,1,0)
         scene.add( gltf.scene );
     
     }, undefined, function ( error ) {
