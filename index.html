@@ -7,7 +7,7 @@
     <style>
         /* Make the canvas take up the full screen */
         body { margin: 0; overflow: hidden; }
-        
+
         /* Position the health container */
         #health-container {
             position: absolute;
@@ -16,6 +16,7 @@
             display: flex;
             gap: 5px;
             z-index: 10;
+            display: none; /* Hide by default */
         }
         #message-container {
             position: absolute;
@@ -43,7 +44,6 @@
     </style>
 </head>
 <body>
-
     <!-- Health container for displaying hearts -->
     <div id="health-container"></div>
     <div id="message-container"></div>
