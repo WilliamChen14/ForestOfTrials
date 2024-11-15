@@ -9,31 +9,18 @@ import { Tree } from '../entities/Tree';
 import { InvisWall } from '../entities/InvisWall';
 import { BigSlime } from '../entities/BigSlime.js';
 import { Box } from '../entities/Box.js';
+import { Exit } from '../entities/Exit.js';
 
 export function StarterLevelTwo(scene) {
     let MapLayout = [];
     let Mobs = [];
-    let Exit = [];
+    let Exits = [];
     let Signs = [];
     let Tools = [];
 
     const floorWidth = 20;
     const floorDepth = 8;
 
-
-    const addExit = (x,y,z) => {
-        const exitMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xfffc63,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const exit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2, 1.2), exitMaterial);
-        exit.castShadow = true;
-        exit.receiveShadow = true;
-        exit.position.set(x, y, z);
-        scene.add(exit);
-        Exit.push(exit);
-    }
 
 
     loadModel(scene);
@@ -57,7 +44,8 @@ export function StarterLevelTwo(scene) {
     MapLayout.push(Box1.MapLayoutMesh);
 
 
-    addExit(20,1,6);
+    const exit = new Exit(scene, 20, 1, 6);
+    Exits.push(exit.MapLayoutMesh);
 
     for(let x = -1; x < floorDepth + 1; x++){
         const stoneWallOne = new StoneFLoor(scene, 16, 1, x);
@@ -103,5 +91,5 @@ export function StarterLevelTwo(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exit, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
 }

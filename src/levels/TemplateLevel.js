@@ -7,30 +7,18 @@ import { Slime } from '../entities/Slime';
 import { StoneFLoor } from '../entities/StoneFloor';
 import { Tree } from '../entities/Tree';
 import { InvisWall } from '../entities/InvisWall';
+import { Exit } from '../entities/Exit.js';
 
 export function TemplateLevel(scene) {
     let MapLayout = [];
     let Mobs = [];
-    let Exit = [];
+    let Exits = [];
     let Signs = [];
     let Tools = [];
 
     const floorSize = 10;
 
 
-    const addExit = (x,y,z) => {
-        const exitMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xfffc63,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const exit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2, 1.2), exitMaterial);
-        exit.castShadow = true;
-        exit.receiveShadow = true;
-        exit.position.set(x, y, z);
-        scene.add(exit);
-        Exit.push(exit);
-    }
 
 
     loadModel(scene);
@@ -41,7 +29,8 @@ export function TemplateLevel(scene) {
     Mobs.push(slimeOne);
 
 
-    addExit(10,1,9);
+    const exit = new Exit(scene, 10, 1,9);
+    Exits.push(exit.MapLayoutMesh);
     
 
     // Add ground tiles (10x10 grid)
@@ -78,5 +67,5 @@ export function TemplateLevel(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exit, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
 }

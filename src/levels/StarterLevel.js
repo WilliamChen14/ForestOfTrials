@@ -7,11 +7,12 @@ import { Slime } from '../entities/Slime.js';
 import { StoneFLoor } from '../entities/StoneFloor.js';
 import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
+import { Exit } from '../entities/Exit.js';
 
 export function StarterLevel(scene) {
     let MapLayout = [];
     let Mobs = [];
-    let Exit = [];
+    let Exits = [];
     let Signs = [];
     let Tools = [];
     
@@ -38,8 +39,9 @@ export function StarterLevel(scene) {
     const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);
 
-
-    addExit(10,1,9);
+    const exit = new Exit(scene, 10, 1, 9);
+    Exits.push(exit.MapLayoutMesh);
+    
     
 
     // Add ground tiles (10x10 grid)
@@ -76,5 +78,5 @@ export function StarterLevel(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exit, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
 }
