@@ -32,6 +32,7 @@ export class Slime {
         this.checkCollision = this.checkCollision.bind(this);
         this.getLastCollisionTime = this.getLastCollisionTime.bind(this);
         this.loseLife = this.loseLife.bind(this);
+        this.lastLostLife = 0;
 
         this.health = 1;
 
@@ -56,6 +57,7 @@ export class Slime {
 
     loseLife(damage){
         this.health = this.health - damage;
+        this.lastLostLife = Date.now;
     }
 
     // Update method to move the slime randomly
@@ -72,9 +74,6 @@ export class Slime {
         // Update slime position based on direction and speed
         this.mobMesh.position.add(this.direction.clone().multiplyScalar(this.moveSpeed));
 
-        // Keep slime within certain bounds (e.g., the floor area)
-        if (Math.abs(this.mobMesh.position.x) > 10) this.direction.x *= -1;
-        if (Math.abs(this.mobMesh.position.z) > 10) this.direction.z *= -1;
 
         if(this.health <= 0){
             this.remove();

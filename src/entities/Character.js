@@ -147,7 +147,6 @@ export class Character {
         }
             
 
-        console.log(this.characterMesh.position.y);
 
 
         this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
@@ -171,7 +170,10 @@ export class Character {
             obj.update();
 
             if(this.checkHitboxCollision(obj)){
-                obj.loseLife(1);
+                if(currentTime - obj.lastLostLife > 500){
+                    obj.loseLife(1);
+                    obj.lastLostLife = currentTime;
+                }
             }
                 
         });

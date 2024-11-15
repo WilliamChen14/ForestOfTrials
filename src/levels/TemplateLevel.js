@@ -8,12 +8,12 @@ import { StoneFLoor } from '../entities/StoneFloor';
 import { Tree } from '../entities/Tree';
 import { InvisWall } from '../entities/InvisWall';
 
-export function LevelTwo(scene) {
+export function TemplateLevel(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
     let Signs = [];
-    
+
     const floorSize = 10;
 
 

@@ -8,6 +8,7 @@ import { LevelTwo } from '../levels/LevelTwo.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 
 import * as THREE from 'three';
+import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
 
 export class GameState {
     constructor(stateManager) {
@@ -63,7 +64,7 @@ export class GameState {
     
         // Step 2: Load the new level
         if(this.currentLevel == 1){
-            this.levelData = LevelOne(this.stateManager.scene);
+            this.levelData = StarterLevelTwo(this.stateManager.scene);
         }
         else if(this.currentLevel == 2){
             this.levelData = LevelTwo(this.stateManager.scene);
