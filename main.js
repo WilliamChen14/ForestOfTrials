@@ -8,10 +8,13 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Create renderer, scene, and camera
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 // Set up lights (adjust to your preference)
 const light = new THREE.DirectionalLight(0xffffff, 1);
