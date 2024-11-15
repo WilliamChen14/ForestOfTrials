@@ -56,7 +56,7 @@ export class Controls {
                 this.keysPressed.j = true;
                 break;
             case "k":
-                console.log("Action K");
+                this.keysPressed.k = true;
                 break;
             case "l":
                 console.log("Action L");
@@ -117,6 +117,9 @@ export class Controls {
                 break;
             case "j":
                 this.keysPressed.j = false;
+                break;
+            case "k":
+                this.keysPressed.k = false;
                 break;
             case " ":
                 this.keysPressed.space = false;

@@ -13,6 +13,7 @@ export function StarterLevel(scene) {
     let Mobs = [];
     let Exit = [];
     let Signs = [];
+    let Tools = [];
     
     const floorSize = 10;
 
@@ -75,5 +76,5 @@ export function StarterLevel(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exit};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exit, Tools};  // Return all tiles for collision detection
 }
