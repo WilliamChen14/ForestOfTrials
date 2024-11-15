@@ -7,12 +7,15 @@ import { Slime } from '../entities/Slime';
 import { StoneFLoor } from '../entities/StoneFloor';
 import { Tree } from '../entities/Tree';
 import { InvisWall } from '../entities/InvisWall';
+import { BigSlime } from '../entities/BigSlime.js';
+import { Box } from '../entities/Box.js';
 
 export function StarterLevelTwo(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exit = [];
     let Signs = [];
+    let Tools = [];
 
     const floorWidth = 20;
     const floorDepth = 8;
@@ -46,8 +49,24 @@ export function StarterLevelTwo(scene) {
     const slimeFour = new Slime(scene, 12, 1, 2);
     Mobs.push(slimeFour);
 
+    const slimeBoss = new BigSlime(scene, 13, 1, 2);
+    Mobs.push(slimeBoss);
+
+    const Box1 = new Box(scene, 3, 1, 3);
+    Tools.push(Box1);
+    MapLayout.push(Box1.MapLayoutMesh);
+
 
     addExit(20,1,6);
+
+    for(let x = -1; x < floorDepth + 1; x++){
+        const stoneWallOne = new StoneFLoor(scene, 16, 1, x);
+        MapLayout.push(stoneWallOne.MapLayoutMesh);
+        const stoneWallOnet = new StoneFLoor(scene, 16, 2, x);
+        MapLayout.push(stoneWallOnet.MapLayoutMesh);
+    }
+
+
     
 
     // Add ground tiles (10x10 grid)
@@ -84,5 +103,5 @@ export function StarterLevelTwo(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exit};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exit, Tools};  // Return all tiles for collision detection
 }

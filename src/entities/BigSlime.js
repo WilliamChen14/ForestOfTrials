@@ -1,7 +1,8 @@
 // src/entities/Slime.js
 import * as THREE from 'three';
+import { Slime } from './Slime';
 
-export class Slime {
+export class BigSlime {
     constructor(scene, x, y, z) {
         this.scene = scene;
 
@@ -11,7 +12,7 @@ export class Slime {
             roughness: 0.8,
             metalness: 0.1,
         });
-        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.7, 0.7), slimeMaterial);
+        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.2, 1.8), slimeMaterial);
         this.mobMesh.castShadow = true;
         this.mobMesh.receiveShadow = true;
         this.mobMesh.position.set(x, y, z);
@@ -19,8 +20,8 @@ export class Slime {
         this.scene.add(this.mobMesh); // Add the slime to the scene
 
         // Collision and movement properties
-        this.collisionDistance = 0.5; // Set collision distance for proximity detection
-        this.moveSpeed = 0.02; // Movement speed of the slime
+        this.collisionDistance = 1.6; // Set collision distance for proximity detection
+        this.moveSpeed = 0.04; // Movement speed of the slime
         this.direction = new THREE.Vector3(
             (Math.random() - 0.5) * 2,
             0,
@@ -34,8 +35,7 @@ export class Slime {
         this.loseLife = this.loseLife.bind(this);
         this.lastLostLife = 0;
 
-        this.health = 1;
-        this.isDead = false;
+        this.health = 3;
 
         // Collision raycaster
         this.raycaster = new THREE.Raycaster();
@@ -45,6 +45,8 @@ export class Slime {
             new THREE.Vector3(0, 0, 1),    // Forward
             new THREE.Vector3(0, 0, -1)    // Backward
         ];
+
+        this.isDead = false;
 
     }
 
@@ -102,6 +104,10 @@ export class Slime {
 
 
         if(this.health <= 0){
+            const babySlimeOne = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
+            Mobs.push(babySlimeOne);
+            const babySlimeTwo = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
+            Mobs.push(babySlimeTwo);
             this.isDead = true;
             this.remove();
         }
@@ -114,5 +120,7 @@ export class Slime {
     // Method to remove the slime from the scene if needed
     remove() {
         this.scene.remove(this.mobMesh);
+        
+        
     }
 }

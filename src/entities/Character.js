@@ -54,6 +54,10 @@ export class Character {
         this.scene.add(this.characterMesh);
 
         this.createAttackHitbox = this.createAttackHitbox.bind(this);
+
+        this.heldItem = null;
+        this.pickupCooldown = 500;
+        this.lastPickupTime = 0;
     }
 
     createAttackHitbox(horizontalDirection) {
@@ -126,12 +130,13 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, moveX, moveZ, changeLevel, stateManager) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager) {
         const currentTime = Date.now();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
+        this.Tools = Tools;
 
         if(LastKeyPressed === "w"){
             this.lastDirection = new THREE.Vector3(0, 0, -1);
@@ -161,22 +166,44 @@ export class Character {
         }
 
         this.Mobs.forEach(obj=> {
-            if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh)) {
+            if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh) && !obj.getIsDead()) {
                 this.updateHealth(this.health - 1);
                 console.log("collided with mob");
             }
 
 
-            obj.update(this.levelData);
+            obj.update(this.levelData, this.Mobs);
 
             if(this.checkHitboxCollision(obj)){
-                if(currentTime - obj.lastLostLife > 500){
+                if(currentTime - obj.lastLostLife > 600){
                     obj.loseLife(1);
                     obj.lastLostLife = currentTime;
                 }
             }
                 
         });
+
+        this.Tools.forEach(obj=> {
+            if(obj.checkCollision(this.characterMesh) && keysPressed.k && currentTime - this.lastPickupTime > this.pickupCooldown){
+                this.lastPickupTime = currentTime;
+                console.log("tried to pick up box");
+                if(this.heldItem === null){
+                    this.heldItem = obj;
+                }
+            }
+
+            if(obj === this.heldItem && keysPressed.k && currentTime - this.lastPickupTime > this.pickupCooldown){
+                this.lastPickupTime = currentTime;
+                console.log("tried to drop the box");
+                obj.MapLayoutMesh.position.x = this.characterMesh.position.x + this.lastDirection.x;
+                obj.MapLayoutMesh.position.y = this.characterMesh.position.y + this.lastDirection.y;
+                obj.MapLayoutMesh.position.z = this.characterMesh.position.z + this.lastDirection.z;
+                
+                this.heldItem = null;
+            }
+        })
+
+
         
 
         //this.showMessage("You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
@@ -274,6 +301,12 @@ export class Character {
         this.characterMesh.position.x += direction.x;
         this.characterMesh.position.y += this.moveY;
         this.characterMesh.position.z += direction.y;
+
+        if(this.heldItem){
+            this.heldItem.MapLayoutMesh.position.x = this.characterMesh.position.x;
+            this.heldItem.MapLayoutMesh.position.y = this.characterMesh.position.y + 1;
+            this.heldItem.MapLayoutMesh.position.z = this.characterMesh.position.z;
+        }
 
         // Collision detection can be added here
 

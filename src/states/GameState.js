@@ -119,7 +119,7 @@ export class GameState {
 
     update() {
         // Pass controls to the character's update method
-        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exit, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
+        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exit, this.levelData.Tools, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
 
         
 
