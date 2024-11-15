@@ -52,7 +52,6 @@ export class GameState {
     changeLevel() {
         // Step 1: Remove all level objects from scene
         this.currentLevel++;
-        console.log(this.currentLevel);
         
         while (this.stateManager.scene.children.length > 0) {
             this.stateManager.scene.remove(this.stateManager.scene.children[0]);

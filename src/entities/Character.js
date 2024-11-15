@@ -126,8 +126,6 @@ export class Character {
         this.Mobs = Mobs;
         this.Exit = Exit;
 
-        console.log(this.characterMesh.position.y);
-
 
         this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
 
