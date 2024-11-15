@@ -101,7 +101,7 @@ export class GameState {
 
 
         // Optionally, add ambient light to ensure basic visibility
-        const ambientLight = new THREE.AmbientLight(0x5f5fff, 1.6);
+        const ambientLight = new THREE.AmbientLight(0x5f8fff, 1.6);
         ambientLight.position.set(-5, 5, 5);
 
         ambientLight.target = target;
@@ -117,8 +117,8 @@ export class GameState {
         // Additional game update logic...
 
         const cameraOffset = new THREE.Vector3(0, 10, 8); // Adjust to change angle and distance
-        this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
-        this.stateManager.camera.lookAt(this.character.characterMesh.position);
+        //this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
+        //this.stateManager.camera.lookAt(this.character.characterMesh.position);
     }
 
     exit() {
