@@ -1,10 +1,15 @@
 // src/Character.js
 import * as THREE from 'three';
 import { Sign } from './Sign';
+import { Model } from '../Models.js';
+
+import CHARACTER from '/assets/models/character.glb'
 
 export class Character {
     constructor(scene) {
         this.scene = scene;
+        this.model = new Model(this.scene);
+        this.model.loadModel(CHARACTER);
 
         // Create a group to hold all parts of the character
         this.characterMesh = new THREE.Group();
