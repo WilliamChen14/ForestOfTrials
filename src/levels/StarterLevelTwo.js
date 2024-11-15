@@ -23,7 +23,7 @@ export function StarterLevelTwo(scene) {
 
 
 
-    loadModel(scene);
+    //loadModel(scene);
 
     const signOne = new Sign(scene, 5, 1, 5, "You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);
