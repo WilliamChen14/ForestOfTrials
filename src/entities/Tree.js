@@ -122,7 +122,7 @@ export class Tree {
         this.treeGroup.add(foliageGroup);
         
         // Position the entire tree
-        this.treeGroup.position.set(x, y, z);
+        this.treeGroup.position.set(x, y - 0.3, z);
         scene.add(this.treeGroup);
         
         // Set reference for collision detection

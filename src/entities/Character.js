@@ -119,21 +119,21 @@ export class Character {
         // Legs - Pants
         const legGeometry = new THREE.CylinderGeometry(0.07, 0.07, 0.8, 32);
         const leftLeg = new THREE.Mesh(legGeometry, pantsMaterial);
-        leftLeg.position.set(-0.15, 0.5, 0);
+        leftLeg.position.set(-0.15, 0.2, 0);
         this.characterMesh.add(leftLeg);
 
         const rightLeg = new THREE.Mesh(legGeometry, pantsMaterial);
-        rightLeg.position.set(0.15, 0.5, 0);
+        rightLeg.position.set(0.15, 0.2, 0);
         this.characterMesh.add(rightLeg);
 
         // Shoes
         const shoeGeometryMain = new THREE.BoxGeometry(0.15, 0.05, 0.2);
         const leftShoe = new THREE.Mesh(shoeGeometryMain, shoeMaterial);
-        leftShoe.position.set(-0.15, 0.1, 0.1);
+        leftShoe.position.set(-0.15, -0.2, 0.1);
         this.characterMesh.add(leftShoe);
 
         const rightShoe = new THREE.Mesh(shoeGeometryMain, shoeMaterial);
-        rightShoe.position.set(0.15, 0.1, 0.1);
+        rightShoe.position.set(0.15, -0.2, 0.1);
         this.characterMesh.add(rightShoe);
 
         // Optional Scarf

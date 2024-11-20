@@ -23,10 +23,10 @@ export function LevelOne(scene) {
 
     //loadModel(scene);
 
-    /*
-    const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
+    
+    const signOne = new Sign(scene, -7, 1, 9, "You can reset the level by pressing \"r\"");
     Signs.push(signOne);
-    */
+    
 
     const exit = new Exit(scene, 0, 1, 30);
     Exits.push(exit.MapLayoutMesh);
