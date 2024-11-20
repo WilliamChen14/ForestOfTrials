@@ -19,7 +19,7 @@ export class GameState {
         this.stateManager = stateManager;
         this.controls = new Controls();
         this.character = new Character(this.stateManager.scene);
-        this.levelData = new StarterLevel(stateManager.scene);
+        this.levelData = new LevelOne(stateManager.scene);
         this.currentLevel = 0;
 
         this.changeLevel = this.changeLevel.bind(this);
@@ -48,7 +48,7 @@ export class GameState {
             this.levelData = StarterLevelTwo(this.stateManager.scene);
         }
         else if(this.currentLevel == 2){
-            this.levelData = LevelTwo(this.stateManager.scene);
+            this.levelData = LevelOne(this.stateManager.scene);
         }
         else if(this.currentLevel == 3){
             this.levelData = LevelOne(this.stateManager.scene);
@@ -125,6 +125,14 @@ export class GameState {
         if (this.mixer) {
             const deltaTime = clock.getDelta();
             this.mixer.update(deltaTime * 10);
+        }
+        if(this.character.characterMesh.position.y < -10){
+            this.currentLevel--;
+            this.changeLevel();
+        }
+        if(this.controls.keysPressed.r === true){
+            this.currentLevel--;
+            this.changeLevel();
         }
 
         
