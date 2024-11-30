@@ -104,6 +104,18 @@ export function LevelOne(scene) {
     }
     const floorPeak = new StoneFLoor(scene, 0, 7, 7);
     MapLayout.push(floorPeak.MapLayoutMesh);
+    for(let x = 0; x < 20; x++){
+        const floorSecret = new StoneFLoor(scene, 3+x, 6, 7);
+        MapLayout.push(floorSecret.MapLayoutMesh);
+    }
+    for(let x = 0; x < 22; x++){
+        const floorSecret = new StoneFLoor(scene, 22, 6, 8+x);
+        MapLayout.push(floorSecret.MapLayoutMesh);
+    }
+    for(let x = 0; x < 22; x++){
+        const floorSecret = new StoneFLoor(scene, 22-x, 6, 30);
+        MapLayout.push(floorSecret.MapLayoutMesh);
+    }
 
     for(let x = -2; x < 3; x++){
         const Box1 = new Box(scene, x, 1, 10);

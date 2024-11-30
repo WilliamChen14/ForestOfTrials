@@ -4,6 +4,7 @@ import { Character } from '../entities/Character.js';
 import { LevelOne } from '../levels/LevelOne.js';
 import { LevelTwo } from '../levels/LevelTwo.js';
 import { loadModel } from '../Models.js';
+import { GameOverState } from './GameOverState.js';
 
 const clock = new THREE.Clock();
 
@@ -12,6 +13,7 @@ import { StarterLevel } from '../levels/StarterLevel.js';
 
 import * as THREE from 'three';
 import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
+import { HomeState } from './HomeState.js';
 
 export class GameState {
 
@@ -51,7 +53,7 @@ export class GameState {
             this.levelData = LevelOne(this.stateManager.scene);
         }
         else if(this.currentLevel == 3){
-            this.levelData = LevelOne(this.stateManager.scene);
+            this.levelData = LevelTwo(this.stateManager.scene);
         }
         else if(this.currentLevel == 4){
             this.levelData = LevelOne(this.stateManager.scene);
@@ -133,6 +135,9 @@ export class GameState {
         if(this.controls.keysPressed.r === true){
             this.currentLevel--;
             this.changeLevel();
+        }
+        if(this.character.health == 0){
+            this.stateManager.changeState(GameOverState);
         }
 
         

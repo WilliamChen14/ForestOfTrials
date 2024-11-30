@@ -1,8 +1,9 @@
 // src/entities/Slime.js
 import * as THREE from 'three';
 import { Slime } from './Slime';
+import { BigSlime } from './BigSlime';
 
-export class BigSlime {
+export class BossSlime {
     constructor(scene, x, y, z) {
         this.scene = scene;
 
@@ -12,7 +13,7 @@ export class BigSlime {
             roughness: 0.8,
             metalness: 0.1,
         });
-        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.2, 1.8), slimeMaterial);
+        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(6.0, 2.4, 6.0), slimeMaterial);
         this.mobMesh.castShadow = true;
         this.mobMesh.receiveShadow = true;
         this.mobMesh.position.set(x, y, z);
@@ -21,7 +22,7 @@ export class BigSlime {
 
         // Collision and movement properties
         this.collisionDistance = 1.6; // Set collision distance for proximity detection
-        this.moveSpeed = 0.035; // Movement speed of the slime
+        this.moveSpeed = 0.03; // Movement speed of the slime
         this.direction = new THREE.Vector3(
             (Math.random() - 0.5) * 2,
             0,
@@ -35,7 +36,9 @@ export class BigSlime {
         this.loseLife = this.loseLife.bind(this);
         this.lastLostLife = 0;
 
-        this.health = 3;
+        this.health = 10;
+
+        this.lastSpawnSlime = 0;
 
         // Collision raycaster
         this.raycaster = new THREE.Raycaster();
@@ -102,15 +105,21 @@ export class BigSlime {
         // Update slime position based on direction and speed
         this.mobMesh.position.add(this.direction.clone().multiplyScalar(this.moveSpeed));
 
+        if(this.lastLostLife > Date.now() - 600 && Date.now() - this.lastSpawnSlime > 600){
+            const babySlimeThree = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
+            Mobs.push(babySlimeThree);
+            this.lastSpawnSlime = Date.now();
+        }
 
         if(this.health <= 0){
-            const babySlimeOne = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
+            const babySlimeOne = new BigSlime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
             Mobs.push(babySlimeOne);
-            const babySlimeTwo = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
+            const babySlimeTwo = new BigSlime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
             Mobs.push(babySlimeTwo);
             this.isDead = true;
             this.remove();
         }
+
     }
 
     getIsDead(){
