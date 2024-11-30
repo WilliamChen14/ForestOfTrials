@@ -95,7 +95,7 @@ export class LevelOne extends BaseLevel {
         }
 
         // Add boxes
-        for (let x = -2; x < 3; x++) {
+        for (let x = -2; x < 4; x++) {
             this.addBox(x, 1, 10);
         }
 
@@ -117,6 +117,8 @@ export class LevelOne extends BaseLevel {
         this.addMob(Slime, 8, 1, 14);
         this.addMob(Slime, 0, 1, 14);
         this.addMob(Slime, -6, 1, 14);
+
+        this.addBox(8, 1, 16); // can jump
 
         // Add final tree line
         for (let x = -13; x < 10; x++) {
