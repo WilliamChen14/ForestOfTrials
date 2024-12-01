@@ -6,7 +6,6 @@ import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { Box } from '../entities/Box.js';
-import { Fire } from '../entities/Fire.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -16,7 +15,6 @@ export class BaseLevel {
         this.Exits = [];
         this.Signs = [];
         this.Tools = [];
-        this.Hazards = []; // New array to track fire hazards
     }
 
     addInvisWall(x, y, z) {
@@ -33,6 +31,7 @@ export class BaseLevel {
 
     addTree(x, y, z) {
         const tree = new Tree(this.scene, x, y, z);
+        // Trees are added directly to the scene in the Tree constructor
         return tree;
     }
 
@@ -59,34 +58,6 @@ export class BaseLevel {
         const mob = new MobClass(this.scene, x, y, z);
         this.Mobs.push(mob);
         return mob;
-    }
-
-    addFire(x, y, z) {
-        const fire = new Fire(this.scene, x, y, z);
-        this.Hazards.push(fire);
-        return fire;
-    }
-
-    addFireRing(centerX, centerY, centerZ, radius, count) {
-        const angleStep = (2 * Math.PI) / count;
-        for (let i = 0; i < count; i++) {
-            const x = centerX + Math.cos(angleStep * i) * radius;
-            const z = centerZ + Math.sin(angleStep * i) * radius;
-            this.addFire(x, centerY, z);
-        }
-    }
-
-    addFireWall(startX, startZ, endX, endZ, y = 1, spacing = 1) {
-        const dx = endX - startX;
-        const dz = endZ - startZ;
-        const distance = Math.sqrt(dx * dx + dz * dz);
-        const count = Math.floor(distance / spacing);
-        
-        for (let i = 0; i <= count; i++) {
-            const x = startX + (dx * i) / count;
-            const z = startZ + (dz * i) / count;
-            this.addFire(x, y, z);
-        }
     }
 
     addGrid(startX, endX, startZ, endZ, elementCallback) {
@@ -122,17 +93,7 @@ export class BaseLevel {
             Mobs: this.Mobs,
             Signs: this.Signs,
             Exits: this.Exits,
-            Tools: this.Tools,
-            Hazards: this.Hazards // Include hazards in level data
+            Tools: this.Tools
         };
-    }
-
-    update() {
-        // Update all hazards (fires)
-        this.Hazards.forEach(hazard => {
-            if (hazard.update) {
-                hazard.update();
-            }
-        });
     }
 }
