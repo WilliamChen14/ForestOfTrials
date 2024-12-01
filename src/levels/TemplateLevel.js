@@ -1,7 +1,6 @@
 // Level.js
 import * as THREE from 'three';
 
-import { loadModel } from '../Models.js';
 import { Sign } from '../entities/Sign';
 import { Slime } from '../entities/Slime';
 import { StoneFLoor } from '../entities/StoneFloor';
@@ -20,8 +19,6 @@ export function TemplateLevel(scene) {
 
 
 
-
-    //loadModel(scene);
 
     const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);

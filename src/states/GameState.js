@@ -1,142 +1,167 @@
-// src/states/GameState.js
 import { Controls } from '../Controls.js';
 import { Character } from '../entities/Character.js';
 import { LevelOne } from '../levels/LevelOne.js';
 import { LevelTwo } from '../levels/LevelTwo.js';
-import { loadModel } from '../Models.js';
 import { GameOverState } from './GameOverState.js';
+import { StarterLevel } from '../levels/StarterLevel.js';
+import * as THREE from 'three';
+import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
 
 const clock = new THREE.Clock();
 
-
-import { StarterLevel } from '../levels/StarterLevel.js';
-
-import * as THREE from 'three';
-import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
-import { HomeState } from './HomeState.js';
-import { WorldTwoLevelOne } from '../levels/WorldTwoLevelOne.js';
-
 export class GameState {
-
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.controls = new Controls();
-        this.character = new Character(this.stateManager.scene);
-        this.levelData = new StarterLevel(stateManager.scene);
         this.currentLevel = 0;
-
+        this.levelData = null;
+        this.level = null; // Store level instance for updates
         this.changeLevel = this.changeLevel.bind(this);
-        this.setUpLevel();
     }
 
-    enter() {
-        console.log("Entering Game State");
-
+    // initialize game
+    async enter() {
+        this.setupLighting();
+        
+        try {
+            console.log("Loading character model...");
+            /*this.mixer = await loadModel(this.stateManager.scene);*/
+            console.log("Character loaded successfully with mixer:", this.mixer);
+            
+            this.character = new Character(this.stateManager.scene);
+            await this.character.init();
+            
+            this.changeLevel();
+        } catch (error) {
+            console.error("Failed to load character:", error);
+        }
     }
 
-
-    changeLevel() {
-        // Step 1: Remove all level objects from scene
-        this.currentLevel++;
-        
-        while (this.stateManager.scene.children.length > 0) {
-            this.stateManager.scene.remove(this.stateManager.scene.children[0]);
-        }
-        this.levelData = [];
-        
-       
-    
-        // Step 2: Load the new level
-        if(this.currentLevel == 1){
-            this.levelData = StarterLevelTwo(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 2){
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 3){
-            this.levelData = LevelTwo(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 4){
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 5){
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 6){
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-        else if(this.currentLevel == 7){
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-        else{
-            this.levelData = LevelOne(this.stateManager.scene);
-        }
-
-        this.character = new Character(this.stateManager.scene);
-
-        this.setUpLevel();
-        console.log("Level changed successfully.");
-        
-    }
-
-    setUpLevel() {
-        // Set up lights (adjust to your preference)
+    setupLighting() {
         const sunLight = new THREE.DirectionalLight(0xffffff, 5);
-        sunLight.castShadow = true; // default false
+        sunLight.castShadow = true;
         sunLight.position.set(2, 10, 2);
 
-        const target = new THREE.Object3D(); // Create a target object
-        target.position.set(0, 0, 0); // Set the target position, for example, the center of the scene
+        const target = new THREE.Object3D();
+        target.position.set(0, 0, 0);
         this.stateManager.scene.add(target);
-
-        // Set the light to point towards the target
         sunLight.target = target;
 
         this.stateManager.scene.add(sunLight);
-        sunLight.shadow.mapSize.width = 4096;  // Increase width resolution
-        sunLight.shadow.mapSize.height = 4096; // Increase height resolution
+        sunLight.shadow.mapSize.width = 4096;
+        sunLight.shadow.mapSize.height = 4096;
 
-        // Configure the shadow camera to focus on the relevant area
         const size = 50;
         sunLight.shadow.camera.top = size;
         sunLight.shadow.camera.bottom = -size;
         sunLight.shadow.camera.left = -size;
         sunLight.shadow.camera.right = size;
-        sunLight.shadow.camera.near = 0.5;  // Near clipping plane
-        sunLight.shadow.camera.far = size*3;   // Far clipping plane
+        sunLight.shadow.camera.near = 0.5;
+        sunLight.shadow.camera.far = size * 3;
 
-
-        // Optionally, add ambient light to ensure basic visibility
         const ambientLight = new THREE.AmbientLight(0x5f8fff, 1.6);
         ambientLight.position.set(-5, 5, 5);
-
-        ambientLight.target = target;
         this.stateManager.scene.add(ambientLight);
-       loadModel(this.stateManager.scene).then((mixer) => {
-            this.mixer = mixer;
-            console.log("Character loaded with mixer:", mixer);
-        })
-        .catch((error) => {
-            console.error("Failed to load character:", error);
-        });
     }
 
+    changeLevel() {
+        const characterMesh = this.character ? this.character.characterMesh : null;
+        
+        const objectsToRemove = [];
+        this.stateManager.scene.traverse((object) => {
+            if (object !== characterMesh) {
+                objectsToRemove.push(object);
+            }
+        });
+        objectsToRemove.forEach((object) => {
+            this.stateManager.scene.remove(object);
+        });
+
+        this.currentLevel++;
+        console.log("Changing to level:", this.currentLevel);
+
+        // Create new level
+        if (this.currentLevel === 1) {
+            console.log("Creating WorldOneLevelOne");
+            this.level = new StarterLevel(this.stateManager.scene);
+        } else if (this.currentLevel === 2) {
+            console.log("Creating WorldOneLevelTwo");
+            this.level = new StarterLevelTwo(this.stateManager.scene);
+        } else if (this.currentLevel === 3) {
+            console.log("Creating WorldOneLevelThree");
+            this.level = new LevelOne(this.stateManager.scene);
+        } else if (this.currentLevel === 4){
+            console.log("Creating default WorldOneLevelFour");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else if (this.currentLevel === 5){
+            console.log("Creating default WorldTwoLevelOne");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else {
+            console.log("Creating default WorldOneLevelFour");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+
+        console.log("Building level...");
+        this.levelData = this.level.build();
+        console.log("Level data:", this.levelData);
+
+        this.setupLighting();
+        
+        if (this.character && this.character.characterMesh) {
+            this.character.characterMesh.position.set(0, 1, 0);
+        }
+    }
+
+    exit() {
+        console.log("Exiting Game State");
+        this.controls.resetKeys();
+    }
 
     update() {
-        // Pass controls to the character's update method
-        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exits, this.levelData.Tools, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager, this.levelData.Waters);
+        if (!this.levelData || !this.character) {
+            console.error("Level data or character not initialized");
+            return;
+        }
+
+        // Update level hazards
+        if (this.level && this.level.update) {
+            this.level.update();
+        }
+
+        // Update character with hazards included
+        this.character.update(
+            this.controls.keysPressed,
+            this.controls.lastKeyPressed,
+            this.levelData.MapLayout,
+            this.levelData.Mobs,
+            this.levelData.Signs,
+            this.levelData.Exits,
+            this.levelData.Tools,
+            this.controls.moveX,
+            this.controls.moveZ,
+            this.changeLevel,
+            this.stateManager,
+            this.levelData.Hazards,
+            this.levelData.Waters
+        );
+
         if (this.mixer) {
             const deltaTime = clock.getDelta();
             this.mixer.update(deltaTime * 10);
         }
-        if(this.character.characterMesh.position.y < -10){
+
+        if (this.character.characterMesh.position.y < -10) {
             this.currentLevel--;
             this.changeLevel();
         }
-        if(this.controls.keysPressed.r === true){
+
+        if (this.controls.keysPressed.r === true) {
             this.currentLevel--;
             this.changeLevel();
         }
+
         if(this.character.health == 0){
             while (this.stateManager.scene.children.length > 0) {
                 this.stateManager.scene.remove(this.stateManager.scene.children[0]);
@@ -145,19 +170,12 @@ export class GameState {
             this.stateManager.changeState(GameOverState);
         }
 
-        
+        const cameraOffset = new THREE.Vector3(0, 10, 8);
 
-        // Additional game update logic...
-
-        const cameraOffset = new THREE.Vector3(0, 10, 8); // Adjust to change angle and distance
-        //this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
-        //this.stateManager.camera.lookAt(this.character.characterMesh.position);
-        this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
-        this.stateManager.camera.lookAt(this.character.characterMesh.position);
-    }
-
-    exit() {
-        console.log("Exiting Game State");
-        this.controls.resetKeys(); // Reset keys when exiting the state
+        // debug camera is activated with "["
+        if (!this.controls.debugCameraMode) {
+            this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
+            this.stateManager.camera.lookAt(this.character.characterMesh.position);
+        }
     }
 }

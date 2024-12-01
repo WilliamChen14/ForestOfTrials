@@ -10,6 +10,7 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
+/*
 import { Fire } from '../entities/Fire.js';
 import { Ghost } from '../entities/Ghost.js';
 
@@ -80,4 +81,38 @@ export function WorldTwoLevelOne(scene) {
     }
 
     return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
+
+*/
+
+export class WorldTwoLevelOne extends BaseLevel {
+    build() {
+        const floorSize = 20;
+
+        this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
+        for (let x = -1; x <= floorSize + 1; x++) {
+            this.addTree(x, 1, -1);
+            this.addTree(x, 1, floorSize + 1);
+        }
+
+        for (let z = -1; z <= floorSize + 1; z++) {
+            this.addTree(-1, 1, z);
+            this.addTree(floorSize + 1, 1, z);
+        }
+
+        this.addMob(BossSlime, 10, 1, 10);
+
+        this.addBox(3, 1, 3);
+        this.addBox(17, 1, 3);
+        this.addBox(3, 1, 17);
+        this.addBox(17, 1, 17);
+
+        this.addExit(20, 1, 20);
+
+        for (let x = -1; x < floorSize + 1; x++) {
+            this.addInvisWall(x, 1, -1);
+            this.addInvisWall(x, 1, floorSize + 1);
+        }
+
+        return this.getLevelData();
+    }
 }

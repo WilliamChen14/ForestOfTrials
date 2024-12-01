@@ -100,6 +100,7 @@ export class HomeState {
                         <span class="mushroom-top play">Play</span>
                         <span class="mushroom-stem"></span>
                     </a>
+                    </a>
                 </div>
             `;
 
@@ -272,7 +273,7 @@ export class HomeState {
         switch(buttonText) {
             case 'play':
                 console.log('Play clicked');
-                this.stateManager.changeState(GameState);
+                this.stateManager.changeState(GameState, 1);
                 break;
             case 'instructions':
                 console.log('Instructions clicked');

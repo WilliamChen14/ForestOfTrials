@@ -1,85 +1,43 @@
-// Level.js
 import * as THREE from 'three';
-
 import { Sign } from '../entities/Sign.js';
 import { Slime } from '../entities/Slime.js';
 import { StoneFLoor } from '../entities/StoneFloor.js';
 import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
-import { DirtFloor } from '../entities/DirtFloor.js';
-import { Water } from '../entities/Water.js';
-import { Fire } from '../entities/Fire.js';
+import { BaseLevel } from './BaseLevel.js';
 
-export function StarterLevel(scene) {
-    let MapLayout = [];
-    let Mobs = [];
-    let Exits = [];
-    let Signs = [];
-    let Tools = [];
-    let Waters = [];
-    
-    const floorSize = 10;
+export class StarterLevel extends BaseLevel {
+    build() {
+        const floorSize = 10;
 
+        // Add initial sign and exit
+        this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
+        this.addExit(10, 1, 9);
 
-    const addExit = (x,y,z) => {
-        const exitMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xfffc63,
-            roughness: 0.5,
-            metalness: 0,
-        });
-        const exit = new THREE.Mesh(new THREE.BoxGeometry(1.2, 2, 1.2), exitMaterial);
-        exit.castShadow = true;
-        exit.receiveShadow = true;
-        exit.position.set(x, y, z);
-        scene.add(exit);
-        Exit.push(exit);
-    }
+        // Create a complete floor with walls
+        this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
 
 
-
-    const signOne = new Sign(scene, 5, 1, 5, "You can jump with the space bar. \nWhen you are ready make your way to the Yellow Exit");
-    Signs.push(signOne);
-
-    const exit = new Exit(scene, 9, 1, 8);
-    Exits.push(exit.MapLayoutMesh);
-    
-    
-
-    // Add ground tiles (10x10 grid)
-    for (let x = -1; x < floorSize + 1; x++) {
-        const treeOne = new Tree(scene, -1, 1, x);
-        //MapLayout.push(treeOne.MapLayoutMesh);
-        const treeTwo = new Tree(scene, 10, 1, x);
-        //MapLayout.push(treeTwo.MapLayoutMesh);
-        const treeThree = new Tree(scene, x, 1, -1);
-        //MapLayout.push(treeThree.MapLayoutMesh);
-        const treeFour = new Tree(scene, x, 1, 10);
-        //MapLayout.push(treeFour.MapLayoutMesh);
-
-        const invisWallOne = new InvisWall(scene, x, 1, -1);
-        MapLayout.push(invisWallOne.MapLayoutMesh);
-        const invisWallTwo = new InvisWall(scene, x, 2, -1);
-        MapLayout.push(invisWallTwo.MapLayoutMesh);
-        const invisWallThree = new InvisWall(scene, x, 1, floorSize);
-        MapLayout.push(invisWallThree.MapLayoutMesh);
-        const invisWallFour = new InvisWall(scene, x, 2, floorSize);
-        MapLayout.push(invisWallFour.MapLayoutMesh);
-        const invisWallFive = new InvisWall(scene, -1, 1, x);
-        MapLayout.push(invisWallFive.MapLayoutMesh);
-        const invisWallSix = new InvisWall(scene, -1, 2, x);
-        MapLayout.push(invisWallSix.MapLayoutMesh);
-        const invisWallSeven = new InvisWall(scene, floorSize, 1, x);
-        MapLayout.push(invisWallSeven.MapLayoutMesh);
-        const invisWallEight = new InvisWall(scene, floorSize, 2, x);
-        MapLayout.push(invisWallEight.MapLayoutMesh);
-
-        for (let z = -1; z < floorSize + 1; z++) {
-
-            const dirtFloor = new DirtFloor(scene, x, 0, z);
-            MapLayout.push(dirtFloor.MapLayoutMesh);
+        // Add trees around the perimeter for decoration
+        for (let x = -1; x <= floorSize + 1; x++) {
+            this.addTree(x, 1, -1);
+            this.addTree(x, 1, floorSize + 1);
         }
 
+        for (let z = -1; z <= floorSize + 1; z++) {
+            this.addTree(-1, 1, z);
+            this.addTree(floorSize + 1, 1, z);
+        }
+
+        //this.addFireRing(3, 1, 3, 1.5, 4); // Small ring of 4 fires
+
+        //this.addFireWall(6, 2, 6, 6, 1, 2); // Vertical line of fires with gaps
+
+        // Add a single fire near the exit as a final challenge
+        this.addFire(8, 1, 5);
+
+        /*
         const water = new Water(scene, 6, 1, 2);
         Waters.push(water);
         const water2 = new Water(scene, 6, 1, 3);
@@ -112,9 +70,11 @@ export function StarterLevel(scene) {
         MapLayout.push(stoneFloor9.MapLayoutMesh);
         const stoneFloor10 = new StoneFLoor(scene, 8, 1, 1);
         MapLayout.push(stoneFloor10.MapLayoutMesh);
+        */
 
+        // Add an extra sign explaining fire
+        this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
 
+        return this.getLevelData();
     }
-
-    return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
 }

@@ -25,6 +25,8 @@ export class Controls {
         this.onKeyPress = this.onKeyPress.bind(this);
         this.onKeyRelease = this.onKeyRelease.bind(this);
 
+        this.debugCameraMode = false;
+
         // Event listeners for keydown and keyup
         window.addEventListener('keydown', this.onKeyPress);
         window.addEventListener('keyup', this.onKeyRelease);
@@ -71,6 +73,9 @@ export class Controls {
                 break;
             case " ":
                 this.keysPressed.space = true;
+                break;
+            case "[": // DEBUG: camera mode
+                this.debugCameraMode = !this.debugCameraMode;
                 break;
             default:
                 break;

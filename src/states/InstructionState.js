@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { GameState } from './GameState';
 import { HomeState } from './HomeState';
 
 export class InstructionState {
