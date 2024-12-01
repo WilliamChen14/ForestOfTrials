@@ -22,7 +22,7 @@ export class GameState {
         this.stateManager = stateManager;
         this.controls = new Controls();
         this.character = new Character(this.stateManager.scene);
-        this.levelData = new WorldTwoLevelOne(stateManager.scene);
+        this.levelData = new StarterLevel(stateManager.scene);
         this.currentLevel = 0;
 
         this.changeLevel = this.changeLevel.bind(this);
