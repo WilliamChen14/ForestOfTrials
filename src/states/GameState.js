@@ -65,17 +65,17 @@ export class GameState {
     }
 
     changeLevel() {
-        const characterMesh = this.character ? this.character.characterMesh : null;
         
         const objectsToRemove = [];
         this.stateManager.scene.traverse((object) => {
-            if (object !== characterMesh) {
-                objectsToRemove.push(object);
-            }
+            objectsToRemove.push(object);
         });
         objectsToRemove.forEach((object) => {
             this.stateManager.scene.remove(object);
         });
+
+        this.character = new Character(this.stateManager.scene);
+        this.character.init();
 
         this.currentLevel++;
         console.log("Changing to level:", this.currentLevel);

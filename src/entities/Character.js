@@ -48,7 +48,6 @@ export class Character {
         this.moveSpeed = 0.1;
         this.jumpStrength = 0.15;
         this.gravity = -0.01;
-        this.isOnGround = false;
         this.moveX = 0;
         this.moveY = 0;
         this.moveZ = 0;
