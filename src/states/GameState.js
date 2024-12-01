@@ -6,6 +6,7 @@ import { GameOverState } from './GameOverState.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
 import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
+import { EndState } from './EndState.js';
 
 const clock = new THREE.Clock();
 
@@ -99,8 +100,8 @@ export class GameState {
             this.level = new LevelTwo(this.stateManager.scene);
         }
         else {
-            console.log("Creating default WorldOneLevelFour");
-            this.level = new LevelTwo(this.stateManager.scene);
+            console.log("Game has been won");
+            this.stateManager.changeState(EndState);
         }
 
         console.log("Building level...");

@@ -114,9 +114,9 @@ export class LevelOne extends BaseLevel {
         }
 
         // Add enemies
-        this.addMob(Slime, 8, 1, 14);
-        this.addMob(Slime, 0, 1, 14);
-        this.addMob(Slime, -6, 1, 14);
+        this.addMob(Slime, 8, 1, 16);
+        this.addMob(Slime, 0, 1, 16);
+        this.addMob(Slime, -6, 1, 16);
 
         // nah its  a skill issue if they need this this.addBox(8, 1, 16); // can jump
 
