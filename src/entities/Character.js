@@ -16,7 +16,7 @@ export class Character {
         this.characterMesh = new THREE.Group();
         await this.model.loadModel(CHARACTER, {
             transformOffset: {
-                x: 0.5,
+                x: 0.52,
                 y: -0.5,
                 z: 0.85,
             },
@@ -320,6 +320,12 @@ export class Character {
         if (this.moveX < 0 && !canMoveLeft) this.moveX = 0;     // Left
         if (this.moveX > 0 && !canMoveRight) this.moveX = 0;    // Right
 
+        if (keysPressed.w || keysPressed.a || keysPressed.s || keysPressed.d) {
+            this.model.mixer.update(0.3);
+        } else {
+            this.model.mixer.setTime(0);
+        }
+
         if(currentTime - this.lastAttackTime < 400){
             this.moveX = 0;
             this.moveZ = 0;
@@ -339,7 +345,6 @@ export class Character {
         this.model.sceneObject.position.x = this.characterMesh.position.x;
         this.model.sceneObject.position.y = this.characterMesh.position.y;
         this.model.sceneObject.position.z = this.characterMesh.position.z;
-        this.model.mixer.update(0.3);
         */
 
         if(this.heldItem){
