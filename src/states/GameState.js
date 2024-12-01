@@ -15,25 +15,22 @@ export class GameState {
         this.controls = new Controls();
         this.currentLevel = 0;
         this.levelData = null;
+        this.level = null; // Store level instance for updates
 
         this.changeLevel = this.changeLevel.bind(this);
         this.initializeGame();
     }
 
     async initializeGame() {
-        // Set up initial lighting
         this.setupLighting();
         
-        // Load character first
         try {
             console.log("Loading character model...");
             this.mixer = await loadModel(this.stateManager.scene);
             console.log("Character loaded successfully with mixer:", this.mixer);
             
-            // Create character after model is loaded
             this.character = new Character(this.stateManager.scene);
             
-            // Initialize first level
             this.changeLevel();
         } catch (error) {
             console.error("Failed to load character:", error);
@@ -68,10 +65,8 @@ export class GameState {
     }
 
     changeLevel() {
-        // Store character mesh before clearing scene
         const characterMesh = this.character ? this.character.characterMesh : null;
         
-        // Clear existing scene except character
         const objectsToRemove = [];
         this.stateManager.scene.traverse((object) => {
             if (object !== characterMesh) {
@@ -82,35 +77,30 @@ export class GameState {
             this.stateManager.scene.remove(object);
         });
 
-        // Increment level counter
         this.currentLevel++;
         console.log("Changing to level:", this.currentLevel);
 
         // Create new level
-        let level;
         if (this.currentLevel === 1) {
             console.log("Creating StarterLevel");
-            level = new StarterLevel(this.stateManager.scene);
+            this.level = new StarterLevel(this.stateManager.scene);
         } else if (this.currentLevel === 2) {
             console.log("Creating LevelOne");
-            level = new LevelOne(this.stateManager.scene);
+            this.level = new LevelOne(this.stateManager.scene);
         } else if (this.currentLevel === 3) {
             console.log("Creating LevelTwo");
-            level = new LevelTwo(this.stateManager.scene);
+            this.level = new LevelTwo(this.stateManager.scene);
         } else {
             console.log("Creating default LevelOne");
-            level = new LevelOne(this.stateManager.scene);
+            this.level = new LevelOne(this.stateManager.scene);
         }
 
-        // Build the level and store its data
         console.log("Building level...");
-        this.levelData = level.build();
+        this.levelData = this.level.build();
         console.log("Level data:", this.levelData);
 
-        // Restore lighting after clearing scene
         this.setupLighting();
         
-        // Ensure character is at a good starting position
         if (this.character && this.character.characterMesh) {
             this.character.characterMesh.position.set(0, 1, 0);
         }
@@ -126,13 +116,17 @@ export class GameState {
     }
 
     update() {
-        // Safety check for level data and character
         if (!this.levelData || !this.character) {
             console.error("Level data or character not initialized");
             return;
         }
 
-        // Update character
+        // Update level hazards
+        if (this.level && this.level.update) {
+            this.level.update();
+        }
+
+        // Update character with hazards included
         this.character.update(
             this.controls.keysPressed,
             this.controls.lastKeyPressed,
@@ -144,33 +138,29 @@ export class GameState {
             this.controls.moveX,
             this.controls.moveZ,
             this.changeLevel,
-            this.stateManager
+            this.stateManager,
+            this.levelData.Hazards 
         );
 
-        // Update character animation
         if (this.mixer) {
             const deltaTime = clock.getDelta();
             this.mixer.update(deltaTime * 10);
         }
 
-        // Check for character falling
         if (this.character.characterMesh.position.y < -10) {
             this.currentLevel--;
             this.changeLevel();
         }
 
-        // Check for reset
         if (this.controls.keysPressed.r === true) {
             this.currentLevel--;
             this.changeLevel();
         }
 
-        // Check for game over
         if (this.character.health === 0) {
             this.stateManager.changeState(GameOverState);
         }
 
-        // Update camera
         const cameraOffset = new THREE.Vector3(0, 10, 8);
         this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
         this.stateManager.camera.lookAt(this.character.characterMesh.position);

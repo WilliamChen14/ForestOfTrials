@@ -268,13 +268,14 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards) {
         const currentTime = Date.now();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
         this.Tools = Tools;
+        this.Hazards = Hazards || [];
 
         const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
         this.characterMesh.rotation.y = angle;
@@ -303,6 +304,17 @@ export class Character {
                 this.createAttackHitbox(0);
             }
         }
+
+        this.Hazards.forEach(hazard => {
+            if (currentTime - hazard.getLastCollisionTime() > 800 && hazard.checkCollision(this.characterMesh)) {
+                this.updateHealth(this.health - 1);
+                console.log("collided with fire");
+            }
+            
+            if (hazard.update) {
+                hazard.update();
+            }
+        });
 
         this.Mobs.forEach(obj=> {
             if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh) && !obj.getIsDead()) {
