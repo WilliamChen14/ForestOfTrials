@@ -37,40 +37,22 @@ export class StarterLevel extends BaseLevel {
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 5);
 
-        /*
-        const water = new Water(scene, 6, 1, 2);
-        Waters.push(water);
-        const water2 = new Water(scene, 6, 1, 3);
-        Waters.push(water2);
-        const water3 = new Water(scene, 7, 1, 2);
-        Waters.push(water3);
-        const water4 = new Water(scene, 7, 1, 3);
-        Waters.push(water4);
-        const stoneFloor = new StoneFLoor(scene, 8, 1, 3);
-        MapLayout.push(stoneFloor.MapLayoutMesh);
-        const stoneFloor0 = new StoneFLoor(scene, 8, 1, 2);
-        MapLayout.push(stoneFloor0.MapLayoutMesh);
-        const stoneFloor1 = new StoneFLoor(scene, 7, 1, 4);
-        MapLayout.push(stoneFloor1.MapLayoutMesh);
-        const stoneFloor2 = new StoneFLoor(scene, 8, 1, 4);
-        MapLayout.push(stoneFloor2.MapLayoutMesh);
-        const stoneFloor3 = new StoneFLoor(scene, 6, 1, 4);
-        MapLayout.push(stoneFloor3.MapLayoutMesh);
-        const stoneFloor4 = new StoneFLoor(scene, 5, 1, 3);
-        MapLayout.push(stoneFloor4.MapLayoutMesh);
-        const stoneFloor5 = new StoneFLoor(scene, 5, 1, 2);
-        MapLayout.push(stoneFloor5.MapLayoutMesh);
-        const stoneFloor6 = new StoneFLoor(scene, 5, 1, 4);
-        MapLayout.push(stoneFloor6.MapLayoutMesh);
-        const stoneFloor7 = new StoneFLoor(scene, 5, 1, 1);
-        MapLayout.push(stoneFloor7.MapLayoutMesh);
-        const stoneFloor8 = new StoneFLoor(scene, 6, 1, 1);
-        MapLayout.push(stoneFloor8.MapLayoutMesh);
-        const stoneFloor9 = new StoneFLoor(scene, 7, 1, 1);
-        MapLayout.push(stoneFloor9.MapLayoutMesh);
-        const stoneFloor10 = new StoneFLoor(scene, 8, 1, 1);
-        MapLayout.push(stoneFloor10.MapLayoutMesh);
-        */
+        this.addWater(6,1,2);
+        this.addWater(6,1,3);
+        this.addWater(7,1,3);
+        this.addWater(7,1,2);
+        this.addStoneFloor(8,1,3);
+        this.addStoneFloor(8,1,2);
+        this.addStoneFloor(7,1,4);
+        this.addStoneFloor(8,1,4);
+        this.addStoneFloor(6,1,4);
+        this.addStoneFloor(5,1,3);
+        this.addStoneFloor(5,1,2);
+        this.addStoneFloor(5,1,4);
+        this.addStoneFloor(5,1,1);
+        this.addStoneFloor(6,1,1);
+        this.addStoneFloor(7,1,1);
+        this.addStoneFloor(8,1,1);
 
         // Add an extra sign explaining fire
         this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');

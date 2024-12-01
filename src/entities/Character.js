@@ -154,7 +154,7 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards, Water) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards, Waters) {
 
         const currentTime = Date.now();
         this.levelData = MapLayout;
@@ -162,7 +162,7 @@ export class Character {
         this.Mobs = Mobs;
         this.Exit = Exit;
         this.Tools = Tools;
-        this.Water = Water;
+        this.Waters = Waters;
         this.Hazards = Hazards || [];
 
         const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
@@ -193,7 +193,7 @@ export class Character {
             }
         }
 
-        this.Water.forEach(obj=> {
+        this.Waters.forEach(obj=> {
             obj.update();
         });
         this.Hazards.forEach(hazard => {
