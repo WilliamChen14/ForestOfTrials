@@ -6,7 +6,7 @@ export class Fire {
         this.scene = scene;
         this.position = new THREE.Vector3(x, y, z);
         this.lastCollisionTime = 0;
-        this.collisionDistance = 1.5;
+        this.collisionDistance = 0.7;
 
         // Create base flame shape geometry
         const flameShape = new THREE.Shape();
