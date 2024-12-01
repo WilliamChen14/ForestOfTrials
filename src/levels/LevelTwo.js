@@ -125,12 +125,12 @@ export class LevelTwo extends BaseLevel {
         }
 
         // Add decorative water features in final platform
-        this.addWater(40, bridgeHeight, -6);
-        this.addWater(40, bridgeHeight, 6);
-        this.addWater(45, bridgeHeight, -6);
-        this.addWater(45, bridgeHeight, 6);
-        this.addWater(50, bridgeHeight, -6);
-        this.addWater(50, bridgeHeight, 6);
+        this.addWater(40, bridgeHeight + 1, -6);
+        this.addWater(40, bridgeHeight + 1, 6);
+        this.addWater(45, bridgeHeight + 1, -6);
+        this.addWater(45, bridgeHeight + 1, 6);
+        this.addWater(50, bridgeHeight + 1, -6);
+        this.addWater(50, bridgeHeight + 1, 6);
 
         // Add enemies on final platform
         this.addMob(Slime, 42, bridgeHeight + 1, -4);
