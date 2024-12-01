@@ -5,6 +5,7 @@ import { LevelTwo } from '../levels/LevelTwo.js';
 import { GameOverState } from './GameOverState.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
+import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
 
 const clock = new THREE.Clock();
 
@@ -81,17 +82,25 @@ export class GameState {
 
         // Create new level
         if (this.currentLevel === 1) {
-            console.log("Creating StarterLevel");
+            console.log("Creating WorldOneLevelOne");
             this.level = new StarterLevel(this.stateManager.scene);
         } else if (this.currentLevel === 2) {
-            console.log("Creating LevelOne");
-            this.level = new LevelOne(this.stateManager.scene);
+            console.log("Creating WorldOneLevelTwo");
+            this.level = new StarterLevelTwo(this.stateManager.scene);
         } else if (this.currentLevel === 3) {
-            console.log("Creating LevelTwo");
-            this.level = new LevelTwo(this.stateManager.scene);
-        } else {
-            console.log("Creating default LevelOne");
+            console.log("Creating WorldOneLevelThree");
             this.level = new LevelOne(this.stateManager.scene);
+        } else if (this.currentLevel === 4){
+            console.log("Creating default WorldOneLevelFour");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else if (this.currentLevel === 5){
+            console.log("Creating default WorldTwoLevelOne");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else {
+            console.log("Creating default WorldOneLevelFour");
+            this.level = new LevelTwo(this.stateManager.scene);
         }
 
         console.log("Building level...");

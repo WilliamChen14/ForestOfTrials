@@ -1,6 +1,7 @@
 // Level.js
 import * as THREE from 'three';
 
+import { loadModel } from '../Models.js';
 import { Sign } from '../entities/Sign.js';
 import { Slime } from '../entities/Slime.js';
 import { StoneFLoor } from '../entities/StoneFloor.js';
@@ -9,9 +10,9 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
-import { BaseLevel } from './BaseLevel.js';
 
-export class LevelTwo extends BaseLevel {
+
+export class WorldTwoLevelOne extends BaseLevel {
     build() {
         const floorSize = 20;
 

@@ -17,6 +17,7 @@ export class BaseLevel {
         this.Signs = [];
         this.Tools = [];
         this.Hazards = []; // New array to track fire hazards
+        this.Waters = [];
     }
 
     addInvisWall(x, y, z) {
@@ -99,13 +100,13 @@ export class BaseLevel {
 
     addWallsAndFloorsAroundGrid(startX, endX, startZ, endZ) {
         // Add walls around the perimeter
-        for (let x = startX - 1; x <= endX + 1; x++) {
-            this.addInvisWall(x, 1, startZ - 1);
-            this.addInvisWall(x, 1, endZ + 1);
+        for (let x = startX; x <= endX; x++) {
+            this.addInvisWall(x, 1, startZ);
+            this.addInvisWall(x, 1, endZ);
         }
-        for (let z = startZ - 1; z <= endZ + 1; z++) {
-            this.addInvisWall(startX - 1, 1, z);
-            this.addInvisWall(endX + 1, 1, z);
+        for (let z = startZ; z <= endZ; z++) {
+            this.addInvisWall(startX, 1, z);
+            this.addInvisWall(endX, 1, z);
         }
 
         // Add floor tiles within the perimeter

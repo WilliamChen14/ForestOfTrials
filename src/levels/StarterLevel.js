@@ -13,21 +13,16 @@ export class StarterLevel extends BaseLevel {
 
         // Add initial sign and exit
         this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
-        this.addExit(9, 1, 8);
+        this.addExit(10, 1, 9);
 
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
 
-        // Add wall borders
-        for (let x = -1; x < floorSize + 1; x++) {
-            this.addInvisWall(x, 1, -1);
-            this.addInvisWall(x, 1, floorSize);
-        }
 
         // Add trees around the perimeter for decoration
         for (let x = -1; x <= floorSize + 1; x++) {
             this.addTree(x, 1, -1);
-            this.addTree(x, 1, floorSize);
+            this.addTree(x, 1, floorSize + 1);
         }
 
         for (let z = -1; z <= floorSize + 1; z++) {
