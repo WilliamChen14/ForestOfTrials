@@ -143,7 +143,8 @@ export class GameState {
             this.controls.moveZ,
             this.changeLevel,
             this.stateManager,
-            this.levelData.Hazards 
+            this.levelData.Hazards,
+            this.levelData.Waters
         );
 
         if (this.mixer) {
@@ -161,7 +162,11 @@ export class GameState {
             this.changeLevel();
         }
 
-        if (this.character.health === 0) {
+        if(this.character.health == 0){
+            while (this.stateManager.scene.children.length > 0) {
+                this.stateManager.scene.remove(this.stateManager.scene.children[0]);
+            }
+            this.levelData = [];
             this.stateManager.changeState(GameOverState);
         }
 

@@ -154,13 +154,15 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards, Water) {
+
         const currentTime = Date.now();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
         this.Tools = Tools;
+        this.Water = Water;
         this.Hazards = Hazards || [];
 
         const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
@@ -191,6 +193,9 @@ export class Character {
             }
         }
 
+        this.Water.forEach(obj=> {
+            obj.update();
+        });
         this.Hazards.forEach(hazard => {
             if (currentTime - hazard.getLastCollisionTime() > 800 && hazard.checkCollision(this.characterMesh)) {
                 this.updateHealth(this.health - 1);

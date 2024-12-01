@@ -6,9 +6,13 @@ export class Sign {
         this.scene = scene;
         this.message = message;  // Store the custom message
 
+        const textureLoader = new THREE.TextureLoader();
+        const woodTexture = textureLoader.load('../../assets/wood.png');
+
         // Create sign mesh and set its properties
         const signMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x422522,
+            map: woodTexture,
+            color: 0x73543d,
             roughness: 0.5,
             metalness: 0,
         });
