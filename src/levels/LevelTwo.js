@@ -15,6 +15,7 @@ export class LevelTwo extends BaseLevel {
     build() {
         const floorSize = 20;
 
+
         this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
         for (let x = -1; x <= floorSize + 1; x++) {
             this.addTree(x, 1, -1);

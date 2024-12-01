@@ -8,6 +8,7 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export class LevelOne extends BaseLevel {
     build() {

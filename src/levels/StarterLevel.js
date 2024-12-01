@@ -37,6 +37,23 @@ export class StarterLevel extends BaseLevel {
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 5);
 
+        this.addWater(6,1,2);
+        this.addWater(6,1,3);
+        this.addWater(7,1,3);
+        this.addWater(7,1,2);
+        this.addStoneFloor(8,1,3);
+        this.addStoneFloor(8,1,2);
+        this.addStoneFloor(7,1,4);
+        this.addStoneFloor(8,1,4);
+        this.addStoneFloor(6,1,4);
+        this.addStoneFloor(5,1,3);
+        this.addStoneFloor(5,1,2);
+        this.addStoneFloor(5,1,4);
+        this.addStoneFloor(5,1,1);
+        this.addStoneFloor(6,1,1);
+        this.addStoneFloor(7,1,1);
+        this.addStoneFloor(8,1,1);
+
         // Add an extra sign explaining fire
         this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
 
