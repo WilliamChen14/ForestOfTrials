@@ -4,11 +4,14 @@ import { Sign } from './Sign';
 import { Model } from '../Models.js';
 
 import CHARACTER from '/assets/models/character.glb'
+const clock = new THREE.Clock();
 
 export class Character {
     constructor(scene) {
         this.scene = scene;
         this.model = new Model();
+        this.angle = 0;
+        this.spinSpeed = 7;
     }
 
     async init() {
@@ -156,6 +159,7 @@ export class Character {
     update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards, Waters) {
 
         const currentTime = Date.now();
+        let deltaTime = clock.getDelta();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
@@ -164,21 +168,15 @@ export class Character {
         this.Waters = Waters;
         this.Hazards = Hazards || [];
 
-        const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
-        this.characterMesh.rotation.y = angle;
+        const normalizeAngle = (angle) => ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
 
-        if(LastKeyPressed === "w"){
-            this.lastDirection = new THREE.Vector3(0, 0, -1);
-        }
-        else if(LastKeyPressed === "a"){
-            this.lastDirection = new THREE.Vector3(-1, 0, 0);
-        }
-        else if(LastKeyPressed === "d"){
-            this.lastDirection = new THREE.Vector3(1, 0, 0);
-        }
-        else {
-            this.lastDirection = new THREE.Vector3(0, 0, 1);
-        }
+        let targetAngle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
+        targetAngle = normalizeAngle(targetAngle)
+        this.angle = normalizeAngle(this.angle)
+
+        let deltaAngle = normalizeAngle(targetAngle - this.angle);
+        this.angle += this.spinSpeed * deltaAngle * deltaTime;
+        this.characterMesh.rotation.y = this.angle;
             
 
         this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
@@ -312,6 +310,9 @@ export class Character {
         // Set movement based on key presses
         this.moveX = moveX;
         this.moveZ = moveZ;
+        if (moveX !== 0 || moveZ !== 0) {
+            this.lastDirection = new THREE.Vector3(moveX, 0, moveZ);
+        }
         /*
         this.moveZ = keysPressed.w ? -this.moveSpeed : keysPressed.s ? this.moveSpeed : 0;
         this.moveX = keysPressed.a ? -this.moveSpeed : keysPressed.d ? this.moveSpeed : 0;
@@ -325,7 +326,7 @@ export class Character {
         if (this.moveX > 0 && !canMoveRight) this.moveX = 0;    // Right
 
         if (keysPressed.w || keysPressed.a || keysPressed.s || keysPressed.d) {
-            this.model.mixer.update(0.3);
+            this.model.mixer.update(deltaTime * 15);
         } else {
             this.model.mixer.setTime(0);
         }
