@@ -4,12 +4,14 @@ import { Sign } from './Sign';
 import { Model } from '../Models.js';
 
 import CHARACTER from '/assets/models/character.glb'
+const clock = new THREE.Clock();
 
 export class Character {
     constructor(scene) {
         this.scene = scene;
         this.model = new Model();
         this.angle = 0;
+        this.spinSpeed = 7;
     }
 
     async init() {
@@ -157,6 +159,7 @@ export class Character {
     // Method to update character position each frame
     update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards) {
         const currentTime = Date.now();
+        let deltaTime = clock.getDelta();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
@@ -164,12 +167,14 @@ export class Character {
         this.Tools = Tools;
         this.Hazards = Hazards || [];
 
-        const targetAngle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
-        if ((this.angle - targetAngle) % (Math.PI * 2)< 0) {
-            this.angle += 0.1;
-        } else {
-            this.angle -= 0.1;
-        }
+        const normalizeAngle = (angle) => ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
+
+        let targetAngle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
+        targetAngle = normalizeAngle(targetAngle)
+        this.angle = normalizeAngle(this.angle)
+
+        let deltaAngle = normalizeAngle(targetAngle - this.angle);
+        this.angle += this.spinSpeed * deltaAngle * deltaTime;
         this.characterMesh.rotation.y = this.angle;
             
 
@@ -317,7 +322,7 @@ export class Character {
         if (this.moveX > 0 && !canMoveRight) this.moveX = 0;    // Right
 
         if (keysPressed.w || keysPressed.a || keysPressed.s || keysPressed.d) {
-            this.model.mixer.update(0.3);
+            this.model.mixer.update(deltaTime * 15);
         } else {
             this.model.mixer.setTime(0);
         }
