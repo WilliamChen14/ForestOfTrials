@@ -10,6 +10,7 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export function LevelTwo(scene) {
     let MapLayout = [];
@@ -17,6 +18,8 @@ export function LevelTwo(scene) {
     let Exits = [];
     let Signs = [];
     let Tools = [];
+    let Waters = [];
+    
     
     const floorSize = 20;
 
@@ -73,10 +76,10 @@ export function LevelTwo(scene) {
         MapLayout.push(invisWallEight.MapLayoutMesh);
 
         for (let z = -1; z < floorSize + 1; z++) {
-            const stoneFloor = new StoneFLoor(scene, x, 0, z);
-            MapLayout.push(stoneFloor.MapLayoutMesh);
+            const dirtFloor = new DirtFloor(scene, x, 0, z);
+            MapLayout.push(dirtFloor.MapLayoutMesh);
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
 }

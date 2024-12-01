@@ -1,17 +1,21 @@
 // src/entities/Slime.js
 import * as THREE from 'three';
 
-export class Fire {
+export class Ghost {
     constructor(scene, x, y, z) {
         this.scene = scene;
 
+        const textureLoader = new THREE.TextureLoader();
+        const ghostTexture = textureLoader.load('../../assets/ghost.jpg');
+
         // Create slime mesh and set its properties
         const slimeMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xff0000, // Green color for slime
+            color: 0x00ff00, // Green color for slime
+            map: ghostTexture,
             roughness: 0.8,
             metalness: 0.1,
         });
-        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), slimeMaterial);
+        this.mobMesh = new THREE.Mesh(new THREE.BoxGeometry(0.9, 2, 0.9), slimeMaterial);
         this.mobMesh.castShadow = true;
         this.mobMesh.receiveShadow = true;
         this.mobMesh.position.set(x, y, z);
@@ -20,7 +24,7 @@ export class Fire {
 
         // Collision and movement properties
         this.collisionDistance = 0.5; // Set collision distance for proximity detection
-        this.moveSpeed = 0.00; // Movement speed of the slime
+        this.moveSpeed = 0.02; // Movement speed of the slime
         this.direction = new THREE.Vector3(
             (Math.random() - 0.5) * 2,
             0,
@@ -34,7 +38,7 @@ export class Fire {
         this.loseLife = this.loseLife.bind(this);
         this.lastLostLife = 0;
 
-        this.health = 100;
+        this.health = 1;
         this.isDead = false;
 
         // Collision raycaster

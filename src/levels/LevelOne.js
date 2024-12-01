@@ -9,6 +9,7 @@ import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { Box } from '../entities/Box.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export function LevelOne(scene) {
     let MapLayout = [];
@@ -16,6 +17,8 @@ export function LevelOne(scene) {
     let Exits = [];
     let Signs = [];
     let Tools = [];
+    let Waters = [];
+    
     
     const floorSize = 15;
 
@@ -57,17 +60,17 @@ export function LevelOne(scene) {
         const treeOne = new Tree(scene, 0-x - 1, 1, x-1);
         const invisWallOne = new InvisWall(scene, 0-x - 1, 1, x-1);
         MapLayout.push(invisWallOne.MapLayoutMesh);
-        const floorOne = new StoneFLoor(scene, 0-x - 1, 0, x-1);
+        const floorOne = new DirtFloor(scene, 0-x - 1, 0, x-1);
         MapLayout.push(floorOne.MapLayoutMesh);
         const invisWallTwo = new InvisWall(scene, x + 1, 1, x-1);
         MapLayout.push(invisWallTwo.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, x + 1, 0, x-1);
+        const floorTwo = new DirtFloor(scene, x + 1, 0, x-1);
         MapLayout.push(floorTwo.MapLayoutMesh);
         const treeTwo = new Tree(scene, x + 1, 1, x-1);
         for(let y = 0; y < x + 1; y++){
-            const floorOne = new StoneFLoor(scene, y, 0, x-1);
+            const floorOne = new DirtFloor(scene, y, 0, x-1);
             MapLayout.push(floorOne.MapLayoutMesh);
-            const floorTwo = new StoneFLoor(scene, 0-y, 0, x-1);
+            const floorTwo = new DirtFloor(scene, 0-y, 0, x-1);
             MapLayout.push(floorTwo.MapLayoutMesh);
         }
     }
@@ -75,17 +78,17 @@ export function LevelOne(scene) {
         const treeOne = new Tree(scene, 0-x - 1, 1, (floorSize - x) + floorSize);
         const invisWallOne = new InvisWall(scene, 0-x - 1, 1, (floorSize - x) + floorSize);
         MapLayout.push(invisWallOne.MapLayoutMesh);
-        const floorOne = new StoneFLoor(scene, 0-x - 1, 0, (floorSize - x) + floorSize);
+        const floorOne = new DirtFloor(scene, 0-x - 1, 0, (floorSize - x) + floorSize);
         MapLayout.push(floorOne.MapLayoutMesh);
         const invisWallTwo = new InvisWall(scene, x + 1, 1, (floorSize - x) + floorSize);
         MapLayout.push(invisWallTwo.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, x + 1, 0, (floorSize - x) + floorSize);
+        const floorTwo = new DirtFloor(scene, x + 1, 0, (floorSize - x) + floorSize);
         MapLayout.push(floorTwo.MapLayoutMesh);
         const treeTwo = new Tree(scene, x + 1, 1, (floorSize - x) + floorSize);
         for(let y = 0; y < x + 1; y++){
-            const floorOne = new StoneFLoor(scene, y, 0, (floorSize - x) + floorSize);
+            const floorOne = new DirtFloor(scene, y, 0, (floorSize - x) + floorSize);
             MapLayout.push(floorOne.MapLayoutMesh);
-            const floorTwo = new StoneFLoor(scene, 0-y, 0, (floorSize - x) + floorSize);
+            const floorTwo = new DirtFloor(scene, 0-y, 0, (floorSize - x) + floorSize);
             MapLayout.push(floorTwo.MapLayoutMesh);
         }
     }
@@ -156,5 +159,5 @@ export function LevelOne(scene) {
         MapLayout.push(invisWallOne.MapLayoutMesh);
     }
 
-    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
 }

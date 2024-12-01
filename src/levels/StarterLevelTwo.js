@@ -10,6 +10,7 @@ import { InvisWall } from '../entities/InvisWall';
 import { BigSlime } from '../entities/BigSlime.js';
 import { Box } from '../entities/Box.js';
 import { Exit } from '../entities/Exit.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export function StarterLevelTwo(scene) {
     let MapLayout = [];
@@ -17,6 +18,8 @@ export function StarterLevelTwo(scene) {
     let Exits = [];
     let Signs = [];
     let Tools = [];
+    let Waters = [];
+    
 
     const floorWidth = 20;
     const floorDepth = 8;
@@ -86,10 +89,10 @@ export function StarterLevelTwo(scene) {
         MapLayout.push(invisWallEight.MapLayoutMesh);
 
         for (let z = -1; z < floorDepth + 1; z++) {
-            const stoneFloor = new StoneFLoor(scene, x, 0, z);
-            MapLayout.push(stoneFloor.MapLayoutMesh);
+            const dirtFloor = new DirtFloor(scene, x, 0, z);
+            MapLayout.push(dirtFloor.MapLayoutMesh);
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
 }

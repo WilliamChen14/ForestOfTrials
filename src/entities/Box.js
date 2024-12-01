@@ -6,9 +6,13 @@ export class Box {
         this.scene = scene;
         this.MapLayoutMesh = null;
 
+        const textureLoader = new THREE.TextureLoader();
+        const boxTexture = textureLoader.load('../../assets/box.png');
+
         // Create sign mesh and set its properties
         const BoxMaterial = new THREE.MeshPhysicalMaterial({
             color: 0xa1843b,
+            map: boxTexture,
             roughness: 0.5,
             metalness: 0,
         });

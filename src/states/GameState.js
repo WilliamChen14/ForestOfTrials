@@ -14,6 +14,7 @@ import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
 import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
 import { HomeState } from './HomeState.js';
+import { WorldTwoLevelOne } from '../levels/WorldTwoLevelOne.js';
 
 export class GameState {
 
@@ -21,7 +22,7 @@ export class GameState {
         this.stateManager = stateManager;
         this.controls = new Controls();
         this.character = new Character(this.stateManager.scene);
-        this.levelData = new LevelOne(stateManager.scene);
+        this.levelData = new WorldTwoLevelOne(stateManager.scene);
         this.currentLevel = 0;
 
         this.changeLevel = this.changeLevel.bind(this);
@@ -123,7 +124,7 @@ export class GameState {
 
     update() {
         // Pass controls to the character's update method
-        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exits, this.levelData.Tools, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager);
+        this.character.update(this.controls.keysPressed, this.controls.lastKeyPressed, this.levelData.MapLayout,this.levelData.Mobs, this.levelData.Signs, this.levelData.Exits, this.levelData.Tools, this.controls.moveX, this.controls.moveZ, this.changeLevel, this.stateManager, this.levelData.Waters);
         if (this.mixer) {
             const deltaTime = clock.getDelta();
             this.mixer.update(deltaTime * 10);
@@ -137,6 +138,10 @@ export class GameState {
             this.changeLevel();
         }
         if(this.character.health == 0){
+            while (this.stateManager.scene.children.length > 0) {
+                this.stateManager.scene.remove(this.stateManager.scene.children[0]);
+            }
+            this.levelData = [];
             this.stateManager.changeState(GameOverState);
         }
 

@@ -268,13 +268,15 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Water) {
         const currentTime = Date.now();
         this.levelData = MapLayout;
         this.signs = Signs;
         this.Mobs = Mobs;
         this.Exit = Exit;
         this.Tools = Tools;
+        this.Water = Water;
+
 
         const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
         this.characterMesh.rotation.y = angle;
@@ -303,6 +305,10 @@ export class Character {
                 this.createAttackHitbox(0);
             }
         }
+
+        this.Water.forEach(obj=> {
+            obj.update();
+        });
 
         this.Mobs.forEach(obj=> {
             if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh) && !obj.getIsDead()) {
