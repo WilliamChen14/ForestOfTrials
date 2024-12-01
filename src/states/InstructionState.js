@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { GameState } from './GameState';
-import { InstructionState } from './InstructionState';
+import { HomeState } from './HomeState';
 
-export class HomeState {
+export class InstructionState {
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.homeScreenElement = null;
@@ -76,31 +76,24 @@ export class HomeState {
                         <rect x="90" y="260" width="20" height="40" fill="#5d4037"/>
                     </svg>
                 </div>
-
-                <div class="title-banner">
-                    <div class="chains">
-                        <div class="chain"></div>
-                        <div class="chain"></div>
-                        <div class="chain"></div>
-                        <div class="chain"></div>
+                <div class="content-container">
+                    <div class="title-banner">
+                        <div class="chains">
+                            <div class="chain"></div>
+                            <div class="chain"></div>
+                            <div class="chain"></div>
+                            <div class="chain"></div>
+                        </div>
+                        <h1 class="title">Instructions</h1>
                     </div>
-                    <h1 class="title">Forest of Trials</h1>
-                </div>
+                    <div class="instructions-box">Use wasd to move. <br />j to attack in the last inputed direction.  <br />k to pick up and drop items.  <br />r to reset the level.</div>
 
-                <div class="mushroom-container">
-                    <a href="#" class="mushroom">
-                        <span class="mushroom-top">Exit</span>
-                        <span class="mushroom-stem"></span>
-                    </a>
-                    <a href="#" class="mushroom">
-                        <span class="mushroom-top">Instructions</span>
-                        <span class="mushroom-stem"></span>
-                    </a>
-                    <a href="#" class="mushroom">
-                        <span class="mushroom-top play">Play</span>
-                        <span class="mushroom-stem"></span>
-                    </a>
-                    </a>
+                    <div class="mushroom-container">
+                        <a href="#" class="mushroom">
+                            <span class="mushroom-top play">Return to Home</span>
+                            <span class="mushroom-stem"></span>
+                        </a>
+                    </div>
                 </div>
             `;
 
@@ -138,6 +131,7 @@ export class HomeState {
                     position: absolute;
                     top: 10%;
                     left: 50%;
+                    margine-bottom: 20px;
                     transform: translateX(-50%);
                     background: #e8c4b8;
                     padding: 30px 160px; /* Increased padding for larger buttons */
@@ -147,6 +141,32 @@ export class HomeState {
                     width: 60%;
                     min-width: 600px;
                     text-align: center;
+                }
+                .content-container {
+                    position: absolute;
+                    top: 10%;  /* Adjust for overall positioning */
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    height: 90%;  /* Adjust height as needed */
+                    width: 60%;
+                    text-align: center;
+                }
+
+                .instructions-box {
+                    background: #e8c4b8;
+                    padding: 40px;
+                    height: auto;
+                    border-radius: 15px;
+                    border: 4px solid #b39c94;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    font-size: 1.5em;  /* Adjust font size for better readability */
+                    color: #443328;
+                    width: 100%;
+                    margin-top: 20px;
                 }
 
                 .title-banner::before {
@@ -271,20 +291,9 @@ export class HomeState {
         const buttonText = e.currentTarget.querySelector('.mushroom-top').textContent.toLowerCase();
 
         switch(buttonText) {
-            case 'play':
-                console.log('Play clicked');
-                this.stateManager.changeState(GameState, 1);
-                break;
-            case 'instructions':
-                console.log('Instructions clicked');
-                this.stateManager.changeState(InstructionState);
-                // Implement instructions logic here
-                break;
-            case 'exit':
-                console.log('Exit clicked');
-
-                // Implement exit logic here
-                alert("Press 'Ctrl + W' (Windows/Linux) or 'Cmd + W' (Mac) to close the tab.");
+            case 'return to home':
+                console.log('Return to Home clicked');
+                this.stateManager.changeState(HomeState);
                 break;
             default:
                 console.log('Unknown button clicked:', buttonText);

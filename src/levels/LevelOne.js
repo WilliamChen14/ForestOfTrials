@@ -1,147 +1,130 @@
-// Level.js
 import * as THREE from 'three';
-
+import { BaseLevel } from './BaseLevel.js';
 import { Sign } from '../entities/Sign.js';
 import { Slime } from '../entities/Slime.js';
 import { StoneFLoor } from '../entities/StoneFloor.js';
 import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
+import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
 
-export function LevelOne(scene) {
-    let MapLayout = [];
-    let Mobs = [];
-    let Exits = [];
-    let Signs = [];
-    let Tools = [];
-    
-    const floorSize = 15;
+export class LevelOne extends BaseLevel {
+    build() {
+        const floorSize = 15;
 
+        // Add initial sign and exit
+        this.addSign(-7, 1, 9, 'You can reset the level by pressing "r"');
+        this.addExit(0, 1, 30);
 
+        // Add initial floor and walls
+        this.addStoneFloor(0, 0, -1);
+        this.addInvisWall(-1, 1, -1);
+        this.addInvisWall(1, 1, -1);
+        this.addStoneFloor(1, 0, -1);
+        this.addStoneFloor(-1, 0, -1);
+        this.addTree(-1, 1, -1);
+        this.addTree(1, 1, -1);
 
-    //loadModel(scene);
+        // Add additional initial elements
+        this.addStoneFloor(0, 0, -2);
+        this.addInvisWall(0, 1, -1);
+        this.addTree(0, 1, -2);
 
-    
-    const signOne = new Sign(scene, -7, 1, 9, "You can reset the level by pressing \"r\"");
-    Signs.push(signOne);
-    
+        // Build main floor grid
+        for (let x = 1; x < floorSize + 1; x++) {
+            // Add border trees and walls
+            this.addTree(-x - 1, 1, x - 1);
+            this.addInvisWall(-x - 1, 1, x - 1);
+            this.addStoneFloor(-x - 1, 0, x - 1);
+            this.addInvisWall(x + 1, 1, x - 1);
+            this.addStoneFloor(x + 1, 0, x - 1);
+            this.addTree(x + 1, 1, x - 1);
 
-    const exit = new Exit(scene, 0, 1, 30);
-    Exits.push(exit.MapLayoutMesh);
-    
-    const floor = new StoneFLoor(scene, 0, 0, -1);
-    const treeO = new Tree(scene, -1, 1, -1);
-    const invisWallO = new InvisWall(scene, -1, 1, -1);
-    MapLayout.push(invisWallO.MapLayoutMesh);
-    const invisWallT = new InvisWall(scene, 1, 1, -1);
-    MapLayout.push(invisWallT.MapLayoutMesh);
-    const floorT = new StoneFLoor(scene, 1, 0, -1);
-    MapLayout.push(floorT.MapLayoutMesh);
-    const floorO = new StoneFLoor(scene, -1, 0, -1);
-    MapLayout.push(floorO.MapLayoutMesh);
-    const treeT = new Tree(scene, 1, 1, -1);
-
-    const floorTH = new StoneFLoor(scene, 0, 0, -2);
-    MapLayout.push(floorTH.MapLayoutMesh);
-    const invisWallTH = new InvisWall(scene, 0, 1, -1);
-    MapLayout.push(invisWallTH.MapLayoutMesh);
-    const treeTH = new Tree(scene, 0, 1, -2);
-
-    
-    
-
-    // Add ground tiles (10x10 grid)
-    for (let x = 1; x < floorSize + 1; x++) {
-        const treeOne = new Tree(scene, 0-x - 1, 1, x-1);
-        const invisWallOne = new InvisWall(scene, 0-x - 1, 1, x-1);
-        MapLayout.push(invisWallOne.MapLayoutMesh);
-        const floorOne = new StoneFLoor(scene, 0-x - 1, 0, x-1);
-        MapLayout.push(floorOne.MapLayoutMesh);
-        const invisWallTwo = new InvisWall(scene, x + 1, 1, x-1);
-        MapLayout.push(invisWallTwo.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, x + 1, 0, x-1);
-        MapLayout.push(floorTwo.MapLayoutMesh);
-        const treeTwo = new Tree(scene, x + 1, 1, x-1);
-        for(let y = 0; y < x + 1; y++){
-            const floorOne = new StoneFLoor(scene, y, 0, x-1);
-            MapLayout.push(floorOne.MapLayoutMesh);
-            const floorTwo = new StoneFLoor(scene, 0-y, 0, x-1);
-            MapLayout.push(floorTwo.MapLayoutMesh);
-        }
-    }
-    for (let x = floorSize; x >= 0; x--) {
-        const treeOne = new Tree(scene, 0-x - 1, 1, (floorSize - x) + floorSize);
-        const invisWallOne = new InvisWall(scene, 0-x - 1, 1, (floorSize - x) + floorSize);
-        MapLayout.push(invisWallOne.MapLayoutMesh);
-        const floorOne = new StoneFLoor(scene, 0-x - 1, 0, (floorSize - x) + floorSize);
-        MapLayout.push(floorOne.MapLayoutMesh);
-        const invisWallTwo = new InvisWall(scene, x + 1, 1, (floorSize - x) + floorSize);
-        MapLayout.push(invisWallTwo.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, x + 1, 0, (floorSize - x) + floorSize);
-        MapLayout.push(floorTwo.MapLayoutMesh);
-        const treeTwo = new Tree(scene, x + 1, 1, (floorSize - x) + floorSize);
-        for(let y = 0; y < x + 1; y++){
-            const floorOne = new StoneFLoor(scene, y, 0, (floorSize - x) + floorSize);
-            MapLayout.push(floorOne.MapLayoutMesh);
-            const floorTwo = new StoneFLoor(scene, 0-y, 0, (floorSize - x) + floorSize);
-            MapLayout.push(floorTwo.MapLayoutMesh);
-        }
-    }
-
-    for(let z = 1; z < 7; z++){
-        for(let x = 0; x < 3; x++){
-            for(let y = -x; y <= x; y++){
-                const floorOne = new StoneFLoor(scene, y, z, 5+x);
-                MapLayout.push(floorOne.MapLayoutMesh);
-            }
-            for(let y = -x; y <= x; y++){
-                const floorOne = new StoneFLoor(scene, y, z, 9-x);
-                MapLayout.push(floorOne.MapLayoutMesh);
+            // Fill in floor tiles
+            for (let y = -x; y <= x; y++) {
+                this.addStoneFloor(y, 0, x - 1);
             }
         }
+
+        // Build second half of floor
+        for (let x = floorSize; x >= 0; x--) {
+            const z = (floorSize - x) + floorSize;
+            
+            // Add border elements
+            this.addTree(-x - 1, 1, z);
+            this.addInvisWall(-x - 1, 1, z);
+            this.addStoneFloor(-x - 1, 0, z);
+            this.addInvisWall(x + 1, 1, z);
+            this.addStoneFloor(x + 1, 0, z);
+            this.addTree(x + 1, 1, z);
+
+            // Fill in floor tiles
+            for (let y = -x; y <= x; y++) {
+                this.addStoneFloor(y, 0, z);
+            }
+        }
+
+        // Build elevated sections
+        for (let z = 1; z < 7; z++) {
+            for (let x = 0; x < 3; x++) {
+                for (let y = -x; y <= x; y++) {
+                    this.addStoneFloor(y, z, 5 + x);
+                    this.addStoneFloor(y, z, 9 - x);
+                }
+            }
+        }
+
+        // Add peak and secret areas
+        this.addStoneFloor(0, 7, 7);
+        
+        // Secret path 1
+        for (let x = 0; x < 20; x++) {
+            this.addStoneFloor(3 + x, 6, 7);
+        }
+        
+        // Secret path 2
+        for (let x = 0; x < 22; x++) {
+            this.addStoneFloor(22, 6, 8 + x);
+        }
+        
+        // Secret path 3
+        for (let x = 0; x < 22; x++) {
+            this.addStoneFloor(22 - x, 6, 30);
+        }
+
+        // Add boxes
+        for (let x = -2; x < 4; x++) {
+            this.addBox(x, 1, 10);
+        }
+
+        // Add tree line with invisible walls
+        for (let x = -10; x < 15; x++) {
+            this.addTree(x, 1, 13);
+            this.addInvisWall(x, 1, 13);
+        }
+
+        // Add elevated platforms
+        for (let x = 0; x < 3; x++) {
+            this.addStoneFloor(-9, 1, 14 + x);
+            this.addStoneFloor(-9, 2, 14 + x);
+            this.addStoneFloor(9, 1, 14 + x);
+            this.addStoneFloor(9, 2, 14 + x);
+        }
+
+        // Add enemies
+        this.addMob(Slime, 8, 1, 14);
+        this.addMob(Slime, 0, 1, 14);
+        this.addMob(Slime, -6, 1, 14);
+
+        this.addBox(8, 1, 16); // can jump
+
+        // Add final tree line
+        for (let x = -13; x < 10; x++) {
+            this.addTree(x, 1, 17);
+            this.addInvisWall(x, 1, 17);
+        }
+
+        return this.getLevelData();
     }
-    const floorPeak = new StoneFLoor(scene, 0, 7, 7);
-    MapLayout.push(floorPeak.MapLayoutMesh);
-
-    for(let x = -2; x < 3; x++){
-        const Box1 = new Box(scene, x, 1, 10);
-        Tools.push(Box1);
-        MapLayout.push(Box1.MapLayoutMesh);
-    }
-
-    for(let x = -10; x < 15; x++){
-        const treeOne = new Tree(scene, x, 1, 13);
-        const invisWallOne = new InvisWall(scene, x, 1, 13);
-        MapLayout.push(invisWallOne.MapLayoutMesh);
-    }
-
-    for(let x = 0; x < 3; x++){
-        const floorOne = new StoneFLoor(scene, -9, 1, 14+x);
-        MapLayout.push(floorOne.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, -9, 2, 14+x);
-        MapLayout.push(floorTwo.MapLayoutMesh);
-    }
-
-    const slimeOne = new Slime(scene, 8, 1, 14);
-    Mobs.push(slimeOne);
-    const slimeTwo = new Slime(scene, 0, 1, 14);
-    Mobs.push(slimeTwo);
-    const slimeThree = new Slime(scene, -6, 1, 14);
-    Mobs.push(slimeThree);
-
-    for(let x = 0; x < 3; x++){
-        const floorOne = new StoneFLoor(scene, 9, 1, 14+x);
-        MapLayout.push(floorOne.MapLayoutMesh);
-        const floorTwo = new StoneFLoor(scene, 9, 2, 14+x);
-        MapLayout.push(floorTwo.MapLayoutMesh);
-    }
-
-    for(let x = -13; x < 10; x++){
-        const treeOne = new Tree(scene, x, 1, 17);
-        const invisWallOne = new InvisWall(scene, x, 1, 17);
-        MapLayout.push(invisWallOne.MapLayoutMesh);
-    }
-
-    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
 }

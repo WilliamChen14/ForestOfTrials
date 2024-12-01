@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { GameState } from './GameState';
-import { InstructionState } from './InstructionState';
+import { HomeState } from './HomeState';
 
-export class HomeState {
+export class GameOverState {
     constructor(stateManager) {
         this.stateManager = stateManager;
         this.homeScreenElement = null;
@@ -84,7 +84,7 @@ export class HomeState {
                         <div class="chain"></div>
                         <div class="chain"></div>
                     </div>
-                    <h1 class="title">Forest of Trials</h1>
+                    <h1 class="title">Game Over</h1>
                 </div>
 
                 <div class="mushroom-container">
@@ -93,13 +93,8 @@ export class HomeState {
                         <span class="mushroom-stem"></span>
                     </a>
                     <a href="#" class="mushroom">
-                        <span class="mushroom-top">Instructions</span>
+                        <span class="mushroom-top play">Return to Home</span>
                         <span class="mushroom-stem"></span>
-                    </a>
-                    <a href="#" class="mushroom">
-                        <span class="mushroom-top play">Play</span>
-                        <span class="mushroom-stem"></span>
-                    </a>
                     </a>
                 </div>
             `;
@@ -271,19 +266,12 @@ export class HomeState {
         const buttonText = e.currentTarget.querySelector('.mushroom-top').textContent.toLowerCase();
 
         switch(buttonText) {
-            case 'play':
-                console.log('Play clicked');
-                this.stateManager.changeState(GameState, 1);
-                break;
-            case 'instructions':
-                console.log('Instructions clicked');
-                this.stateManager.changeState(InstructionState);
-                // Implement instructions logic here
+            case 'return to home':
+                console.log('Return to Home clicked');
+                this.stateManager.changeState(HomeState);
                 break;
             case 'exit':
                 console.log('Exit clicked');
-
-                // Implement exit logic here
                 alert("Press 'Ctrl + W' (Windows/Linux) or 'Cmd + W' (Mac) to close the tab.");
                 break;
             default:
