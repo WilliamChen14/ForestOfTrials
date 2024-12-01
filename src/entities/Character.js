@@ -12,6 +12,8 @@ export class Character {
         this.model = new Model();
         this.angle = 0;
         this.spinSpeed = 7;
+        this.velocityX = 0;
+        this.velocityY = 0;
     }
 
     async init() {
@@ -49,8 +51,8 @@ export class Character {
 
         // Movement properties
         this.moveSpeed = 0.1;
-        this.jumpStrength = 0.15;
-        this.gravity = -0.01;
+        this.jumpStrength = 0.2;
+        this.gravity = -.5;
         this.moveX = 0;
         this.moveY = 0;
         this.moveZ = 0;
@@ -259,7 +261,7 @@ export class Character {
         }
 
         if (!this.isOnGround) {
-            this.moveY += this.gravity;
+            this.moveY += this.gravity * deltaTime;
         }
 
         // Collision detection in all directions
@@ -341,11 +343,16 @@ export class Character {
         this.moveZ = tempZ;
         this.moveX = tempX;
 
+        const walkSpeed = 10;
+        const friction = 10;
+        this.velocityX += (direction.x * walkSpeed - this.velocityX * friction) * deltaTime;
+        this.velocityY += (direction.y * walkSpeed - this.velocityY * friction) * deltaTime;
+
 
         // Update character position based on movement
-        this.characterMesh.position.x += direction.x;
+        this.characterMesh.position.x += this.velocityX;
         this.characterMesh.position.y += this.moveY;
-        this.characterMesh.position.z += direction.y;
+        this.characterMesh.position.z += this.velocityY;
         /*
         this.model.sceneObject.position.x = this.characterMesh.position.x;
         this.model.sceneObject.position.y = this.characterMesh.position.y;
