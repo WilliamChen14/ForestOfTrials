@@ -8,6 +8,7 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export class LevelOne extends BaseLevel {
     build() {
@@ -113,11 +114,11 @@ export class LevelOne extends BaseLevel {
         }
 
         // Add enemies
-        this.addMob(Slime, 8, 1, 14);
-        this.addMob(Slime, 0, 1, 14);
-        this.addMob(Slime, -6, 1, 14);
+        this.addMob(Slime, 8, 1, 16);
+        this.addMob(Slime, 0, 1, 16);
+        this.addMob(Slime, -6, 1, 16);
 
-        this.addBox(8, 1, 16); // can jump
+        // nah its  a skill issue if they need this this.addBox(8, 1, 16); // can jump
 
         // Add final tree line
         for (let x = -13; x < 10; x++) {

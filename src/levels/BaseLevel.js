@@ -7,6 +7,8 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { Box } from '../entities/Box.js';
 import { Fire } from '../entities/Fire.js';
+import { Water } from '../entities/Water.js';
+import { DirtFloor } from '../entities/DirtFloor.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -17,6 +19,7 @@ export class BaseLevel {
         this.Signs = [];
         this.Tools = [];
         this.Hazards = []; // New array to track fire hazards
+        this.Waters = [];
     }
 
     addInvisWall(x, y, z) {
@@ -29,6 +32,11 @@ export class BaseLevel {
         const stoneFloor = new StoneFLoor(this.scene, x, y, z);
         this.MapLayout.push(stoneFloor.MapLayoutMesh);
         return stoneFloor;
+    }
+    addDirtFloor(x, y, z) {
+        const dirtFloor = new DirtFloor(this.scene, x, y, z);
+        this.MapLayout.push(dirtFloor.MapLayoutMesh);
+        return dirtFloor;
     }
 
     addTree(x, y, z) {
@@ -88,6 +96,12 @@ export class BaseLevel {
             this.addFire(x, y, z);
         }
     }
+    
+    addWater(x, y, z){
+        const water = new Water(this.scene, x, y, z);
+        this.Waters.push(water);
+        return water;
+    }
 
     addGrid(startX, endX, startZ, endZ, elementCallback) {
         for (let x = startX; x <= endX; x++) {
@@ -99,19 +113,19 @@ export class BaseLevel {
 
     addWallsAndFloorsAroundGrid(startX, endX, startZ, endZ) {
         // Add walls around the perimeter
-        for (let x = startX - 1; x <= endX + 1; x++) {
-            this.addInvisWall(x, 1, startZ - 1);
-            this.addInvisWall(x, 1, endZ + 1);
+        for (let x = startX; x <= endX; x++) {
+            this.addInvisWall(x, 1, startZ);
+            this.addInvisWall(x, 1, endZ);
         }
-        for (let z = startZ - 1; z <= endZ + 1; z++) {
-            this.addInvisWall(startX - 1, 1, z);
-            this.addInvisWall(endX + 1, 1, z);
+        for (let z = startZ; z <= endZ; z++) {
+            this.addInvisWall(startX, 1, z);
+            this.addInvisWall(endX, 1, z);
         }
 
         // Add floor tiles within the perimeter
         for (let x = startX; x <= endX; x++) {
             for (let z = startZ; z <= endZ; z++) {
-                this.addStoneFloor(x, 0, z);
+                this.addDirtFloor(x, 0, z);
             }
         }
     }
@@ -123,7 +137,8 @@ export class BaseLevel {
             Signs: this.Signs,
             Exits: this.Exits,
             Tools: this.Tools,
-            Hazards: this.Hazards // Include hazards in level data
+            Hazards: this.Hazards, // Include hazards in level data
+            Waters: this.Waters
         };
     }
 

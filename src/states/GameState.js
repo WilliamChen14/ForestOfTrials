@@ -5,6 +5,8 @@ import { LevelTwo } from '../levels/LevelTwo.js';
 import { GameOverState } from './GameOverState.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
+import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
+import { EndState } from './EndState.js';
 
 const clock = new THREE.Clock();
 
@@ -64,34 +66,42 @@ export class GameState {
     }
 
     changeLevel() {
-        const characterMesh = this.character ? this.character.characterMesh : null;
         
         const objectsToRemove = [];
         this.stateManager.scene.traverse((object) => {
-            if (object !== characterMesh) {
-                objectsToRemove.push(object);
-            }
+            objectsToRemove.push(object);
         });
         objectsToRemove.forEach((object) => {
             this.stateManager.scene.remove(object);
         });
+
+        this.character = new Character(this.stateManager.scene);
+        this.character.init();
 
         this.currentLevel++;
         console.log("Changing to level:", this.currentLevel);
 
         // Create new level
         if (this.currentLevel === 1) {
-            console.log("Creating StarterLevel");
+            console.log("Creating WorldOneLevelOne");
             this.level = new StarterLevel(this.stateManager.scene);
         } else if (this.currentLevel === 2) {
-            console.log("Creating LevelOne");
-            this.level = new LevelOne(this.stateManager.scene);
+            console.log("Creating WorldOneLevelTwo");
+            this.level = new StarterLevelTwo(this.stateManager.scene);
         } else if (this.currentLevel === 3) {
-            console.log("Creating LevelTwo");
-            this.level = new LevelTwo(this.stateManager.scene);
-        } else {
-            console.log("Creating default LevelOne");
+            console.log("Creating WorldOneLevelThree");
             this.level = new LevelOne(this.stateManager.scene);
+        } else if (this.currentLevel === 4){
+            console.log("Creating default WorldOneLevelFour");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else if (this.currentLevel === 5){
+            console.log("Creating default WorldTwoLevelOne");
+            this.level = new LevelTwo(this.stateManager.scene);
+        }
+        else {
+            console.log("Game has been won");
+            this.stateManager.changeState(EndState);
         }
 
         console.log("Building level...");
@@ -134,7 +144,8 @@ export class GameState {
             this.controls.moveZ,
             this.changeLevel,
             this.stateManager,
-            this.levelData.Hazards 
+            this.levelData.Hazards,
+            this.levelData.Waters
         );
 
         if (this.mixer) {
@@ -152,7 +163,11 @@ export class GameState {
             this.changeLevel();
         }
 
-        if (this.character.health === 0) {
+        if(this.character.health == 0){
+            while (this.stateManager.scene.children.length > 0) {
+                this.stateManager.scene.remove(this.stateManager.scene.children[0]);
+            }
+            this.levelData = [];
             this.stateManager.changeState(GameOverState);
         }
 

@@ -6,6 +6,9 @@ export class StoneFLoor {
         this.scene = scene;
         this.MapLayoutMesh = null;
 
+        //const textureLoader = new THREE.TextureLoader();
+        //onst stoneTexture = textureLoader.load('../../assets/stone.png');
+
         // Create sign mesh and set its properties
         const StoneFloorMaterial = new THREE.MeshPhysicalMaterial({
             color: 0x4a403f,

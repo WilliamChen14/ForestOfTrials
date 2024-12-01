@@ -13,21 +13,16 @@ export class StarterLevel extends BaseLevel {
 
         // Add initial sign and exit
         this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
-        this.addExit(9, 1, 8);
+        this.addExit(10, 1, 9);
 
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
 
-        // Add wall borders
-        for (let x = -1; x < floorSize + 1; x++) {
-            this.addInvisWall(x, 1, -1);
-            this.addInvisWall(x, 1, floorSize);
-        }
 
         // Add trees around the perimeter for decoration
         for (let x = -1; x <= floorSize + 1; x++) {
             this.addTree(x, 1, -1);
-            this.addTree(x, 1, floorSize);
+            this.addTree(x, 1, floorSize + 1);
         }
 
         for (let z = -1; z <= floorSize + 1; z++) {
@@ -41,6 +36,23 @@ export class StarterLevel extends BaseLevel {
 
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 5);
+
+        this.addWater(6,1,2);
+        this.addWater(6,1,3);
+        this.addWater(7,1,3);
+        this.addWater(7,1,2);
+        this.addStoneFloor(8,1,3);
+        this.addStoneFloor(8,1,2);
+        this.addStoneFloor(7,1,4);
+        this.addStoneFloor(8,1,4);
+        this.addStoneFloor(6,1,4);
+        this.addStoneFloor(5,1,3);
+        this.addStoneFloor(5,1,2);
+        this.addStoneFloor(5,1,4);
+        this.addStoneFloor(5,1,1);
+        this.addStoneFloor(6,1,1);
+        this.addStoneFloor(7,1,1);
+        this.addStoneFloor(8,1,1);
 
         // Add an extra sign explaining fire
         this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');

@@ -10,36 +10,38 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
+/*
+import { Fire } from '../entities/Fire.js';
+import { Ghost } from '../entities/Ghost.js';
 
-export function LevelTwo(scene) {
+export function WorldTwoLevelOne(scene) {
     let MapLayout = [];
     let Mobs = [];
     let Exits = [];
     let Signs = [];
     let Tools = [];
+    let Waters = [];
     
-    const floorSize = 20;
+    
+    const floorSize = 14;
 
 
 
+    const fire = new Fire(scene, 3, 1, 3);
+    Mobs.push(fire);
+    const fire1 = new Fire(scene, 11, 1, 3);
+    Mobs.push(fire1);
+    const fire2 = new Fire(scene, 11, 1, 11);
+    Mobs.push(fire2);
+    const fire3 = new Fire(scene, 3, 1, 11);
+    Mobs.push(fire3);
 
-    const bossSlime = new BossSlime(scene, 10, 1, 10);
-    Mobs.push(bossSlime);
+    const ghost = new Ghost(scene, 6, 1, 6);
+    Mobs.push(ghost);
 
-    const Box1 = new Box(scene, 3, 1, 3);
-    Tools.push(Box1);
-    MapLayout.push(Box1.MapLayoutMesh);
-    const Box2 = new Box(scene, 17, 1, 3);
-    Tools.push(Box2);
-    MapLayout.push(Box2.MapLayoutMesh);
-    const Box3 = new Box(scene, 3, 1, 17);
-    Tools.push(Box3);
-    MapLayout.push(Box3.MapLayoutMesh);
-    const Box4 = new Box(scene, 17, 1, 17);
-    Tools.push(Box4);
-    MapLayout.push(Box4.MapLayoutMesh);
 
-    const exit = new Exit(scene, 19, 1, 19);
+
+    const exit = new Exit(scene, 13, 1, 13);
     Exits.push(exit.MapLayoutMesh);
     
     
@@ -48,11 +50,11 @@ export function LevelTwo(scene) {
     for (let x = -1; x < floorSize + 1; x++) {
         const treeOne = new Tree(scene, -1, 1, x);
         //MapLayout.push(treeOne.MapLayoutMesh);
-        const treeTwo = new Tree(scene, 20, 1, x);
+        const treeTwo = new Tree(scene, 14, 1, x);
         //MapLayout.push(treeTwo.MapLayoutMesh);
         const treeThree = new Tree(scene, x, 1, -1);
         //MapLayout.push(treeThree.MapLayoutMesh);
-        const treeFour = new Tree(scene, x, 1, 20);
+        const treeFour = new Tree(scene, x, 1, 14);
         //MapLayout.push(treeFour.MapLayoutMesh);
 
         const invisWallOne = new InvisWall(scene, x, 1, -1);
@@ -78,5 +80,39 @@ export function LevelTwo(scene) {
         }
     }
 
-    return {MapLayout, Mobs, Signs, Exits, Tools};  // Return all tiles for collision detection
+    return {MapLayout, Mobs, Signs, Exits, Tools, Waters};  // Return all tiles for collision detection
+
+*/
+
+export class WorldTwoLevelOne extends BaseLevel {
+    build() {
+        const floorSize = 20;
+
+        this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
+        for (let x = -1; x <= floorSize + 1; x++) {
+            this.addTree(x, 1, -1);
+            this.addTree(x, 1, floorSize + 1);
+        }
+
+        for (let z = -1; z <= floorSize + 1; z++) {
+            this.addTree(-1, 1, z);
+            this.addTree(floorSize + 1, 1, z);
+        }
+
+        this.addMob(BossSlime, 10, 1, 10);
+
+        this.addBox(3, 1, 3);
+        this.addBox(17, 1, 3);
+        this.addBox(3, 1, 17);
+        this.addBox(17, 1, 17);
+
+        this.addExit(20, 1, 20);
+
+        for (let x = -1; x < floorSize + 1; x++) {
+            this.addInvisWall(x, 1, -1);
+            this.addInvisWall(x, 1, floorSize + 1);
+        }
+
+        return this.getLevelData();
+    }
 }

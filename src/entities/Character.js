@@ -51,7 +51,6 @@ export class Character {
         this.moveSpeed = 0.1;
         this.jumpStrength = 0.15;
         this.gravity = -0.01;
-        this.isOnGround = false;
         this.moveX = 0;
         this.moveY = 0;
         this.moveZ = 0;
@@ -157,7 +156,8 @@ export class Character {
     }
 
     // Method to update character position each frame
-    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards) {
+    update(keysPressed, LastKeyPressed, MapLayout, Mobs, Signs, Exit, Tools, moveX, moveZ, changeLevel, stateManager, Hazards, Waters) {
+
         const currentTime = Date.now();
         let deltaTime = clock.getDelta();
         this.levelData = MapLayout;
@@ -165,6 +165,7 @@ export class Character {
         this.Mobs = Mobs;
         this.Exit = Exit;
         this.Tools = Tools;
+        this.Waters = Waters;
         this.Hazards = Hazards || [];
 
         const normalizeAngle = (angle) => ((angle + Math.PI) % (2 * Math.PI)) - Math.PI;
@@ -189,6 +190,9 @@ export class Character {
             }
         }
 
+        this.Waters.forEach(obj=> {
+            obj.update();
+        });
         this.Hazards.forEach(hazard => {
             if (currentTime - hazard.getLastCollisionTime() > 800 && hazard.checkCollision(this.characterMesh)) {
                 this.updateHealth(this.health - 1);
