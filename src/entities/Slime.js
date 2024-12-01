@@ -20,7 +20,7 @@ export class Slime {
 
         // Collision and movement properties
         this.collisionDistance = 0.5; // Set collision distance for proximity detection
-        this.moveSpeed = 0.02; // Movement speed of the slime
+        this.moveSpeed = 0.05; // Movement speed of the slime
         this.direction = new THREE.Vector3(
             (Math.random() - 0.5) * 2,
             0,

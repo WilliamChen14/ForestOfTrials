@@ -50,7 +50,7 @@ export class Character {
         });
 
         // Movement properties
-        this.moveSpeed = 0.1;
+        this.moveSpeed = 0.125;
         this.jumpStrength = 0.2;
         this.gravity = -.5;
         this.moveX = 0;
@@ -92,28 +92,33 @@ export class Character {
         // Create a visible hitbox with red color
         const hitboxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
         let hitboxGeometry = null;
-        if(horizontalDirection == 1){
-            hitboxGeometry =  new THREE.BoxGeometry(1, 1, 2);
-        }
-        else{
-            hitboxGeometry =  new THREE.BoxGeometry(2, 1, 1);
+        
+        // Create hitbox based on the direction the character is facing
+        if(horizontalDirection == 1) {
+            hitboxGeometry = new THREE.BoxGeometry(2, 1, 1); // Width, Height, Depth
+        } else {
+            hitboxGeometry = new THREE.BoxGeometry(1, 1, 2);
         }
         
         const hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
 
-        // Position the hitbox based on last direction
         hitboxMesh.position.copy(this.characterMesh.position);
-        hitboxMesh.position.add(this.lastDirection.clone().multiplyScalar(1));  // Offset from character position
-
+        const offset = this.lastDirection.clone().normalize();
+        hitboxMesh.position.add(offset);
+    
+        // Match the character's rotation
+        hitboxMesh.rotation.y = this.angle;
+    
         // Add hitbox to the scene
         this.scene.add(hitboxMesh);
         this.currentHitbox = hitboxMesh;
-
-        // Remove hitbox after a short duration (e.g., 200ms)
+    
+        // Remove hitbox after a short duration
         setTimeout(() => {
             this.scene.remove(hitboxMesh);
             this.currentHitbox = null;
         }, 200);
+        
         return hitboxMesh;
     }
 
