@@ -9,6 +9,7 @@ export class Character {
     constructor(scene) {
         this.scene = scene;
         this.model = new Model();
+        this.angle = 0;
     }
 
     async init() {
@@ -163,21 +164,13 @@ export class Character {
         this.Tools = Tools;
         this.Hazards = Hazards || [];
 
-        const angle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
-        this.characterMesh.rotation.y = angle;
-
-        if(LastKeyPressed === "w"){
-            this.lastDirection = new THREE.Vector3(0, 0, -1);
+        const targetAngle = Math.atan2(this.lastDirection.x, this.lastDirection.z);
+        if ((this.angle - targetAngle) % (Math.PI * 2)< 0) {
+            this.angle += 0.1;
+        } else {
+            this.angle -= 0.1;
         }
-        else if(LastKeyPressed === "a"){
-            this.lastDirection = new THREE.Vector3(-1, 0, 0);
-        }
-        else if(LastKeyPressed === "d"){
-            this.lastDirection = new THREE.Vector3(1, 0, 0);
-        }
-        else {
-            this.lastDirection = new THREE.Vector3(0, 0, 1);
-        }
+        this.characterMesh.rotation.y = this.angle;
             
 
         this.signs.forEach(obj => obj.checkSignCollision(this.characterMesh));
@@ -308,6 +301,9 @@ export class Character {
         // Set movement based on key presses
         this.moveX = moveX;
         this.moveZ = moveZ;
+        if (moveX !== 0 || moveZ !== 0) {
+            this.lastDirection = new THREE.Vector3(moveX, 0, moveZ);
+        }
         /*
         this.moveZ = keysPressed.w ? -this.moveSpeed : keysPressed.s ? this.moveSpeed : 0;
         this.moveX = keysPressed.a ? -this.moveSpeed : keysPressed.d ? this.moveSpeed : 0;
