@@ -9,7 +9,6 @@ const loader = new GLTFLoader();
 
 export class Model {
     constructor(scene) {
-        this.scene = scene;
         this.initialized = false;
         this.mixer = null;
         this.sceneObject = null;
@@ -18,15 +17,12 @@ export class Model {
     async loadModel(path) {
         await new Promise((resolve, reject) => {
             loader.load(path, function ( gltf ) {
-                console.log("loaded entity")
                 gltf.scene.traverse((node) => {
                     if (node.isMesh) {
                         const prevNodeMaterial = node.material;
-                        console.log(node.material.name)
                         node.material = MATERIALS[node.material.name];
                     }
                 });
-                gltf.scene.position.set(-2,1,0)
                 // Set up AnimationMixer
                 const mixer = new THREE.AnimationMixer(gltf.scene);
                 const animation = gltf.animations[0]; // Play the first animation
@@ -34,16 +30,20 @@ export class Model {
                     const action = mixer.clipAction(animation);
                     action.play();
                 }
+                gltf.scene.position.set(0.5, 0, 0.85);
+                gltf.scene.rotation.set(0, -Math.PI / 2, 0);
+                gltf.scene.scale.set(0.5, 0.5, 0.5);
 
                 // Resolve the promise with the mixer
-                this.mixer = mixer;
-                this.sceneObject = gltf.scene;
                 resolve({mixer: mixer, sceneObject: gltf.scene });
             
             }, undefined, function ( error ) {
                 console.error( error );
                 reject(error);
             } );
+        }).then((results) => {
+            this.mixer = results.mixer;
+            this.sceneObject = results.sceneObject;
         });
     }
 }

@@ -8,10 +8,14 @@ import CHARACTER from '/assets/models/character.glb'
 export class Character {
     constructor(scene) {
         this.scene = scene;
-        this.model = new Model(this.scene);
+        this.model = new Model();
+    }
 
+    async init() {
         // Create a group to hold all parts of the character
         this.characterMesh = new THREE.Group();
+        await this.model.loadModel(CHARACTER);
+        this.characterMesh.add(this.model.sceneObject);
 
         // Set initial position
         this.characterMesh.position.set(0, 1, 0); // Initial position

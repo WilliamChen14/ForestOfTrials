@@ -28,6 +28,7 @@ export class GameState {
             console.log("Character loaded successfully with mixer:", this.mixer);
             
             this.character = new Character(this.stateManager.scene);
+            await this.character.init();
             
             this.changeLevel();
         } catch (error) {
