@@ -9,154 +9,23 @@ export class Character {
     constructor(scene) {
         this.scene = scene;
         this.model = new Model(this.scene);
-        //this.model.loadModel(CHARACTER);
-
-        // Create a group to hold all parts of the character
-        this.characterMesh = new THREE.Group();
-
-        // Materials
-        const skinMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xffd1a4, // Skin color
-            roughness: 0.5,
-            metalness: 0.1,
+        this.model.loadModel(CHARACTER).then(() => {
+            console.log("hello")
+            this.characterMesh = this.model.sceneObject;
         });
-
-        const hairMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x2c1b18, // Dark hair color
-            roughness: 0.4,
-            metalness: 0.0,
-        });
-
-        const shirtMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x1565c0, // Shirt color
-            roughness: 0.5,
-            metalness: 0.2,
-        });
-
-        const jacketMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x8d6e63, // Jacket color
-            roughness: 0.6,
-            metalness: 0.1,
-        });
-
-        const pantsMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x2e7d32, // Pants color
-            roughness: 0.5,
-            metalness: 0.1,
-        });
-
-        const shoeMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x333333, // Shoe color
-            roughness: 0.7,
-            metalness: 0.2,
-        });
-
-        // Head
-        const headGeometry = new THREE.SphereGeometry(0.25, 32, 32);
-        const headMesh = new THREE.Mesh(headGeometry, skinMaterial);
-        headMesh.position.y = 1.5;
-        this.characterMesh.add(headMesh);
-
-        // Hair - multiple layers for depth
-        const hairLayer1 = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 32), hairMaterial);
-        hairLayer1.position.y = 1.55;
-        hairLayer1.position.z = 0.05;
-        this.characterMesh.add(hairLayer1);
-
-        const hairLayer2 = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.4, 32), hairMaterial);
-        hairLayer2.position.y = 1.55;
-        hairLayer2.position.z = -0.1;
-        hairLayer2.rotation.x = Math.PI / 2;
-        this.characterMesh.add(hairLayer2);
-
-        // Hat (optional accessory)
-        const hatGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.1, 32);
-        const hatMesh = new THREE.Mesh(hatGeometry, hairMaterial);
-        hatMesh.position.y = 1.7;
-        this.characterMesh.add(hatMesh);
-
-        // Body - Jacket and Shirt
-        const bodyGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.8, 32);
-        const shirtMesh = new THREE.Mesh(bodyGeometry, shirtMaterial);
-        shirtMesh.position.y = 0.9;
-        this.characterMesh.add(shirtMesh);
-
-        const jacketGeometry = new THREE.CylinderGeometry(0.32, 0.32, 0.85, 32);
-        const jacketMesh = new THREE.Mesh(jacketGeometry, jacketMaterial);
-        jacketMesh.position.y = 0.9;
-        jacketMesh.rotation.x = Math.PI / 20; // Slight tilt for realism
-        this.characterMesh.add(jacketMesh);
-
-        // Belt
-        const beltGeometry = new THREE.TorusGeometry(0.3, 0.02, 16, 100);
-        const beltMesh = new THREE.Mesh(beltGeometry, shoeMaterial);
-        beltMesh.position.y = 0.6;
-        beltMesh.rotation.x = Math.PI / 2;
-        this.characterMesh.add(beltMesh);
-
-        // Arms
-        const armGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.6, 32);
-        const leftArm = new THREE.Mesh(armGeometry, skinMaterial);
-        leftArm.position.set(-0.35, 1.2, 0);
-        leftArm.rotation.z = Math.PI / 8;
-        this.characterMesh.add(leftArm);
-
-        const rightArm = new THREE.Mesh(armGeometry, skinMaterial);
-        rightArm.position.set(0.35, 1.2, 0);
-        rightArm.rotation.z = -Math.PI / 8;
-        this.characterMesh.add(rightArm);
-
-        // Gloves
-        const gloveGeometry = new THREE.SphereGeometry(0.07, 16, 16);
-        const leftGlove = new THREE.Mesh(gloveGeometry, shirtMaterial);
-        leftGlove.position.set(-0.35, 1.2, 0);
-        this.characterMesh.add(leftGlove);
-
-        const rightGlove = new THREE.Mesh(gloveGeometry, shirtMaterial);
-        rightGlove.position.set(0.35, 1.2, 0);
-        this.characterMesh.add(rightGlove);
-
-        // Legs - Pants
-        const legGeometry = new THREE.CylinderGeometry(0.07, 0.07, 0.8, 32);
-        const leftLeg = new THREE.Mesh(legGeometry, pantsMaterial);
-        leftLeg.position.set(-0.15, 0.2, 0);
-        this.characterMesh.add(leftLeg);
-
-        const rightLeg = new THREE.Mesh(legGeometry, pantsMaterial);
-        rightLeg.position.set(0.15, 0.2, 0);
-        this.characterMesh.add(rightLeg);
-
-        // Shoes
-        const shoeGeometryMain = new THREE.BoxGeometry(0.15, 0.05, 0.2);
-        const leftShoe = new THREE.Mesh(shoeGeometryMain, shoeMaterial);
-        leftShoe.position.set(-0.15, -0.2, 0.1);
-        this.characterMesh.add(leftShoe);
-
-        const rightShoe = new THREE.Mesh(shoeGeometryMain, shoeMaterial);
-        rightShoe.position.set(0.15, -0.2, 0.1);
-        this.characterMesh.add(rightShoe);
-
-        // Optional Scarf
-        const scarfGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.5, 16);
-        const scarfMesh = new THREE.Mesh(scarfGeometry, new THREE.MeshPhysicalMaterial({
-            color: 0xff0000, // Red scarf
-            roughness: 0.6,
-            metalness: 0.1,
-        }));
-        scarfMesh.position.set(0, 1.0, 0.3);
-        scarfMesh.rotation.x = Math.PI / 8;
-        this.characterMesh.add(scarfMesh);
 
         // Set initial position
-        this.characterMesh.position.set(0, 1, 0); // Initial position
+        this.model.sceneObject.position.set(0, 1, 0); // Initial position
 
         // Enable shadow casting and receiving
+        /*
         this.characterMesh.traverse((child) => {
             if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
             }
         });
+        */
 
         // Movement properties
         this.moveSpeed = 0.1;

@@ -17,10 +17,9 @@ export class Model {
     }
 
     loadModel(path) {
-        /*
         new Promise((resolve, reject) => {
             loader.load(path, function ( gltf ) {
-                console.log("loaded entity")
+                console.log(`loaded entity ${path}`)
                 gltf.scene.traverse((node) => {
                     if (node.isMesh) {
                         const prevNodeMaterial = node.material;
@@ -43,7 +42,7 @@ export class Model {
             }, undefined, function ( error ) {
                 console.error( error );
                 reject(error);
-            } );
+            });
         }).then((results) => {
             this.mixer = results.mixer;
             this.sceneObject = results.sceneObject;
@@ -53,7 +52,6 @@ export class Model {
         .catch((error) => {
             console.error("Failed to load character:", error);
         });
-        */
     }
 }
 
@@ -100,9 +98,9 @@ const MATERIALS = {
         metalness: 1.0,
       }),
 };
+/*
 
 export function loadModel(scene) {
-
     console.log("loading model")
     loader.load( TREE, function ( gltf ) {
         console.log("created tree")
@@ -149,3 +147,5 @@ export function loadModel(scene) {
         } );
     });
 }
+
+*/

@@ -3,7 +3,6 @@ import { Controls } from '../Controls.js';
 import { Character } from '../entities/Character.js';
 import { LevelOne } from '../levels/LevelOne.js';
 import { LevelTwo } from '../levels/LevelTwo.js';
-import { loadModel } from '../Models.js';
 
 const clock = new THREE.Clock();
 
@@ -109,13 +108,15 @@ export class GameState {
 
         ambientLight.target = target;
         this.stateManager.scene.add(ambientLight);
-       loadModel(this.stateManager.scene).then((mixer) => {
+        /*
+       //loadModel(this.stateManager.scene).then((mixer) => {
             this.mixer = mixer;
             console.log("Character loaded with mixer:", mixer);
         })
         .catch((error) => {
             console.error("Failed to load character:", error);
         });
+        */
     }
 
 
