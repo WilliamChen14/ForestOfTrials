@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { BaseLevel } from './BaseLevel.js';
+import { loadModel } from '../Models.js';
 import { Sign } from '../entities/Sign.js';
 import { Slime } from '../entities/Slime.js';
 import { StoneFLoor } from '../entities/StoneFloor.js';

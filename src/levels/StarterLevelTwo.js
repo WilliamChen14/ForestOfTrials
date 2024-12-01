@@ -1,6 +1,7 @@
 // Level.js
 import * as THREE from 'three';
 
+import { loadModel } from '../Models.js';
 import { Sign } from '../entities/Sign';
 import { Slime } from '../entities/Slime';
 import { StoneFLoor } from '../entities/StoneFloor';
