@@ -1,7 +1,6 @@
 // Level.js
 import * as THREE from 'three';
 
-import { loadModel } from '../Models.js';
 import { Sign } from '../entities/Sign';
 import { Slime } from '../entities/Slime';
 import { StoneFLoor } from '../entities/StoneFloor';
@@ -21,9 +20,6 @@ export function StarterLevelTwo(scene) {
     const floorWidth = 20;
     const floorDepth = 8;
 
-
-
-    //loadModel(scene);
 
     const signOne = new Sign(scene, 5, 1, 5, "You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit");
     Signs.push(signOne);

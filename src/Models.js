@@ -7,7 +7,6 @@ import CHARACTER from '/assets/models/character.glb'
 // instantiate a loader
 const loader = new GLTFLoader();
 
-
 export class Model {
     constructor(scene) {
         this.scene = scene;
@@ -16,9 +15,8 @@ export class Model {
         this.sceneObject = null;
     }
 
-    loadModel(path) {
-        /*
-        new Promise((resolve, reject) => {
+    async loadModel(path) {
+        await new Promise((resolve, reject) => {
             loader.load(path, function ( gltf ) {
                 console.log("loaded entity")
                 gltf.scene.traverse((node) => {
@@ -38,22 +36,15 @@ export class Model {
                 }
 
                 // Resolve the promise with the mixer
+                this.mixer = mixer;
+                this.sceneObject = gltf.scene;
                 resolve({mixer: mixer, sceneObject: gltf.scene });
             
             }, undefined, function ( error ) {
                 console.error( error );
                 reject(error);
             } );
-        }).then((results) => {
-            this.mixer = results.mixer;
-            this.sceneObject = results.sceneObject;
-            this.scene.add(this.sceneObject);
-            console.log("Character loaded with mixer:", this.mixer);
-        })
-        .catch((error) => {
-            console.error("Failed to load character:", error);
         });
-        */
     }
 }
 
@@ -100,52 +91,3 @@ const MATERIALS = {
         metalness: 1.0,
       }),
 };
-
-export function loadModel(scene) {
-
-    console.log("loading model")
-    loader.load( TREE, function ( gltf ) {
-        console.log("created tree")
-        gltf.scene.traverse((node) => {
-            if (node.isMesh) {
-                const prevNodeMaterial = node.material;
-                node.material = MATERIALS[node.material.name];
-            }
-        });
-        gltf.scene.position.set(3,1,0)
-        scene.add( gltf.scene );
-    
-    }, undefined, function ( error ) {
-        console.error( error );
-    } );
-
-    return new Promise((resolve, reject) => {
-        loader.load(CHARACTER, function ( gltf ) {
-            console.log("created tree")
-            gltf.scene.traverse((node) => {
-                if (node.isMesh) {
-                    const prevNodeMaterial = node.material;
-                    console.log(node.material.name)
-                    node.material = MATERIALS[node.material.name];
-                }
-            });
-            gltf.scene.position.set(3,1,2)
-            // Set up AnimationMixer
-            const mixer = new THREE.AnimationMixer(gltf.scene);
-            const animation = gltf.animations[0]; // Play the first animation
-            if (animation) {
-                const action = mixer.clipAction(animation);
-                action.play();
-                console.log("playing anim")
-            }
-            scene.add( gltf.scene );
-
-            // Resolve the promise with the mixer
-            resolve(mixer);
-        
-        }, undefined, function ( error ) {
-            console.error( error );
-            reject(error);
-        } );
-    });
-}

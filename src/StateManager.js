@@ -7,13 +7,36 @@ export class StateManager {
         this.currentState = null;
     }
 
-    changeState(newStateClass) {
+    async changeState(newStateClass) {
         if (this.currentState) this.currentState.exit();
         this.currentState = new newStateClass(this);
-        this.currentState.enter();
+
+        // load the state
+        this.showLoadMessage("loading state...");
+        this.currentState.isInit = false;
+        await this.currentState.enter();
+
+        // done loading
+        this.currentState.isInit = true;
+        this.hideLoadMessage();
     }
 
     update() {
-        if (this.currentState) this.currentState.update();
+        if (this.currentState) {
+            if (this.currentState.isInit === undefined || this.currentState.isInit) {
+                this.currentState.update();
+            }
+        }
+    }
+
+    showLoadMessage(message) {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.innerText = message;
+        messageContainer.style.display = "block"; // Show the message
+    }
+
+    hideLoadMessage(message) {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.style.display = "none"; 
     }
 }

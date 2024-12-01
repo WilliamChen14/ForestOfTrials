@@ -2,7 +2,6 @@ import { Controls } from '../Controls.js';
 import { Character } from '../entities/Character.js';
 import { LevelOne } from '../levels/LevelOne.js';
 import { LevelTwo } from '../levels/LevelTwo.js';
-import { loadModel } from '../Models.js';
 import { GameOverState } from './GameOverState.js';
 import { StarterLevel } from '../levels/StarterLevel.js';
 import * as THREE from 'three';
@@ -16,17 +15,16 @@ export class GameState {
         this.currentLevel = 0;
         this.levelData = null;
         this.level = null; // Store level instance for updates
-
         this.changeLevel = this.changeLevel.bind(this);
-        this.initializeGame();
     }
 
-    async initializeGame() {
+    // initialize game
+    async enter() {
         this.setupLighting();
         
         try {
             console.log("Loading character model...");
-            this.mixer = await loadModel(this.stateManager.scene);
+            /*this.mixer = await loadModel(this.stateManager.scene);*/
             console.log("Character loaded successfully with mixer:", this.mixer);
             
             this.character = new Character(this.stateManager.scene);
@@ -104,10 +102,6 @@ export class GameState {
         if (this.character && this.character.characterMesh) {
             this.character.characterMesh.position.set(0, 1, 0);
         }
-    }
-
-    enter() {
-        console.log("Entering Game State");
     }
 
     exit() {

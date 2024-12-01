@@ -2,7 +2,6 @@
 import * as THREE from 'three';
 import { StateManager } from './src/StateManager.js';
 import { HomeState } from './src/states/HomeState.js';
-import { GameState } from './src/states/GameState.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Create renderer, scene, and camera
