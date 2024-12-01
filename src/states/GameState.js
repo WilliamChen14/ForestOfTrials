@@ -157,7 +157,11 @@ export class GameState {
         }
 
         const cameraOffset = new THREE.Vector3(0, 10, 8);
-        this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
-        this.stateManager.camera.lookAt(this.character.characterMesh.position);
+
+        // debug camera is activated with "["
+        if (!this.controls.debugCameraMode) {
+            this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
+            this.stateManager.camera.lookAt(this.character.characterMesh.position);
+        }
     }
 }

@@ -8,13 +8,13 @@ import CHARACTER from '/assets/models/character.glb'
 const loader = new GLTFLoader();
 
 export class Model {
-    constructor(scene) {
+    constructor() {
         this.initialized = false;
         this.mixer = null;
         this.sceneObject = null;
     }
 
-    async loadModel(path) {
+    async loadModel(path, offsets) {
         await new Promise((resolve, reject) => {
             loader.load(path, function ( gltf ) {
                 gltf.scene.traverse((node) => {
@@ -30,9 +30,21 @@ export class Model {
                     const action = mixer.clipAction(animation);
                     action.play();
                 }
-                gltf.scene.position.set(0.5, 0, 0.85);
-                gltf.scene.rotation.set(0, -Math.PI / 2, 0);
-                gltf.scene.scale.set(0.5, 0.5, 0.5);
+                gltf.scene.position.set(
+                  offsets.transformOffset.x,
+                  offsets.transformOffset.y, 
+                  offsets.transformOffset.z
+                );
+                gltf.scene.rotation.set(
+                  offsets.rotationOffset.x,
+                  offsets.rotationOffset.y, 
+                  offsets.rotationOffset.z
+                );
+                gltf.scene.scale.set(
+                  offsets.scaleOffset.x,
+                  offsets.scaleOffset.y, 
+                  offsets.scaleOffset.z
+                );
 
                 // Resolve the promise with the mixer
                 resolve({mixer: mixer, sceneObject: gltf.scene });

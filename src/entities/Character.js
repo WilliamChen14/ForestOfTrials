@@ -14,7 +14,23 @@ export class Character {
     async init() {
         // Create a group to hold all parts of the character
         this.characterMesh = new THREE.Group();
-        await this.model.loadModel(CHARACTER);
+        await this.model.loadModel(CHARACTER, {
+            transformOffset: {
+                x: 0.5,
+                y: -0.5,
+                z: 0.85,
+            },
+            rotationOffset: {
+                x: 0,
+                y: -Math.PI / 2,
+                z: 0,
+            },
+            scaleOffset: {
+                x: 0.5,
+                y: 0.5,
+                z: 0.5,
+            }
+        });
         this.characterMesh.add(this.model.sceneObject);
 
         // Set initial position
