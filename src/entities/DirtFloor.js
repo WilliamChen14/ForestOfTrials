@@ -1,17 +1,21 @@
 // src/entities/Sign.js
 import * as THREE from 'three';
 
+const textureLoader = new THREE.TextureLoader();
+const dirtTexture = textureLoader.load('../../assets/dirt.png');
+const DirtFloorMaterial = new THREE.MeshPhysicalMaterial({
+    map: dirtTexture,
+    color: 0xa6c977,
+    roughness: 0.1,
+    metalness: 0,
+});
+
 export class DirtFloor {
     constructor(scene, x, y, z) {
         this.scene = scene;
         this.MapLayoutMesh = null;
 
         // Create sign mesh and set its properties
-        const DirtFloorMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0x5e4127,
-            roughness: 0.5,
-            metalness: 0,
-        });
         const dirtFloor = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), DirtFloorMaterial);
         dirtFloor.castShadow = true;
         dirtFloor.receiveShadow = true;

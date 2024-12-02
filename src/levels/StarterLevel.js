@@ -37,8 +37,8 @@ export class StarterLevel extends BaseLevel {
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 5);
 
-        this.addMob(BigSlime, 7, 1, 7);
-        this.addMob(BossSlime, 8, 1, 8);
+        //this.addMob(BigSlime, 7, 1, 7);
+        //this.addMob(BossSlime, 8, 1, 8);
 
         this.addWater(6,1,2);
         this.addWater(6,1,3);
