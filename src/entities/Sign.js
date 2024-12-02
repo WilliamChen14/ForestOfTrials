@@ -16,6 +16,7 @@ export class Sign {
             roughness: 0.5,
             metalness: 0,
         });
+        
         this.sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
         this.sign.castShadow = true;
         this.sign.receiveShadow = true;

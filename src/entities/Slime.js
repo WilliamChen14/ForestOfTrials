@@ -28,6 +28,13 @@ export class Slime {
             roughness: 0.1,
             metalness: 0.0,
         });
+        const eyeMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x257425,
+            transparent: true,
+            opacity: 0.9,
+            roughness: 0.1,
+            metalness: 0.0,
+        });
         const innerGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
         const innerCube = new THREE.Mesh(innerGeometry, innerMaterial);
 
