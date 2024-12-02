@@ -175,6 +175,7 @@ export class GameState {
 
         // debug camera is activated with "["
         if (!this.controls.debugCameraMode) {
+            //this.stateManager.camera.position += new THREE.Vector3(1,1,1);
             this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
             this.stateManager.camera.lookAt(this.character.characterMesh.position);
         }
