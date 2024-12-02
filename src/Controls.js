@@ -12,6 +12,7 @@ export class Controls {
             k: false,
             l: false,
             r: false,
+            m: false,
             space: false,
             escape: false
         };
@@ -67,6 +68,9 @@ export class Controls {
             case "r":
                 console.log("Action reset game");
                 this.keysPressed.r = true;
+                break;
+            case "m":
+                this.keysPressed.m = true;
                 break;
             case "Escape":
                 console.log("Pause Game");
@@ -124,6 +128,8 @@ export class Controls {
             case "j":
                 this.keysPressed.j = false;
                 break;
+            case "m":
+                this.keysPressed.m = false;
             case "k":
                 this.keysPressed.k = false;
                 break;

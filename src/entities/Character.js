@@ -13,6 +13,12 @@ export class Character {
         this.spinSpeed = 7;
         this.velocityX = 0;
         this.velocityZ = 0;
+
+        this.isDashing = false;
+        this.dashSpeed = 0.275;
+        this.dashDuration = 200;
+        this.dashCooldown = 2500;
+        this.lastDashTime = 0;
     }
 
     async init() {
@@ -85,6 +91,34 @@ export class Character {
         this.heldItem = null;
         this.pickupCooldown = 500;
         this.lastPickupTime = 0;
+    }
+
+    performDashAttack(currentTime) {
+        if (currentTime - this.lastDashTime < this.dashCooldown || this.isDashing) {
+            return;
+        }
+
+        this.isDashing = true;
+        this.lastDashTime = currentTime;
+
+        const hitboxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const hitboxGeometry = new THREE.BoxGeometry(2.5, 1.5, 2.5);
+        const hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+
+        hitboxMesh.position.copy(this.characterMesh.position);
+        const offset = this.lastDirection.clone().normalize().multiplyScalar(2);
+        hitboxMesh.position.add(offset);
+        hitboxMesh.rotation.y = this.angle;
+
+        this.scene.add(hitboxMesh);
+        this.currentHitbox = hitboxMesh;
+
+        setTimeout(() => {
+            this.scene.remove(hitboxMesh);
+            this.currentHitbox = null;
+            this.isDashing = false;
+        }, this.dashDuration);
+
     }
 
     createAttackHitbox(horizontalDirection) {
@@ -196,6 +230,16 @@ export class Character {
             }
         }
 
+        if (keysPressed.m && !this.isDashing) {
+            this.performDashAttack(currentTime);
+        }
+
+        if (this.isDashing) {
+            const dashDirection = this.lastDirection.clone().normalize();
+            this.velocityX = dashDirection.x * this.dashSpeed;
+            this.velocityZ = dashDirection.z * this.dashSpeed;
+        }
+        
         this.Waters.forEach(obj=> {
             obj.update();
         });
