@@ -85,7 +85,7 @@ export class InstructionState {
                         </div>
                         <h1 class="title">Instructions</h1>
                     </div>
-                    <div class="instructions-box">Use wasd to move. <br />j to attack in the last inputed direction.  <br />k to pick up and drop items.  <br />r to reset the level.</div>
+                    <div class="instructions-box">Use wasd to move. <br />j to attack in the last inputed direction.  <br />k to pick up and drop items.  <br />r to reset the level.  <br />m to launch a dash + attack.</div>
 
                     <div class="mushroom-container">
                         <a href="#" class="mushroom">

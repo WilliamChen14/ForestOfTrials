@@ -73,6 +73,7 @@ export class Controls {
                 this.keysPressed.m = true;
                 break;
             case "Escape":
+                this.keysPressed.escape = true;
                 console.log("Pause Game");
                 break;
             case " ":
@@ -135,6 +136,9 @@ export class Controls {
                 break;
             case " ":
                 this.keysPressed.space = false;
+                break;
+            case "Escape":
+                this.keysPressed.escape = false;
                 break;
             case "r":
                 this.keysPressed.r = false;

@@ -19,6 +19,9 @@ export class GameState {
         this.level = null; // Store level instance for updates
         this.changeLevel = this.changeLevel.bind(this);
         this.isInitLevel = false;
+
+        this.isPaused = false;
+        this.lastEscapePress = 0;
     }
 
     // initialize game
@@ -36,6 +39,25 @@ export class GameState {
             console.error("Failed to load character:", error);
         }
     }
+
+    togglePause() {
+        const currentTime = Date.now();
+        if (currentTime - this.lastEscapePress < 200) {
+            return; // Prevent multiple toggles from one press
+        }
+        
+        this.isPaused = !this.isPaused;
+        this.lastEscapePress = currentTime;
+        
+        if (this.isPaused) {
+            console.log("Game is paused! Press escape to resume.")
+            clock.stop();
+        } else {
+            clock.start();
+        }
+    }
+
+
 
     setupLighting() {
         const sunLight = new THREE.DirectionalLight(0xffffff, 5);
@@ -150,6 +172,15 @@ export class GameState {
         // Update level hazards
         if (this.level && this.level.update) {
             this.level.update();
+        }
+
+        if (this.controls.keysPressed.escape) {
+            this.togglePause();
+            this.controls.keysPressed.escape = false;
+        }
+
+        if (this.isPaused) {
+            return;
         }
 
         // Update character with hazards included
