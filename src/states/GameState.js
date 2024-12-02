@@ -18,6 +18,7 @@ export class GameState {
         this.levelData = null;
         this.level = null; // Store level instance for updates
         this.changeLevel = this.changeLevel.bind(this);
+        this.isInitLevel = false;
     }
 
     // initialize game
@@ -30,7 +31,7 @@ export class GameState {
             this.character = new Character(this.stateManager.scene);
             await this.character.init();
             
-            this.changeLevel();
+            await this.changeLevel();
         } catch (error) {
             console.error("Failed to load character:", error);
         }
@@ -63,8 +64,14 @@ export class GameState {
         this.stateManager.scene.add(ambientLight);
     }
 
-    changeLevel() {
+    async changeLevel() {
+
+        // enter loading state
+        if (this.isInitLevel) return;
+        this.showLoadMessage("loading level...");
+        this.isInitLevel = true;
         
+
         const objectsToRemove = [];
         this.stateManager.scene.traverse((object) => {
             objectsToRemove.push(object);
@@ -103,7 +110,7 @@ export class GameState {
         }
 
         console.log("Building level...");
-        this.levelData = this.level.build();
+        this.levelData = await this.level.build();
         console.log("Level data:", this.levelData);
 
         this.setupLighting();
@@ -111,11 +118,26 @@ export class GameState {
         if (this.character && this.character.characterMesh) {
             this.character.characterMesh.position.set(0, 1, 0);
         }
+
+        // exit loading state
+        this.hideLoadMessage();
+        this.isInitLevel = false;
     }
 
     exit() {
         console.log("Exiting Game State");
         this.controls.resetKeys();
+    }
+
+    showLoadMessage(message) {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.innerText = message;
+        messageContainer.style.display = "block"; // Show the message
+    }
+
+    hideLoadMessage() {
+        const messageContainer = document.getElementById("message-container");
+        messageContainer.style.display = "none"; 
     }
 
     update() {

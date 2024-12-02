@@ -35,7 +35,7 @@ export class StateManager {
         messageContainer.style.display = "block"; // Show the message
     }
 
-    hideLoadMessage(message) {
+    hideLoadMessage() {
         const messageContainer = document.getElementById("message-container");
         messageContainer.style.display = "none"; 
     }

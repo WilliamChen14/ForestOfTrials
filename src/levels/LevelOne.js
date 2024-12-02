@@ -11,11 +11,11 @@ import { Box } from '../entities/Box.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
 
 export class LevelOne extends BaseLevel {
-    build() {
+    async build() {
         const floorSize = 15;
 
         // Add initial sign and exit
-        this.addSign(-7, 1, 9, 'You can reset the level by pressing "r"');
+        await this.addSign(-7, 1, 9, 'You can reset the level by pressing "r"');
         this.addExit(0, 1, 30);
 
         // Add initial floor and walls
