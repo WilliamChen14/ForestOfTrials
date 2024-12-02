@@ -141,6 +141,7 @@ export class GameState {
     }
 
     update() {
+        let deltaTime = clock.getDelta();
         if (!this.levelData || !this.character) {
             console.error("Level data or character not initialized");
             return;
@@ -168,11 +169,6 @@ export class GameState {
             this.levelData.Waters
         );
 
-        if (this.mixer) {
-            const deltaTime = clock.getDelta();
-            this.mixer.update(deltaTime * 10);
-        }
-
         if (this.character.characterMesh.position.y < -10) {
             this.currentLevel--;
             this.changeLevel();
@@ -196,8 +192,16 @@ export class GameState {
         // debug camera is activated with "["
         if (!this.controls.debugCameraMode) {
             //this.stateManager.camera.position += new THREE.Vector3(1,1,1);
-            this.stateManager.camera.position.copy(this.character.characterMesh.position).add(cameraOffset);
-            this.stateManager.camera.lookAt(this.character.characterMesh.position);
+            const targetCameraPosition = this.stateManager.camera.position.clone().sub(cameraOffset);
+            const deltaCameraPosition = this.character.characterMesh.position.clone().sub(targetCameraPosition);
+
+
+            const cameraSpeed = 2;
+            deltaCameraPosition.multiplyScalar(cameraSpeed * deltaTime);
+            this.stateManager.camera.position.x += deltaCameraPosition.x;
+            this.stateManager.camera.position.y += deltaCameraPosition.y;
+            this.stateManager.camera.position.z += deltaCameraPosition.z;
+            this.stateManager.camera.rotation.set(-Math.PI * 0.28, 0, 0);
         }
     }
 }

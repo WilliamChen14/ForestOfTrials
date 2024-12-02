@@ -6,7 +6,7 @@ const dirtTexture = textureLoader.load('../../assets/dirt.png');
 const DirtFloorMaterial = new THREE.MeshPhysicalMaterial({
     map: dirtTexture,
     color: 0xa6c977,
-    roughness: 0.1,
+    roughness: 0.9,
     metalness: 0,
 });
 
@@ -16,10 +16,11 @@ export class DirtFloor {
         this.MapLayoutMesh = null;
 
         // Create sign mesh and set its properties
-        const dirtFloor = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), DirtFloorMaterial);
+        const dirtFloor = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), DirtFloorMaterial);
+        dirtFloor.rotation.x = -Math.PI / 2;
         dirtFloor.castShadow = true;
         dirtFloor.receiveShadow = true;
-        dirtFloor.position.set(x, y, z);
+        dirtFloor.position.set(x, y + 0.5, z);
         this.MapLayoutMesh = dirtFloor;
         scene.add(dirtFloor);
 
