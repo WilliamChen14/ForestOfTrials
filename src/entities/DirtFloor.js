@@ -5,7 +5,7 @@ const textureLoader = new THREE.TextureLoader();
 const dirtTexture = textureLoader.load('../../assets/dirt.png');
 const DirtFloorMaterial = new THREE.MeshPhysicalMaterial({
     map: dirtTexture,
-    color: 0xa6c977,
+    color: 0xa19c87,
     roughness: 0.9,
     metalness: 0,
 });

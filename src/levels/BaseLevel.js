@@ -9,6 +9,8 @@ import { Box } from '../entities/Box.js';
 import { Fire } from '../entities/Fire.js';
 import { Water } from '../entities/Water.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
+import { Fireplace } from '../entities/Fireplace.js';
+import { Rocks } from '../entities/Rocks.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -49,6 +51,18 @@ export class BaseLevel {
         await sign.init();
         this.Signs.push(sign);
         return sign;
+    }
+
+    async addFireplace(x, y, z) {
+        const fireplace = new Fireplace(this.scene, x, y, z);
+        await fireplace.init();
+        return fireplace;
+    }
+
+    async addRocks(x, y, z, rotation) {
+        const fireplace = new Rocks(this.scene, x, y, z, rotation);
+        await fireplace.init();
+        return fireplace;
     }
 
     addExit(x, y, z) {

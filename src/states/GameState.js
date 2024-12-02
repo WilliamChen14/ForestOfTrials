@@ -187,7 +187,7 @@ export class GameState {
             this.stateManager.changeState(GameOverState);
         }
 
-        const cameraOffset = new THREE.Vector3(0, 10, 8);
+        const cameraOffset = new THREE.Vector3(0, 15, 12);
 
         // debug camera is activated with "["
         if (!this.controls.debugCameraMode) {

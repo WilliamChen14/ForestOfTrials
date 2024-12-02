@@ -53,7 +53,6 @@ export class Sign {
     // Method to check collision with the character
     checkSignCollision(characterMesh) {
         const distance = this.sign.position.distanceTo(characterMesh.position);
-            console.log(distance - this.collisionDistance)
         if (distance <= this.collisionDistance) {
             this.showMessage(this.message);  // Display the message on collision
         }
