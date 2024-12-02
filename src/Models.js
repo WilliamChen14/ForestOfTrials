@@ -19,7 +19,6 @@ export class Model {
             loader.load(path, function ( gltf ) {
                 gltf.scene.traverse((node) => {
                     if (node.isMesh) {
-                        const prevNodeMaterial = node.material;
                         node.material = MATERIALS[node.material.name];
                     }
                 });
@@ -30,21 +29,37 @@ export class Model {
                     const action = mixer.clipAction(animation);
                     action.play();
                 }
-                gltf.scene.position.set(
-                  offsets.transformOffset.x,
-                  offsets.transformOffset.y, 
-                  offsets.transformOffset.z
-                );
-                gltf.scene.rotation.set(
-                  offsets.rotationOffset.x,
-                  offsets.rotationOffset.y, 
-                  offsets.rotationOffset.z
-                );
-                gltf.scene.scale.set(
-                  offsets.scaleOffset.x,
-                  offsets.scaleOffset.y, 
-                  offsets.scaleOffset.z
-                );
+                if (offsets !== undefined) {
+                  if (offsets.transformOffset !== undefined) {
+                    gltf.scene.position.set(
+                      offsets.transformOffset.x,
+                      offsets.transformOffset.y, 
+                      offsets.transformOffset.z
+                    );
+                  }
+                  if (offsets.rotationOffset !== undefined) {
+                    gltf.scene.rotation.set(
+                      offsets.rotationOffset.x,
+                      offsets.rotationOffset.y, 
+                      offsets.rotationOffset.z
+                    );
+                  }
+                  if (offsets.scaleOffset !== undefined) {
+                    gltf.scene.scale.set(
+                      offsets.scaleOffset.x,
+                      offsets.scaleOffset.y,
+                      offsets.scaleOffset.z
+                    );
+                  }
+                }
+
+                // add shadows
+                gltf.scene.traverse((child) => {
+                  if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                  }
+                });
 
                 // Resolve the promise with the mixer
                 resolve({mixer: mixer, sceneObject: gltf.scene });
@@ -54,12 +69,15 @@ export class Model {
                 reject(error);
             } );
         }).then((results) => {
+          console.log(`loaded ${path}`);
             this.mixer = results.mixer;
             this.sceneObject = results.sceneObject;
         });
     }
 }
 
+const textureLoader = new THREE.TextureLoader();
+const woodTexture = textureLoader.load('../../assets/wood.png');
 
 const MATERIALS = {
     "treeLeaves0": new THREE.MeshPhysicalMaterial({
@@ -102,4 +120,15 @@ const MATERIALS = {
         roughness: 0.5,
         metalness: 1.0,
       }),
+    "signMaterial": new THREE.MeshPhysicalMaterial({
+        map: woodTexture,
+        color: 0x73543d,
+        roughness: 0.5,
+        metalness: 0,
+    }),
+    "Material": new THREE.MeshPhysicalMaterial({
+        color: 0xff00ff,
+        roughness: 0.5,
+        metalness: 0,
+    }),
 };

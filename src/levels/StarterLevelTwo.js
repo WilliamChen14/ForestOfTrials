@@ -7,7 +7,7 @@ import { BigSlime } from '../entities/BigSlime.js';
 import { BaseLevel } from './BaseLevel.js';
 
 export class StarterLevelTwo extends BaseLevel {
-    build() {
+    async build() {
 
         const floorSize = 20;
 
@@ -15,7 +15,7 @@ export class StarterLevelTwo extends BaseLevel {
         const floorWidth = 20;
 
         // Add initial sign and exit
-        this.addSign(5, 1, 5, 'You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit');
+        await this.addSign(5, 1, 5, 'You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit');
 
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, 20 + 1, -1, 8 + 1);

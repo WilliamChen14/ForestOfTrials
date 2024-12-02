@@ -1,6 +1,5 @@
 // src/Character.js
 import * as THREE from 'three';
-import { Sign } from './Sign';
 import { Model } from '../Models.js';
 
 import CHARACTER from '/assets/models/character.glb'

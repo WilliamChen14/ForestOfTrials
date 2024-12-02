@@ -5,9 +5,9 @@ import { BigSlime } from '../entities/BigSlime.js';
 import { Box } from '../entities/Box.js';
 
 export class LevelTwo extends BaseLevel {
-    build() {
+    async build() {
         // Starting area (12x12 to accommodate stairs)
-        this.addSign(0, 1, 0, "Make your way up the stairs.\nBe careful on the bridge - one wrong jump means death.");
+        await this.addSign(0, 1, 0, "Make your way up the stairs.\nBe careful on the bridge - one wrong jump means death.");
         
         // Create starting platform
         for (let x = -3; x <= 8; x++) {
@@ -143,7 +143,7 @@ export class LevelTwo extends BaseLevel {
         this.addMob(Slime, 50, bridgeHeight + 1, 0);
 
         // Add final boss and sign
-        this.addSign(52, bridgeHeight + 1, 0, "Defeat the Big Slime to reach the exit!");
+        await this.addSign(52, bridgeHeight + 1, 0, "Defeat the Big Slime to reach the exit!");
         this.addMob(BigSlime, 54, bridgeHeight + 1, 0);
 
         // Add exit behind boss

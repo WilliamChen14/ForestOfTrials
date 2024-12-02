@@ -1,26 +1,34 @@
 // src/entities/Sign.js
 import * as THREE from 'three';
+import { Model } from '../Models.js';
+
+import SIGN from '/assets/models/sign.glb'
 
 export class Sign {
     constructor(scene, x, y, z, message) {
         this.scene = scene;
+        this.positionX = x;
+        this.positionY = y;
+        this.positionZ = z;
         this.message = message;  // Store the custom message
+        this.model = new Model();
+    }
 
-        const textureLoader = new THREE.TextureLoader();
-        const woodTexture = textureLoader.load('../../assets/wood.png');
-
-        // Create sign mesh and set its properties
-        const signMaterial = new THREE.MeshPhysicalMaterial({
-            map: woodTexture,
-            color: 0x73543d,
-            roughness: 0.5,
-            metalness: 0,
+    async init () {
+        await this.model.loadModel(SIGN, {
+            rotationOffset: {
+                x: 0,
+                y: -Math.PI / 2,
+                z: 0,
+            },
+            scaleOffset: {
+                x: 0.4,
+                y: 0.4,
+                z: 0.4,
+            }
         });
-        
-        this.sign = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), signMaterial);
-        this.sign.castShadow = true;
-        this.sign.receiveShadow = true;
-        this.sign.position.set(x, y, z);
+        this.sign = this.model.sceneObject;
+        this.sign.position.set(this.positionX, this.positionY - 0.5, this.positionZ);
 
         this.scene.add(this.sign);         // Add the sign to the scene
 
@@ -29,7 +37,6 @@ export class Sign {
 
         this.checkSignCollision = this.checkSignCollision.bind(this);
         this.showMessage = this.showMessage.bind(this);
-
     }
 
     showMessage(message) {
