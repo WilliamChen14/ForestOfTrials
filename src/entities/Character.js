@@ -50,8 +50,8 @@ export class Character {
         });
 
         // Movement properties
-        this.moveSpeed = 0.125;
-        this.jumpStrength = 0.2;
+        this.moveSpeed = 0.1;
+        this.jumpStrength = 0.15;
         this.gravity = -.5;
         this.moveX = 0;
         this.moveY = 0;
