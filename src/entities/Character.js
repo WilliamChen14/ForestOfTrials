@@ -13,7 +13,7 @@ export class Character {
         this.angle = 0;
         this.spinSpeed = 7;
         this.velocityX = 0;
-        this.velocityY = 0;
+        this.velocityZ = 0;
     }
 
     async init() {
@@ -327,10 +327,22 @@ export class Character {
 
         const tempZ = this.moveZ;
         const tempX = this.moveX;
-        if (this.moveZ < 0 && !canMoveForward) this.moveZ = 0; // Forward
-        if (this.moveZ > 0 && !canMoveBackward) this.moveZ = 0; // Backward
-        if (this.moveX < 0 && !canMoveLeft) this.moveX = 0;     // Left
-        if (this.moveX > 0 && !canMoveRight) this.moveX = 0;    // Right
+        if (this.moveZ < 0 && !canMoveForward) {
+            this.moveZ = 0; // Forward
+            this.velocityZ = 0;
+        }
+        if (this.moveZ > 0 && !canMoveBackward) {
+            this.moveZ = 0; // Backward
+            this.velocityZ = 0;
+        }
+        if (this.moveX < 0 && !canMoveLeft) {
+            this.moveX = 0;     // Left
+            this.velocityX = 0;
+        }
+        if (this.moveX > 0 && !canMoveRight) {
+            this.moveX = 0;    // Right
+            this.velocityX = 0;
+        }
 
         if (keysPressed.w || keysPressed.a || keysPressed.s || keysPressed.d) {
             this.model.mixer.update(deltaTime * 15);
@@ -348,16 +360,16 @@ export class Character {
         this.moveZ = tempZ;
         this.moveX = tempX;
 
-        const walkSpeed = 10;
+        const walkSpeed = 5;
         const friction = 10;
         this.velocityX += (direction.x * walkSpeed - this.velocityX * friction) * deltaTime;
-        this.velocityY += (direction.y * walkSpeed - this.velocityY * friction) * deltaTime;
+        this.velocityZ += (direction.y * walkSpeed - this.velocityZ * friction) * deltaTime;
 
 
         // Update character position based on movement
         this.characterMesh.position.x += this.velocityX;
         this.characterMesh.position.y += this.moveY;
-        this.characterMesh.position.z += this.velocityY;
+        this.characterMesh.position.z += this.velocityZ;
         /*
         this.model.sceneObject.position.x = this.characterMesh.position.x;
         this.model.sceneObject.position.y = this.characterMesh.position.y;
