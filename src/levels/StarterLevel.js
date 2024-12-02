@@ -8,11 +8,11 @@ import { Exit } from '../entities/Exit.js';
 import { BaseLevel } from './BaseLevel.js';
 
 export class StarterLevel extends BaseLevel {
-    build() {
+    async build() {
         const floorSize = 10;
 
         // Add initial sign and exit
-        this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
+        await this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
         this.addExit(10, 1, 9);
 
         // Create a complete floor with walls
@@ -55,7 +55,7 @@ export class StarterLevel extends BaseLevel {
         this.addStoneFloor(8,1,1);
 
         // Add an extra sign explaining fire
-        this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
+        await this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
 
         return this.getLevelData();
     }

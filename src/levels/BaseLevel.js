@@ -44,8 +44,9 @@ export class BaseLevel {
         return tree;
     }
 
-    addSign(x, y, z, message) {
+    async addSign(x, y, z, message) {
         const sign = new Sign(this.scene, x, y, z, message);
+        await sign.init();
         this.Signs.push(sign);
         return sign;
     }
