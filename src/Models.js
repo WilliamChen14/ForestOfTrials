@@ -19,7 +19,11 @@ export class Model {
             loader.load(path, function ( gltf ) {
                 gltf.scene.traverse((node) => {
                     if (node.isMesh) {
-                        node.material = MATERIALS[node.material.name];
+                      if (MATERIALS[node.material.name] == undefined) {
+                        console.error(`cannot find material named '${node.material.name}'`)
+                        return;
+                      }
+                      node.material = MATERIALS[node.material.name];
                     }
                 });
                 // Set up AnimationMixer
@@ -122,6 +126,17 @@ const MATERIALS = {
       }),
     "signMaterial": new THREE.MeshPhysicalMaterial({
         map: woodTexture,
+        color: 0x73543d,
+        roughness: 0.5,
+        metalness: 0,
+    }),
+    "woodMaterial": new THREE.MeshPhysicalMaterial({
+        map: woodTexture,
+        color: 0x73543d,
+        roughness: 0.5,
+        metalness: 0,
+    }),
+    "rockMaterial": new THREE.MeshPhysicalMaterial({
         color: 0x73543d,
         roughness: 0.5,
         metalness: 0,

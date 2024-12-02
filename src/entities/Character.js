@@ -366,9 +366,11 @@ export class Character {
 
 
         // Update character position based on movement
-        this.characterMesh.position.x += this.velocityX;
-        this.characterMesh.position.y += this.moveY;
-        this.characterMesh.position.z += this.velocityZ;
+        if (deltaTime < .1) {
+            this.characterMesh.position.x += this.velocityX * deltaTime * 50;
+            this.characterMesh.position.y += this.moveY * deltaTime * 50;
+            this.characterMesh.position.z += this.velocityZ * deltaTime * 50;
+        }
         /*
         this.model.sceneObject.position.x = this.characterMesh.position.x;
         this.model.sceneObject.position.y = this.characterMesh.position.y;

@@ -12,6 +12,7 @@ export class Sign {
         this.positionZ = z;
         this.message = message;  // Store the custom message
         this.model = new Model();
+        this.isMessageShowing = false;
     }
 
     async init () {
@@ -33,19 +34,20 @@ export class Sign {
         this.scene.add(this.sign);         // Add the sign to the scene
 
         // Collision properties
-        this.collisionDistance = 0.5;  // Set collision distance for proximity detection
+        this.collisionDistance = 1;  // Set collision distance for proximity detection
 
         this.checkSignCollision = this.checkSignCollision.bind(this);
         this.showMessage = this.showMessage.bind(this);
     }
 
     showMessage(message) {
+        this.isMessageShowing = true;
         const messageContainer = document.getElementById("message-container");
         messageContainer.innerText = message;
         messageContainer.style.display = "block"; // Show the message
         setTimeout(() => {
             messageContainer.style.display = "none"; // Hide the message after 3 seconds
-        }, 3000);
+        }, 1000);
     }
 
     // Method to check collision with the character

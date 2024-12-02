@@ -36,23 +36,20 @@ export class StarterLevel extends BaseLevel {
 
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 5);
+        await this.addFireplace(8, 1, 5);
+        await this.addRocks(1, 1, 8, 0);
+        await this.addRocks(9, 1, 1, Math.PI * -0.5);
 
-        this.addWater(6,1,2);
-        this.addWater(6,1,3);
-        this.addWater(7,1,3);
-        this.addWater(7,1,2);
-        this.addStoneFloor(8,1,3);
-        this.addStoneFloor(8,1,2);
-        this.addStoneFloor(7,1,4);
-        this.addStoneFloor(8,1,4);
-        this.addStoneFloor(6,1,4);
-        this.addStoneFloor(5,1,3);
-        this.addStoneFloor(5,1,2);
-        this.addStoneFloor(5,1,4);
-        this.addStoneFloor(5,1,1);
-        this.addStoneFloor(6,1,1);
-        this.addStoneFloor(7,1,1);
-        this.addStoneFloor(8,1,1);
+        //this.addMob(BigSlime, 7, 1, 7);
+        //this.addMob(BossSlime, 8, 1, 8);
+
+        this.addWater(5,.01,1);
+        this.addWater(5,.01,2);
+        this.addWater(6,.01,1);
+        this.addWater(6,.01,2);
+        this.addWater(6,.01,3);
+        this.addWater(7,.01,3);
+        this.addWater(7,.01,2);
 
         // Add an extra sign explaining fire
         await this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
