@@ -86,6 +86,54 @@ export class GameState {
         this.stateManager.scene.add(ambientLight);
     }
 
+    async resetLevel() {
+        // Return if already initializing level
+        if (this.isInitLevel) return;
+
+        const objectsToRemove = [];
+        this.stateManager.scene.traverse((object) => {
+            objectsToRemove.push(object);
+        });
+        objectsToRemove.forEach((object) => {
+            this.stateManager.scene.remove(object);
+        });
+    
+        this.character = new Character(this.stateManager.scene);
+        await this.character.init();
+    
+        console.log("Resetting level:", this.currentLevel);
+        
+        switch (this.currentLevel) {
+            case 1:
+                this.level = new StarterLevel(this.stateManager.scene);
+                break;
+            case 2:
+                this.level = new StarterLevelTwo(this.stateManager.scene);
+                break;
+            case 3:
+                this.level = new LevelOne(this.stateManager.scene);
+                break;
+            case 4:
+                this.level = new LevelTwo(this.stateManager.scene);
+            case 5:
+                this.level = new LevelTwo(this.stateManager.scene);
+                break;
+            default:
+                console.log("Invalid level");
+                this.stateManager.changeState(EndState);
+                return;
+        }
+    
+        console.log("Rebuilding level...");
+        this.levelData = await this.level.build();
+        this.setupLighting();
+        if (this.character && this.character.characterMesh) {
+            this.character.characterMesh.position.set(0, 1, 0);
+        }
+
+        this.isInitLevel = false;
+    }
+
     async changeLevel() {
 
         // enter loading state
@@ -201,13 +249,11 @@ export class GameState {
         );
 
         if (this.character.characterMesh.position.y < -10) {
-            this.currentLevel--;
-            this.changeLevel();
+            this.resetLevel();
         }
 
         if (this.controls.keysPressed.r === true) {
-            this.currentLevel--;
-            this.changeLevel();
+            this.resetLevel();
         }
 
         if(this.character.health == 0){
