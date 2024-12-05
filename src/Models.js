@@ -124,6 +124,26 @@ const MATERIALS = {
         roughness: 0.5,
         metalness: 1.0,
       }),
+    "npcHat": new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0x858585),  // Set to desired color (e.g., orange)
+        roughness: 0.2,
+        metalness: 1.0,
+      }),
+    "npcKicks": new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0x8f2835),  // Set to desired color (e.g., orange)
+        roughness: 0.2,
+        metalness: 1.0,
+      }),
+    "npcShirt": new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0xc5c530),  // Set to desired color (e.g., orange)
+        roughness: 0.8,
+        metalness: 0.0,
+      }),
+    "npcSkin": new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0x7f3235),  // Set to desired color (e.g., orange)
+        roughness: 0.4,
+        metalness: 0.0,
+      }),
     "signMaterial": new THREE.MeshPhysicalMaterial({
         map: woodTexture,
         color: 0x73543d,

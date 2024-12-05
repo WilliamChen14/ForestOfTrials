@@ -12,10 +12,11 @@ export class StarterLevel extends BaseLevel {
         const floorSize = 10;
 
         // Add initial sign and exit
-        await this.addSign(5, 1, 5, 'Oh no a fence! Grab that box using the k key and jump over the fence!');
         await this.addMemory(0,1,0, "Memory #1 \n You wake up in this forest unsure of how you got here. You recall some sort of purpose or reason you must continue forward.");
         this.addBox(3,1,3);
         this.addExit(10, 1, 9);
+
+        await this.addNpc(5,1,5, "Hey traveller! Use k to grab that box to help you get over this dreaded fence!");
 
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
@@ -44,13 +45,13 @@ export class StarterLevel extends BaseLevel {
         await this.addRocks(9, 1, 1, Math.PI * -0.5);
 
         await this.addFence(5, 1, 7, Math.PI * 0.1);
-        this.addInvisWall(4, -1, 7.2);
-        this.addInvisWall(5, -1, 7);
-        this.addInvisWall(6, -1, 6.7);
+        this.addInvisWall(4, -1.2, 7.2);
+        this.addInvisWall(5, -1.2, 7);
+        this.addInvisWall(6, -1.2, 6.7);
         await this.addFence(8, 1, 6.5, Math.PI * 0);
-        this.addInvisWall(7, -1, 6.5);
-        this.addInvisWall(8, -1, 6.5);
-        this.addInvisWall(9, -1, 6.5);
+        this.addInvisWall(7, -1.2, 6.5);
+        this.addInvisWall(8, -1.2, 6.5);
+        this.addInvisWall(9, -1.2, 6.5);
 
         //this.addMob(BigSlime, 7, 1, 7);
         //this.addMob(BossSlime, 8, 1, 8);

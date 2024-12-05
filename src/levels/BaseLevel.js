@@ -14,6 +14,7 @@ import { Rocks } from '../entities/Rocks.js';
 import { Fence } from '../entities/Fence.js';
 import { Plank } from '../entities/Plank.js';
 import { Memory } from '../entities/Memory.js';
+import { Npc } from '../entities/Npc.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -62,6 +63,14 @@ export class BaseLevel {
         this.Signs.push(memory);
         this.Updatables.push(memory);
         return memory;
+    }
+
+    async addNpc(x, y, z, message) {
+        const npc = new Npc(this.scene, x, y, z, message);
+        await npc.init();
+        this.Signs.push(npc);
+        this.Updatables.push(npc);
+        return npc;
     }
 
     async addFireplace(x, y, z) {
