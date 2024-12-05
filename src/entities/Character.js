@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { Model } from '../Models.js';
 import { Water } from './Water.js';
+import { AudioPlayer } from '/src/Audio.js';
 
 import CHARACTER from '/assets/models/character.glb'
 const clock = new THREE.Clock();
@@ -9,6 +10,7 @@ const clock = new THREE.Clock();
 export class Character {
     constructor(scene) {
         this.scene = scene;
+        this.audio = new AudioPlayer();
         this.model = new Model();
         this.angle = 0;
         this.spinSpeed = 7;
@@ -180,6 +182,8 @@ export class Character {
     }
 
     createAttackHitbox(horizontalDirection) {
+        console.log("attack");
+        this.audio.playAttackSound();
         // Create a visible hitbox with red color
         const hitboxMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
         let hitboxGeometry = null;
@@ -316,6 +320,7 @@ export class Character {
         });
         this.Hazards.forEach(hazard => {
             if (currentTime - hazard.getLastCollisionTime() > 800 && hazard.checkCollision(this.characterMesh)) {
+                this.audio.playDamageSound();
                 this.updateHealth(this.health - 1);
                 console.log("collided with fire");
             }
@@ -327,6 +332,7 @@ export class Character {
 
         this.Mobs.forEach(obj=> {
             if(currentTime - obj.getLastCollisionTime() > 500 && obj.checkCollision(this.characterMesh) && !obj.getIsDead()) {
+                this.audio.playDamageSound();
                 this.updateHealth(this.health - 1);
                 console.log("collided with mob");
             }
@@ -460,8 +466,10 @@ export class Character {
 
         if (keysPressed.w || keysPressed.a || keysPressed.s || keysPressed.d) {
             this.model.mixer.update(deltaTime * 15);
+            this.audio.playRunSound();
         } else {
             this.model.mixer.setTime(0);
+            this.audio.stopRunSound();
         }
 
         if(currentTime - this.lastAttackTime < 400){

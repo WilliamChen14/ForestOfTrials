@@ -7,11 +7,13 @@ import { WorldOne } from '../levels/WorldOne.js';
 import * as THREE from 'three';
 import { WorldTwo } from '../levels/WorldTwo.js';
 import { EndState } from './EndState.js';
+import { AudioPlayer } from '/src/Audio.js';
 
 const clock = new THREE.Clock();
 
 export class GameState {
     constructor(stateManager) {
+        this.audio = new AudioPlayer();
         this.stateManager = stateManager;
         this.controls = new Controls();
         this.currentLevel = 0;
