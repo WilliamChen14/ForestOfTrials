@@ -11,11 +11,14 @@ export class AudioPlayer {
         }
 
         this.runSound = new Audio('/assets/audio/run.wav');
+        this.runSound.volume = 0.06;
         this.runSound.loop = true;
 
         this.damageSound = new Audio('/assets/audio/damage.wav');
+        this.damageSound.volume = 0.15;
 
         this.attackSound = new Audio('/assets/audio/attack.wav');
+        this.attackSound.volume = 0.08;
     }
 
     playRunSound() {
