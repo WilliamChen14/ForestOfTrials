@@ -249,10 +249,12 @@ export class GameState {
         );
 
         if (this.character.characterMesh.position.y < -10) {
+            this.levelData = [];
             this.resetLevel();
         }
 
         if (this.controls.keysPressed.r === true) {
+            this.levelData = [];
             this.resetLevel();
         }
 
