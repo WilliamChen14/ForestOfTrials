@@ -17,7 +17,7 @@ export class Memory {
             roughness: 0.5,
             metalness: 0.6,
         });
-        const memory = new THREE.Mesh(new THREE.SphereGeometry(0.2, 15, 15), MemoryMaterial);
+        const memory = new THREE.Mesh(new THREE.TorusKnotGeometry(0.2, 0.07, 32, 16), MemoryMaterial);
         memory.castShadow = true;
         memory.receiveShadow = true;
         memory.position.set(x, y, z);
