@@ -13,10 +13,10 @@ export class StarterLevel extends BaseLevel {
 
         // Add initial sign and exit
         await this.addMemory(0,1,0, "Memory #1 \n You wake up in this forest unsure of how you got here. You recall some sort of purpose or reason you must continue forward.");
-        this.addBox(3,1,3);
+        this.addBox(4,1,0.5);
         this.addExit(10, 1, 9);
 
-        await this.addNpc(5,1,5, "Hey traveller! Use k to grab that box to help you get over this dreaded fence!");
+        await this.addNpc(5,1,5, "Help traveller! The slimes are invading our village! Use k to grab that box to help you get over this dreaded fence!");
 
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, floorSize + 1, -1, floorSize + 1);
@@ -42,7 +42,7 @@ export class StarterLevel extends BaseLevel {
         this.addFire(8, 1, 4);
         await this.addFireplace(8, 1, 4);
         await this.addRocks(1, 1, 8, 0);
-        await this.addRocks(9, 1, 1, Math.PI * -0.5);
+        await this.addHouse(6,1,1, 0.5);
 
         await this.addFence(5, 1, 7, Math.PI * 0.1);
         this.addInvisWall(4, -1.2, 7.2);
@@ -56,16 +56,14 @@ export class StarterLevel extends BaseLevel {
         //this.addMob(BigSlime, 7, 1, 7);
         //this.addMob(BossSlime, 8, 1, 8);
 
-        this.addWater(5,.01,1);
         this.addWater(5,.01,2);
-        this.addWater(6,.01,1);
         this.addWater(6,.01,2);
         this.addWater(6,.01,3);
         this.addWater(7,.01,3);
         this.addWater(7,.01,2);
 
         // Add an extra sign explaining fire
-        await this.addSign(2, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
+        await this.addSign(8, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
 
         return this.getLevelData();
     }

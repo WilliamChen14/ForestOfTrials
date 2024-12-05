@@ -14,6 +14,7 @@ import { Rocks } from '../entities/Rocks.js';
 import { Fence } from '../entities/Fence.js';
 import { Plank } from '../entities/Plank.js';
 import { Memory } from '../entities/Memory.js';
+import { House } from '../entities/House.js';
 import { Npc } from '../entities/Npc.js';
 
 export class BaseLevel {
@@ -77,6 +78,11 @@ export class BaseLevel {
         const fireplace = new Fireplace(this.scene, x, y, z);
         await fireplace.init();
         return fireplace;
+    }
+    async addHouse(x, y, z, rotation) {
+        const house = new House(this.scene, x, y, z, rotation);
+        await house.init();
+        return house;
     }
 
     async addRocks(x, y, z, rotation) {

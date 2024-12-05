@@ -17,6 +17,9 @@ export class StarterLevelTwo extends BaseLevel {
         // Add initial sign and exit
         await this.addSign(5, 1, 5, 'You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit');
         await this.addMemory(0,1,0, "Memory #2 \n You see some enemies ahead of you, but why are you here? Who put you in this forest of trials?");
+        await this.addHouse(3,1,0,0);
+        await this.addHouse(7,1,1,0);
+        await this.addFireplace(7,1,1,0);
         
         // Create a complete floor with walls
         this.addWallsAndFloorsAroundGrid(-1, 20 + 1, -1, 8 + 1);

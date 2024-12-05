@@ -161,6 +161,23 @@ const MATERIALS = {
         roughness: 0.5,
         metalness: 0,
     }),
+    "wall1": new THREE.MeshPhysicalMaterial({
+        map: woodTexture,
+        color: 0x73543d,
+        roughness: 0.8,
+        metalness: 0,
+    }),
+    "wall2": new THREE.MeshPhysicalMaterial({
+        map: woodTexture,
+        color: 0xa0aB74,
+        roughness: 0.8,
+        metalness: 0,
+    }),
+    "wall3": new THREE.MeshPhysicalMaterial({
+        color: 0xE7AD64,
+        roughness: 0.9,
+        metalness: 0,
+    }),
     "Material": new THREE.MeshPhysicalMaterial({
         color: 0xff00ff,
         roughness: 0.5,
