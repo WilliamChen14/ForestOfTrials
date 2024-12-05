@@ -20,6 +20,13 @@ export class Character {
         this.dashDuration = 200;
         this.dashCooldown = 2500;
         this.lastDashTime = 0;
+
+        this.isJumpAttacking = false;
+        this.jumpAttackCooldown = 1000; // 1 second cooldown
+        this.lastJumpAttackTime = 0;
+        this.jumpAttackDuration = 300;
+        this.jumpAttackBoost = 0.1;
+        this.jumpAttackForwardSpeed = 0.3;
     }
 
     async init() {
@@ -92,6 +99,56 @@ export class Character {
         this.heldItem = null;
         this.pickupCooldown = 500;
         this.lastPickupTime = 0;
+    }
+
+    performJumpAttack(currentTime, horizontalDirection) {
+        if (currentTime - this.lastJumpAttackTime < this.jumpAttackCooldown || 
+            this.isJumpAttacking || 
+            this.isOnGround) {
+            return;
+        }
+
+        this.isJumpAttacking = true;
+        this.lastJumpAttackTime = currentTime;
+
+        this.moveY = this.jumpAttackBoost;
+        this.isOnGround = false;
+
+        const direction = this.lastDirection.clone().normalize();
+        this.velocityX = direction.x * this.jumpAttackForwardSpeed;
+        this.velocityZ = direction.z * this.jumpAttackForwardSpeed;
+
+        const hitboxMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xff0000, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.5
+        });
+
+        let hitboxGeometry = null;
+
+        if(horizontalDirection == 1) {
+            hitboxGeometry = new THREE.BoxGeometry(2, 1, 1); // Width, Height, Depth
+        } else {
+            hitboxGeometry = new THREE.BoxGeometry(1, 1, 2);
+        }
+
+        const hitboxMesh = new THREE.Mesh(hitboxGeometry, hitboxMaterial);
+
+        hitboxMesh.position.copy(this.characterMesh.position);
+        const offset = this.lastDirection.clone().normalize().multiplyScalar(1.5);
+        hitboxMesh.position.add(offset);
+        hitboxMesh.position.y -= 0.5;
+        hitboxMesh.rotation.y = this.angle;
+
+        this.scene.add(hitboxMesh);
+        this.currentHitbox = hitboxMesh;
+
+        setTimeout(() => {
+            this.scene.remove(hitboxMesh);
+            this.currentHitbox = null;
+            this.isJumpAttacking = false;
+        }, this.jumpAttackDuration);
     }
 
     performDashAttack(currentTime) {
@@ -229,6 +286,19 @@ export class Character {
             else{
                 this.createAttackHitbox(0);
             }
+        }
+
+        if (keysPressed.z && !this.isOnGround && currentTime - this.lastJumpAttackTime > this.jumpAttackCooldown) {
+            if (LastKeyPressed === "d" || LastKeyPressed === "a") {
+                this.performJumpAttack(currentTime, 1);
+            } else {
+                this.performJumpAttack(currentTime, 0);
+            }
+        }
+
+        if (this.isJumpAttacking) {
+            this.moveX *= 0.3; 
+            this.moveZ *= 0.3;
         }
 
         if (keysPressed.m && !this.isDashing) {

@@ -13,6 +13,7 @@ export class Controls {
             l: false,
             r: false,
             m: false,
+            z: false,
             space: false,
             escape: false
         };
@@ -58,6 +59,9 @@ export class Controls {
                 break;
             case "j":
                 this.keysPressed.j = true;
+                break;
+            case "z":
+                this.keysPressed.z = true;
                 break;
             case "k":
                 this.keysPressed.k = true;
@@ -136,6 +140,9 @@ export class Controls {
                 break;
             case " ":
                 this.keysPressed.space = false;
+                break;
+            case "z":
+                this.keysPressed.z = false;
                 break;
             case "Escape":
                 this.keysPressed.escape = false;
