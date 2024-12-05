@@ -6,6 +6,7 @@ import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BaseLevel } from './BaseLevel.js';
+import { Ghost } from '../entities/Ghost.js';
 
 export class WorldOne extends BaseLevel {
     async build() {
@@ -52,6 +53,10 @@ export class WorldOne extends BaseLevel {
         this.addInvisWall(7, -1.2, 6.5);
         this.addInvisWall(8, -1.2, 6.5);
         this.addInvisWall(9, -1.2, 6.5);
+
+        //this.addMob(Ghost, 4, 1, 4);
+
+        
 
         //this.addMob(BigSlime, 7, 1, 7);
         //this.addMob(BossSlime, 8, 1, 8);

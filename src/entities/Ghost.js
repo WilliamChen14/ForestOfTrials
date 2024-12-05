@@ -72,7 +72,7 @@ export class Ghost {
 
         if (collisionDetected) {
             // Reverse direction or pick a new random direction
-            this.direction.negate(); // Invert direction for a simple bounce effect
+            //this.direction.negate(); // Invert direction for a simple bounce effect
         }
     }
 
@@ -86,16 +86,34 @@ export class Ghost {
     }
 
     // Update method to move the slime randomly
-    update(levelData, Mobs) {
+    update(levelData, Mobs, character) {
         if(this.isDead){
             return;
         }
         // Randomly change direction every 100 frames
-        if (Math.random() < 0.02) {
+        const distanceFromChar = Math.abs(this.mobMesh.position.distanceTo(character.position));
+        let xDir = 0;
+        let yDir = 0;
+        if (distanceFromChar < 10) {
+            if(character.position.x < this.mobMesh.position.x){
+                xDir = -Math.random();
+            }
+            else{
+                xDir = Math.random();
+            }
+
+            if(character.position.z < this.mobMesh.position.z){
+                yDir = -Math.random();
+            }
+            else{
+                yDir = +Math.random();
+            }
+
+            
             this.direction = new THREE.Vector3(
-                (Math.random() - 0.5) * 2,
+                xDir,
                 0,
-                (Math.random() - 0.5) * 2
+                yDir
             ).normalize();
         }
 
