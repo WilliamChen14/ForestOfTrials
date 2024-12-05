@@ -11,6 +11,7 @@ import { Water } from '../entities/Water.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
 import { Fireplace } from '../entities/Fireplace.js';
 import { Rocks } from '../entities/Rocks.js';
+import { Fence } from '../entities/Fence.js';
 import { Plank } from '../entities/Plank.js';
 import { Memory } from '../entities/Memory.js';
 
@@ -24,6 +25,7 @@ export class BaseLevel {
         this.Tools = [];
         this.Hazards = []; // New array to track fire hazards
         this.Waters = [];
+        this.Updatables = [];
     }
 
     addInvisWall(x, y, z) {
@@ -58,6 +60,7 @@ export class BaseLevel {
     async addMemory(x, y, z, message) {
         const memory = new Memory(this.scene, x, y, z, message);
         this.Signs.push(memory);
+        this.Updatables.push(memory);
         return memory;
     }
 
@@ -71,6 +74,12 @@ export class BaseLevel {
         const fireplace = new Rocks(this.scene, x, y, z, rotation);
         await fireplace.init();
         return fireplace;
+    }
+
+    async addFence(x, y, z, rotation) {
+        const fence = new Fence(this.scene, x, y, z, rotation);
+        await fence.init();
+        return fence;
     }
 
     addExit(x, y, z) {
@@ -177,6 +186,11 @@ export class BaseLevel {
         this.Hazards.forEach(hazard => {
             if (hazard.update) {
                 hazard.update();
+            }
+        });
+        this.Updatables.forEach(updateable => {
+            if (updateable.update) {
+                updateable.update();
             }
         });
     }

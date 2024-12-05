@@ -11,16 +11,18 @@ export class Memory {
         this.positionZ = z;
         this.message = message;  // Store the custom message
         this.isMessageShowing = false;
+        this.mesh = null;
 
         const MemoryMaterial = new THREE.MeshPhysicalMaterial({
             color: 0xfff39c,
             roughness: 0.5,
-            metalness: 0.6,
+            metalness: 1.0,
         });
         const memory = new THREE.Mesh(new THREE.TorusKnotGeometry(0.2, 0.07, 32, 16), MemoryMaterial);
         memory.castShadow = true;
         memory.receiveShadow = true;
         memory.position.set(x, y, z);
+        this.mesh = memory;
         this.MapLayoutMesh = memory;
         scene.add(memory);
 
@@ -46,6 +48,13 @@ export class Memory {
         const distance = this.MapLayoutMesh.position.distanceTo(characterMesh.position);
         if (distance <= this.collisionDistance) {
             this.showMessage(this.message);  // Display the message on collision
+        }
+    }
+
+    update() {
+        if (this.mesh) {
+            this.mesh.rotateX(0.02);
+            this.mesh.rotateZ(0.02);
         }
     }
 
