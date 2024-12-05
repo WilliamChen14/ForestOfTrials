@@ -13,10 +13,7 @@ export class Memory {
         this.isMessageShowing = false;
         this.mesh = null;
 
-        const MemoryMaterial = new THREE.MeshPhysicalMaterial({
-            color: 0xfff39c,
-            roughness: 0.5,
-            metalness: 1.0,
+        const MemoryMaterial = new THREE.MeshNormalMaterial({
         });
         const memory = new THREE.Mesh(new THREE.TorusKnotGeometry(0.2, 0.07, 32, 16), MemoryMaterial);
         memory.castShadow = true;
