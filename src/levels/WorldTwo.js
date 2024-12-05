@@ -1,12 +1,12 @@
 // Level.js
 import * as THREE from 'three';
 
-import { Slime } from '../entities/Slime';
+import { Slime } from '../entities/Slime.js';
 import { BigSlime } from '../entities/BigSlime.js';
 
 import { BaseLevel } from './BaseLevel.js';
 
-export class StarterLevelTwo extends BaseLevel {
+export class WorldTwo extends BaseLevel {
     async build() {
 
         const floorSize = 20;

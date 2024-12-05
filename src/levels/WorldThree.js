@@ -10,7 +10,7 @@ import { BossSlime } from '../entities/BossSlime.js';
 import { Box } from '../entities/Box.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
 
-export class LevelOne extends BaseLevel {
+export class WorldThree extends BaseLevel {
     async build() {
         const floorSize = 15;
 

@@ -1,11 +1,11 @@
 import { Controls } from '../Controls.js';
 import { Character } from '../entities/Character.js';
-import { LevelOne } from '../levels/LevelOne.js';
-import { LevelTwo } from '../levels/LevelTwo.js';
+import { WorldThree } from '../levels/WorldThree.js';
+import { WorldFour } from '../levels/WorldFour.js';
 import { GameOverState } from './GameOverState.js';
-import { StarterLevel } from '../levels/StarterLevel.js';
+import { WorldOne } from '../levels/WorldOne.js';
 import * as THREE from 'three';
-import { StarterLevelTwo } from '../levels/StarterLevelTwo.js';
+import { WorldTwo } from '../levels/WorldTwo.js';
 import { EndState } from './EndState.js';
 
 const clock = new THREE.Clock();
@@ -105,18 +105,18 @@ export class GameState {
         
         switch (this.currentLevel) {
             case 1:
-                this.level = new StarterLevel(this.stateManager.scene);
+                this.level = new WorldOne(this.stateManager.scene);
                 break;
             case 2:
-                this.level = new StarterLevelTwo(this.stateManager.scene);
+                this.level = new WorldTwo(this.stateManager.scene);
                 break;
             case 3:
-                this.level = new LevelOne(this.stateManager.scene);
+                this.level = new WorldThree(this.stateManager.scene);
                 break;
             case 4:
-                this.level = new LevelTwo(this.stateManager.scene);
+                this.level = new WorldFour(this.stateManager.scene);
             case 5:
-                this.level = new LevelTwo(this.stateManager.scene);
+                this.level = new WorldFour(this.stateManager.scene);
                 break;
             default:
                 console.log("Invalid level");
@@ -158,21 +158,21 @@ export class GameState {
 
         // Create new level
         if (this.currentLevel === 1) {
-            console.log("Creating WorldOneLevelOne");
-            this.level = new StarterLevel(this.stateManager.scene);
+            console.log("Creating WorldOneWorldThree");
+            this.level = new WorldOne(this.stateManager.scene);
         } else if (this.currentLevel === 2) {
-            console.log("Creating WorldOneLevelTwo");
-            this.level = new StarterLevelTwo(this.stateManager.scene);
+            console.log("Creating WorldOneWorldFour");
+            this.level = new WorldTwo(this.stateManager.scene);
         } else if (this.currentLevel === 3) {
             console.log("Creating WorldOneLevelThree");
-            this.level = new LevelOne(this.stateManager.scene);
+            this.level = new WorldThree(this.stateManager.scene);
         } else if (this.currentLevel === 4){
             console.log("Creating default WorldOneLevelFour");
-            this.level = new LevelTwo(this.stateManager.scene);
+            this.level = new WorldFour(this.stateManager.scene);
         }
         else if (this.currentLevel === 5){
-            console.log("Creating default WorldTwoLevelOne");
-            this.level = new LevelTwo(this.stateManager.scene);
+            console.log("Creating default WorldTwoWorldThree");
+            this.level = new WorldFour(this.stateManager.scene);
         }
         else {
             console.log("Game has been won");

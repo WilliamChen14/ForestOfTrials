@@ -7,7 +7,7 @@ import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
 import { BaseLevel } from './BaseLevel.js';
 
-export class StarterLevel extends BaseLevel {
+export class WorldOne extends BaseLevel {
     async build() {
         const floorSize = 10;
 
