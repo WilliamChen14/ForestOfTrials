@@ -6,6 +6,7 @@ import { Ghost } from '../entities/Ghost.js';
 import { Box } from '../entities/Box.js';
 import { Gate } from '../entities/Gate.js';
 import { Button } from '../entities/Button.js';
+import { BossSlime } from '../entities/BossSlime.js';
 
 export class LevelTwo extends BaseLevel {
     async build() {
@@ -182,7 +183,7 @@ export class LevelTwo extends BaseLevel {
 
         // Add mini-bosses and regular enemies in arena
         this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, -5);
-        this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, 5);
+        this.addMob(BossSlime, arenaStartX + 5, bridgeHeight + 1, 5);
         this.addMob(Slime, arenaStartX + 8, bridgeHeight + 1, -3);
         this.addMob(Slime, arenaStartX + 8, bridgeHeight + 1, 3);
         this.addMob(Ghost, arenaStartX + 12, bridgeHeight + 1, -4);

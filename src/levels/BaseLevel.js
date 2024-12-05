@@ -11,6 +11,8 @@ import { Water } from '../entities/Water.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
 import { Fireplace } from '../entities/Fireplace.js';
 import { Rocks } from '../entities/Rocks.js';
+import { Plank } from '../entities/Plank.js';
+import { Memory } from '../entities/Memory.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -53,6 +55,12 @@ export class BaseLevel {
         return sign;
     }
 
+    async addMemory(x, y, z, message) {
+        const memory = new Memory(this.scene, x, y, z, message);
+        this.Signs.push(memory);
+        return memory;
+    }
+
     async addFireplace(x, y, z) {
         const fireplace = new Fireplace(this.scene, x, y, z);
         await fireplace.init();
@@ -76,6 +84,13 @@ export class BaseLevel {
         this.Tools.push(box);
         this.MapLayout.push(box.MapLayoutMesh);
         return box;
+    }
+
+    addPlank(x,y,z){
+        const plank = new Plank(this.scene,x,y,z);
+        this.Tools.push(plank);
+        this.MapLayout.push(plank.MapLayoutMesh);
+        return plank;
     }
 
     addMob(MobClass, x, y, z) {

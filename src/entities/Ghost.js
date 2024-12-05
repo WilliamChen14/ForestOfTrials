@@ -38,7 +38,7 @@ export class Ghost {
         this.loseLife = this.loseLife.bind(this);
         this.lastLostLife = 0;
 
-        this.health = 1;
+        this.health = 2;
         this.isDead = false;
 
         // Collision raycaster

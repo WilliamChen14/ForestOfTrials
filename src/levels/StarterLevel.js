@@ -13,6 +13,7 @@ export class StarterLevel extends BaseLevel {
 
         // Add initial sign and exit
         await this.addSign(5, 1, 5, 'You can jump with the space bar.\nWatch out for the fire!\nMake your way to the Yellow Exit');
+        await this.addMemory(0,1,0, "Memory #1 \n You wake up in this forest unsure of how you got here. You recall some sort of purpose or reason you must continue forward.");
         this.addExit(10, 1, 9);
 
         // Create a complete floor with walls
@@ -24,6 +25,8 @@ export class StarterLevel extends BaseLevel {
             this.addTree(x, 1, -1);
             this.addTree(x, 1, floorSize + 1);
         }
+
+        this.addPlank(3,1,3);
 
         for (let z = -1; z <= floorSize + 1; z++) {
             this.addTree(-1, 1, z);
