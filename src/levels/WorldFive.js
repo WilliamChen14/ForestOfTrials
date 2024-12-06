@@ -64,6 +64,8 @@ export class WorldFive extends BaseLevel {
         const lavaWidth = 16; // Reduced from 20
         
         // Create platforms over lava
+        
+        
         for (let x = lavaStart; x < lavaStart + lavaWidth; x += 4) {
             // Create safe platforms
             this.addStoneFloor(x, 0, 0);
@@ -72,9 +74,11 @@ export class WorldFive extends BaseLevel {
             // Add lava pools between platforms - reduced area
             for (let z = -3; z <= 4; z++) {
                 if (z !== 0 && z !== 1) {
-                    this.addLava(x, 0, z);
-                    this.addLava(x + 1, 0, z);
+                    
+                    //this.addLava(x, 0, z);
+                    //this.addLava(x + 1, 0, z);
                     this.addLava(x + 2, 0, z);
+                    
                 }
             }
             
@@ -88,6 +92,8 @@ export class WorldFive extends BaseLevel {
                 this.addMob(Ghost, x + 2, 2, -2);
             }
         }
+            
+        
 
         // Create combat arena after lava section
         const arenaStart = lavaStart + lavaWidth;
@@ -103,6 +109,7 @@ export class WorldFive extends BaseLevel {
                 }
             }
         }
+            
 
         // Add decorative fire rings - reduced number of fires
         this.addFireRing(arenaStart + arenaSize/2, 1, 0, 4, 6);
@@ -129,9 +136,11 @@ export class WorldFive extends BaseLevel {
                 await this.addFireplace(x, 1, 6);
             }
         }
+            
 
         // Add exit behind boss arena
         this.addExit(arenaStart + arenaSize - 1, 1, 0);
+        
 
         return this.getLevelData();
     }

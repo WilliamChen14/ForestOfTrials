@@ -40,16 +40,17 @@ export class Lava {
                 
                 void main() {
                     vec2 uv = vUv;
+                    float pulseInt = sin(animation_time * 2.0);
                     
                     // Create flowing effect by offsetting UV coordinates
                     float flowSpeed = 0.1;
-                    uv.x += sin(uv.y * 4.0 + animation_time) * 0.05;
-                    uv.y += animation_time * flowSpeed;
+                    //uv.x += sin(uv.y * 4.0 + animation_time) * 0.05;
+                    uv.y += animation_time * 0.1;
                     
                     vec4 texColor = texture2D(uTexture, uv);
                     
                     // Add pulsing glow effect
-                    float pulse = sin(animation_time * 2.0) * 0.1 + 0.9;
+                    float pulse =  pulseInt * 0.1 + 0.9;
                     texColor.rgb *= pulse;
                     
                     gl_FragColor = texColor;
@@ -59,7 +60,7 @@ export class Lava {
         
         // Create and position the lava mesh
         const lava = new THREE.Mesh(
-            new THREE.BoxGeometry(1, 0.5, 1), 
+            new THREE.BoxGeometry(1, 3.0, 1), 
             LavaMaterial
         );
         lava.position.set(x, y, z);
