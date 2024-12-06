@@ -125,7 +125,9 @@ export class BaseLevel {
     }
 
     addMob(MobClass, x, y, z) {
-        const mob = new MobClass(this.scene, x, y, z);
+        const randomX = x + (Math.random() * 4 - 2); 
+        const randomZ = z + (Math.random() * 4 - 2); 
+        const mob = new MobClass(this.scene, randomX, y, randomZ);
         this.Mobs.push(mob);
         return mob;
     }

@@ -8,321 +8,569 @@ export class InstructionState {
         this.handleClick = this.handleClick.bind(this);
     }
 
-    async enter() {
-        try {
-            this.homeScreenElement = document.createElement('div');
-            this.homeScreenElement.style.position = 'fixed';
-            this.homeScreenElement.style.top = '0';
-            this.homeScreenElement.style.left = '0';
-            this.homeScreenElement.style.width = '100%';
-            this.homeScreenElement.style.height = '100%';
-            this.homeScreenElement.style.zIndex = '1';
-            this.homeScreenElement.style.pointerEvents = 'auto';
-            this.homeScreenElement.style.background = '#b8c5b9'; // Set background as per provided HTML
+    // Tree template generation
+    getTreeTemplate(position, treeConfig) {
+        return `
+            <svg class="tree" style="left: ${position}%" viewBox="0 0 200 300">
+                <path d="M100,${treeConfig.top} L${treeConfig.width},${treeConfig.height} L${200 - treeConfig.width},${treeConfig.height} Z" fill="${treeConfig.color1}"/>
+                <path d="M100,${treeConfig.top + 50} L${treeConfig.width - 20},${treeConfig.height - 20} L${200 - treeConfig.width + 20},${treeConfig.height - 20} Z" fill="${treeConfig.color2}"/>
+                <path d="M100,${treeConfig.top + 100} L${treeConfig.width - 40},${treeConfig.height - 40} L${200 - treeConfig.width + 40},${treeConfig.height - 40} Z" fill="${treeConfig.color3}"/>
+                <path d="M100,${treeConfig.top} C${treeConfig.width - 40},${treeConfig.top + 10} ${treeConfig.width - 20},${treeConfig.top + 25} ${treeConfig.width},${treeConfig.height} C${treeConfig.width - 40},${treeConfig.height - 10} ${200 - treeConfig.width + 40},${treeConfig.height - 10} ${200 - treeConfig.width},${treeConfig.height} C${200 - treeConfig.width + 20},${treeConfig.top + 25} ${200 - treeConfig.width + 40},${treeConfig.top + 10} 100,${treeConfig.top}" fill="#b8c5b9" fill-opacity="0.3"/>
+                <rect x="90" y="${treeConfig.height - 20}" width="20" height="40" fill="#5d4037"/>
+            </svg>
+        `;
+    }
 
-            // Set the HTML structure (excluding <html>, <head>, and <body>)
-            this.homeScreenElement.innerHTML = `
-                <div class="trees-container">
-                    <!-- SVG Trees -->
-                    <svg class="tree" style="left: 5%" viewBox="0 0 200 300">
-                        <!-- Tree 1 -->
-                        <path d="M100,20 L160,280 L40,280 Z" fill="#849886"/>
-                        <path d="M100,60 L150,260 L50,260 Z" fill="#7a8e7c"/>
-                        <path d="M100,100 L140,240 L60,240 Z" fill="#6f836f"/>
-                        <!-- Snow -->
-                        <path d="M100,20 C120,30 140,45 160,280 C120,270 80,270 40,280 C60,45 80,30 100,20" fill="#b8c5b9" fill-opacity="0.3"/>
-                        <!-- Trunk -->
-                        <rect x="90" y="260" width="20" height="40" fill="#5d4037"/>
-                    </svg>
-                    <svg class="tree" style="left: 25%" viewBox="0 0 200 300">
-                        <!-- Tree 2 -->
-                        <path d="M100,30 L170,270 L30,270 Z" fill="#7a8e7c"/>
-                        <path d="M100,80 L150,250 L50,250 Z" fill="#6f836f"/>
-                        <path d="M100,130 L130,230 L70,230 Z" fill="#657a65"/>
-                        <!-- Snow -->
-                        <path d="M100,30 C120,40 150,55 170,270 C130,260 70,260 30,270 C50,55 80,40 100,30" fill="#b8c5b9" fill-opacity="0.3"/>
-                        <!-- Trunk -->
-                        <rect x="90" y="250" width="20" height="50" fill="#5d4037"/>
-                    </svg>
-                    <svg class="tree" style="left: 45%" viewBox="0 0 200 300">
-                        <!-- Tree 3 -->
-                        <path d="M100,10 L180,290 L20,290 Z" fill="#849886"/>
-                        <path d="M100,70 L160,270 L40,270 Z" fill="#7a8e7c"/>
-                        <path d="M100,130 L140,250 L60,250 Z" fill="#6f836f"/>
-                        <!-- Snow -->
-                        <path d="M100,10 C130,25 160,45 180,290 C130,280 70,280 20,290 C40,45 70,25 100,10" fill="#b8c5b9" fill-opacity="0.3"/>
-                        <!-- Trunk -->
-                        <rect x="90" y="270" width="20" height="30" fill="#5d4037"/>
-                    </svg>
-                    <svg class="tree" style="left: 65%" viewBox="0 0 200 300">
-                        <!-- Tree 4 -->
-                        <path d="M100,40 L165,280 L35,280 Z" fill="#7a8e7c"/>
-                        <path d="M100,90 L145,260 L55,260 Z" fill="#6f836f"/>
-                        <path d="M100,140 L125,240 L75,240 Z" fill="#657a65"/>
-                        <!-- Snow -->
-                        <path d="M100,40 C120,50 145,65 165,280 C125,270 75,270 35,280 C55,65 80,50 100,40" fill="#b8c5b9" fill-opacity="0.3"/>
-                        <!-- Trunk -->
-                        <rect x="90" y="260" width="20" height="40" fill="#5d4037"/>
-                    </svg>
-                    <svg class="tree" style="left: 85%" viewBox="0 0 200 300">
-                        <!-- Tree 5 -->
-                        <path d="M100,20 L170,280 L30,280 Z" fill="#849886"/>
-                        <path d="M100,80 L150,260 L50,260 Z" fill="#7a8e7c"/>
-                        <path d="M100,140 L130,240 L70,240 Z" fill="#6f836f"/>
-                        <!-- Snow -->
-                        <path d="M100,20 C120,35 150,55 170,280 C130,270 70,270 30,280 C50,55 80,35 100,20" fill="#b8c5b9" fill-opacity="0.3"/>
-                        <!-- Trunk -->
-                        <rect x="90" y="260" width="20" height="40" fill="#5d4037"/>
-                    </svg>
-                </div>
-                <div class="content-container">
-                    <div class="title-banner">
-                        <div class="chains">
-                            <div class="chain"></div>
-                            <div class="chain"></div>
-                            <div class="chain"></div>
-                            <div class="chain"></div>
-                        </div>
-                        <h1 class="title">Instructions</h1>
+    createTreesContainer() {
+        const treeConfigs = [
+            { position: 10, top: 30, width: 140, height: 250, color1: '#849886', color2: '#7a8e7c', color3: '#6f836f' },
+            { position: 30, top: 40, width: 150, height: 240, color1: '#7a8e7c', color2: '#6f836f', color3: '#657a65' },
+            { position: 50, top: 20, width: 160, height: 260, color1: '#849886', color2: '#7a8e7c', color3: '#6f836f' },
+            { position: 70, top: 50, width: 155, height: 250, color1: '#7a8e7c', color2: '#6f836f', color3: '#657a65' },
+            { position: 90, top: 30, width: 160, height: 250, color1: '#849886', color2: '#7a8e7c', color3: '#6f836f' }
+        ];
+
+        return `
+            <div class="trees-container">
+                ${treeConfigs.map(config => this.getTreeTemplate(config.position, config)).join('')}
+            </div>
+        `;
+    }
+
+    // Icon generators
+    getMovementIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M50 10 L65 35 H35 Z" fill="#443328"/>
+                <path d="M90 50 L65 65 V35 Z" fill="#443328"/>
+                <path d="M50 90 L35 65 H65 Z" fill="#443328"/>
+                <path d="M10 50 L35 35 V65 Z" fill="#443328"/>
+            </svg>
+        `;
+    }
+
+    getAttackIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M20 50 L80 50 L70 40 L80 50 L70 60" fill="none" stroke="#443328" stroke-width="4"/>
+                <circle cx="85" cy="50" r="6" fill="#ff4d4d"/>
+            </svg>
+        `;
+    }
+
+    getJumpIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M50 80 Q50 30 80 30" fill="none" stroke="#443328" stroke-width="4"/>
+                <circle cx="85" cy="30" r="6" fill="#ff4d4d"/>
+                <path d="M20 80 L80 80" stroke="#443328" stroke-width="4"/>
+            </svg>
+        `;
+    }
+
+    getDashAttackIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M20 50 L70 50" stroke="#443328" stroke-width="4" stroke-dasharray="4,4"/>
+                <circle cx="75" cy="50" r="6" fill="#ff4d4d"/>
+                <path d="M60 30 L70 50 L60 70" fill="none" stroke="#443328" stroke-width="4"/>
+            </svg>
+        `;
+    }
+
+    getPickupIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M30 60 Q50 20 70 60" fill="none" stroke="#443328" stroke-width="4"/>
+                <rect x="45" y="60" width="10" height="20" fill="#443328"/>
+            </svg>
+        `;
+    }
+
+    getResetIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <path d="M30 30 A30 30 0 1 1 30 70" fill="none" stroke="#443328" stroke-width="4"/>
+                <path d="M30 30 L15 30 L30 15" fill="none" stroke="#443328" stroke-width="4"/>
+            </svg>
+        `;
+    }
+
+    getPauseIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+                <rect x="30" y="25" width="10" height="50" fill="#443328"/>
+                <rect x="60" y="25" width="10" height="50" fill="#443328"/>
+            </svg>
+        `;
+    }
+
+    // New Icon Generator for Jump + Attack
+    getJumpAttackIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+            </svg>
+        `;
+    }
+
+    // Main content generator
+    getInstructionsContent() {
+        return `
+            <div class="instruction-sections">
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getMovementIcon()}</div>
+                    <div class="section-content">
+                        <h3>Basic Movement</h3>
+                        <p>Use <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> keys to move your character.</p>
                     </div>
-                    <div class="instructions-box">Use wasd to move. <br />j to attack in the last inputed direction.  <br />k to pick up and drop items.  <br />r to reset the level.  <br />m to launch a dash + attack.</div>
+                </div>
 
-                    <div class="mushroom-container">
-                        <a href="#" class="mushroom">
-                            <span class="mushroom-top play">Return to Home</span>
-                            <span class="mushroom-stem"></span>
-                        </a>
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getJumpIcon()}</div>
+                    <div class="section-content">
+                        <h3>Jump</h3>
+                        <p>Press the <span class="key">Space bar</span> to make your character jump.</p>
                     </div>
                 </div>
-            `;
 
-            // Add styles
-            const styleElement = document.createElement('style');
-            styleElement.textContent = `
-                @import url('https://fonts.googleapis.com/css2?family=Griffy&display=swap');
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getAttackIcon()}</div>
+                    <div class="section-content">
+                        <h3>Basic Attack</h3>
+                        <p>Press <span class="key">J</span> to attack in the last input direction.</p>
+                    </div>
+                </div>
 
-                body {
-                    margin: 0;
-                    height: 100vh;
-                    background: #b8c5b9;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-family: 'Griffy', cursive;
-                    overflow: hidden;
-                }
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getDashAttackIcon()}</div>
+                    <div class="section-content">
+                        <h3>Dash Attack</h3>
+                        <p>Press <span class="key">M</span> to perform a dash attack.</p>
+                    </div>
+                </div>
 
-                .trees-container {
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    z-index: -1;
-                }
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getPickupIcon()}</div>
+                    <div class="section-content">
+                        <h3>Item Interaction</h3>
+                        <p>Press <span class="key">K</span> to pick up or drop items.</p>
+                    </div>
+                </div>
 
-                .tree {
-                    position: absolute;
-                    bottom: 0;
-                    width: 180px;
-                    height: 280px;
-                }
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getResetIcon()}</div>
+                    <div class="section-content">
+                        <h3>Reset Level</h3>
+                        <p>Press <span class="key">R</span> to reset the current level.</p>
+                    </div>
+                </div>
 
-                .title-banner {
-                    position: absolute;
-                    top: 10%;
-                    left: 50%;
-                    margine-bottom: 20px;
-                    transform: translateX(-50%);
-                    background: #e8c4b8;
-                    padding: 30px 160px; /* Increased padding for larger buttons */
-                    border-radius: 15px;
-                    border: 4px solid #b39c94;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    width: 60%;
-                    min-width: 600px;
-                    text-align: center;
-                }
-                .content-container {
-                    position: absolute;
-                    top: 10%;  /* Adjust for overall positioning */
-                    left: 50%;
-                    transform: translateX(-50%);
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    height: 90%;  /* Adjust height as needed */
-                    width: 60%;
-                    text-align: center;
-                }
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getPauseIcon()}</div>
+                    <div class="section-content">
+                        <h3>Pause Game</h3>
+                        <p>Press <span class="key">Escape</span> to pause the game.</p>
+                    </div>
+                </div>
 
-                .instructions-box {
-                    background: #e8c4b8;
-                    padding: 40px;
-                    height: auto;
-                    border-radius: 15px;
-                    border: 4px solid #b39c94;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                    font-size: 1.5em;  /* Adjust font size for better readability */
-                    color: #443328;
-                    width: 100%;
-                    margin-top: 20px;
-                }
+                <!-- New Instruction Section for Jump + Attack -->
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getJumpAttackIcon()}</div>
+                    <div class="section-content">
+                        <h3>Jump + Attack</h3>
+                        <p>Press <span class="key">Z</span> to perform a combined jump and attack action.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
 
-                .title-banner::before {
-                    content: '';
-                    position: absolute;
-                    top: -25px;
-                    left: 0;
-                    right: 0;
-                    height: 25px;
-                    background: #e8c4b8;
-                    border: 4px solid #b39c94;
-                    border-bottom: none;
-                    border-radius: 15px 15px 0 0;
-                }
+    // Style generators
+    getStyles() {
+        return `
+            @import url('https://fonts.googleapis.com/css2?family=Griffy&display=swap');
 
-                .chains {
-                    position: absolute;
-                    top: -50px;
-                    left: 15%;
-                    right: 15%;
-                    height: 50px;
-                    display: flex;
-                    justify-content: space-around;
-                }
+            body {
+                margin: 0;
+                height: 100vh;
+                background: #b8c5b9;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: 'Griffy', cursive;
+                overflow: hidden;
+            }
 
-                .chain {
-                    width: 6px;
-                    height: 100%;
-                    background: linear-gradient(to bottom, #999, #777);
-                    border-radius: 2px;
-                }
+            .trees-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0.7;
+            }
 
+            .tree {
+                position: absolute;
+                bottom: 0;
+                width: 120px;
+                height: 200px;
+                transform: scale(0.8);
+            }
+
+            .content-container {
+                position: absolute;
+                top: 5%;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 90%;
+                max-width: 1000px;
+                text-align: center;
+            }
+
+            .title-banner {
+                position: relative;
+                margin-bottom: 20px;
+                background: #e8c4b8;
+                padding: 20px 80px;
+                border-radius: 10px;
+                border: 3px solid #b39c94;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 800px;
+                text-align: center;
+            }
+
+            .instructions-box {
+                background: #e8c4b8;
+                padding: 20px;
+                border-radius: 10px;
+                border: 3px solid #b39c94;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                color: #443328;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .instruction-sections {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 15px;
+                padding: 10px;
+            }
+
+            .instruction-section {
+                display: flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.15);
+                padding: 15px;
+                border-radius: 8px;
+                transition: transform 0.2s, background 0.2s;
+            }
+
+            .instruction-section:hover {
+                transform: translateY(-3px);
+                background: rgba(255, 255, 255, 0.25);
+            }
+
+            .section-icon {
+                flex-shrink: 0;
+                margin-right: 15px;
+            }
+
+            .section-content {
+                text-align: left;
+            }
+
+            .section-content h3 {
+                margin: 0 0 5px 0;
+                font-size: 1.2em;
+                color: #443328;
+            }
+
+            .section-content p {
+                margin: 0;
+                font-size: 1em;
+                line-height: 1.3;
+            }
+
+            .key {
+                display: inline-block;
+                padding: 3px 8px;
+                margin: 0 3px;
+                background: #443328;
+                color: #e8c4b8;
+                border-radius: 4px;
+                font-size: 0.8em;
+                font-weight: bold;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            }
+
+            .title-banner::before {
+                content: '';
+                position: absolute;
+                top: -15px;
+                left: 10%;
+                right: 10%;
+                height: 15px;
+                background: #e8c4b8;
+                border: 3px solid #b39c94;
+                border-bottom: none;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .chains {
+                position: absolute;
+                top: -35px;
+                left: 20%;
+                right: 20%;
+                height: 35px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .chain {
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(to bottom, #999, #777);
+                border-radius: 2px;
+            }
+
+            .title {
+                margin: 0;
+                color: #443328;
+                font-size: 3em;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+                letter-spacing: 2px;
+            }
+
+            .mushroom-container {
+                margin-top: 20px;
+                display: flex;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .mushroom {
+                text-decoration: none;
+                text-align: center;
+                color: #443328;
+                font-size: 2em;
+                font-family: 'Griffy', cursive;
+                transition: transform 0.3s ease;
+                position: relative;
+                animation: float 3s ease-in-out infinite;
+            }
+
+            .mushroom:hover {
+                transform: scale(1.1);
+            }
+
+            .mushroom-top {
+                display: block;
+                background: #ff4d4d;
+                padding: 15px 50px;
+                border-radius: 50px 50px 0 0;
+                position: relative;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+
+            .mushroom-top:hover {
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .mushroom-stem {
+                width: 30px;
+                height: 45px;
+                background: #d4b5a9;
+                margin: 0 auto;
+                border-radius: 0 0 8px 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+
+            /* Responsive Adjustments */
+            @media (max-width: 768px) {
                 .title {
-                    margin: 0;
-                    color: #443328;
-                    font-size: 4.5em; /* Increased font size */
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-                    letter-spacing: 4px;
+                    font-size: 2.5em;
                 }
 
-                .mushroom-container {
-                    position: absolute;
-                    bottom: 15%;
-                    left: 0;
-                    right: 0;
-                    display: flex;
-                    justify-content: space-around;
-                    padding: 0 10%; /* Adjusted padding for better spacing */
+                .instruction-sections {
+                    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                    gap: 10px;
                 }
 
-                .mushroom {
-                    text-decoration: none;
-                    text-align: center;
-                    color: #443328;
-                    font-size: 2.5em; /* Increased font size for larger buttons */
-                    font-family: 'Griffy', cursive;
-                    transition: transform 0.3s ease;
-                    position: relative;
-                    animation: float 3s ease-in-out infinite;
+                .section-icon {
+                    margin-right: 10px;
                 }
 
-                .mushroom:nth-child(2) {
-                    animation-delay: -1s;
+                .section-content h3 {
+                    font-size: 1em;
                 }
 
-                .mushroom:nth-child(3) {
-                    animation-delay: -2s;
+                .section-content p {
+                    font-size: 0.9em;
                 }
 
-                .mushroom:hover {
-                    transform: scale(1.2); /* Increased scale on hover for bigger effect */
+                .key {
+                    padding: 2px 6px;
+                    margin: 0 2px;
+                    font-size: 0.7em;
                 }
 
                 .mushroom-top {
-                    display: block;
-                    background: #e8c4b8;
-                    padding: 25px 70px; /* Increased padding for larger buttons */
-                    border-radius: 60px 60px 0 0;
-                    position: relative;
-                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-                    transition: all 0.3s ease;
-                }
-
-                .mushroom-top.play {
-                    background: #ff4d4d; /* Changed to a more prominent red */
-                }
-
-                .mushroom-top:hover {
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+                    padding: 10px 40px;
                 }
 
                 .mushroom-stem {
-                    width: 40px; /* Increased width for larger buttons */
-                    height: 60px; /* Increased height for larger buttons */
-                    background: #d4b5a9;
-                    margin: 0 auto;
-                    border-radius: 0 0 12px 12px;
-                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+                    width: 25px;
+                    height: 35px;
                 }
+            }
+        `;
+    }
 
-                @keyframes float {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-15px); } /* Increased float distance */
-                }
+    // State management methods
+    async enter() {
+        try {
+            this.homeScreenElement = document.createElement('div');
+            Object.assign(this.homeScreenElement.style, {
+                position: 'fixed',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                zIndex: '1',
+                pointerEvents: 'auto',
+                background: '#b8c5b9'
+            });
+
+            this.homeScreenElement.innerHTML = `
+                ${this.createTreesContainer()}
+                <div class="content-container">
+                    <div class="title-banner">
+                        <div class="chains">
+                            ${Array(3).fill('<div class="chain"></div>').join('')}
+                        </div>
+                        <h1 class="title">Instructions</h1>
+                        <div class="instructions-box">
+                            ${this.getInstructionsContent()}
+                        </div>
+                        <div class="return-button">
+                            <a href="#" class="mushroom">
+                                <span class="mushroom-top play">Return to Home</span>
+                                <span class="mushroom-stem"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             `;
 
+            // Update styles
+            const styleElement = document.createElement('style');
+            styleElement.textContent = `
+                ${this.getStyles()}
+                
+                .return-button {
+                    position: absolute;
+                    bottom: -50px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    z-index: 10;
+                }
+
+                .title-banner {
+                    position: relative;
+                    margin-bottom: 30px;
+                }
+
+                .instructions-box {
+                    margin-top: 20px;
+                }
+
+                .mushroom {
+                    transform: scale(0.8);
+                }
+
+                .content-container {
+                    padding-top: 10px;
+                }
+            `;
             document.head.appendChild(styleElement);
             document.body.appendChild(this.homeScreenElement);
 
-            // Add event listeners
-            const mushrooms = this.homeScreenElement.querySelectorAll('.mushroom');
-            mushrooms.forEach(mushroom => {
-                mushroom.addEventListener('click', this.handleClick);
-            });
+            this.addEventListeners();
         } catch (error) {
-            console.error('Error creating homescreen:', error);
+            console.error('Error creating instruction screen:', error);
         }
+    }
+
+    addEventListeners() {
+        const mushrooms = this.homeScreenElement.querySelectorAll('.mushroom');
+        mushrooms.forEach(mushroom => {
+            mushroom.addEventListener('click', this.handleClick);
+        });
+
+        // Add hover effects for instruction sections
+        const sections = this.homeScreenElement.querySelectorAll('.instruction-section');
+        sections.forEach(section => {
+            section.addEventListener('mouseenter', () => {
+                section.style.transform = 'translateY(-3px)';
+            });
+            section.addEventListener('mouseleave', () => {
+                section.style.transform = 'translateY(0)';
+            });
+        });
     }
 
     handleClick(e) {
         e.preventDefault();
         const buttonText = e.currentTarget.querySelector('.mushroom-top').textContent.toLowerCase();
-
-        switch(buttonText) {
-            case 'return to home':
-                console.log('Return to Home clicked');
-                this.stateManager.changeState(HomeState);
-                break;
-            default:
-                console.log('Unknown button clicked:', buttonText);
+        
+        if (buttonText === 'return to home') {
+            this.stateManager.changeState(HomeState);
         }
     }
 
-    update() {
-        //maybe later
+    update(deltaTime) {
+        // Reserved for future animations or state updates
+        // Could be used to add dynamic effects to the icons or background
+    }
+
+    removeEventListeners() {
+        const mushrooms = this.homeScreenElement.querySelectorAll('.mushroom');
+        mushrooms.forEach(mushroom => {
+            mushroom.removeEventListener('click', this.handleClick);
+        });
+
+        const sections = this.homeScreenElement.querySelectorAll('.instruction-section');
+        sections.forEach(section => {
+            section.removeEventListener('mouseenter', () => {});
+            section.removeEventListener('mouseleave', () => {});
+        });
     }
 
     exit() {
-        //cleanup
         if (this.homeScreenElement) {
-            // Remove event listeners
-            const mushrooms = this.homeScreenElement.querySelectorAll('.mushroom');
-            mushrooms.forEach(mushroom => {
-                mushroom.removeEventListener('click', this.handleClick);
-            });
-
-            // Remove the element
+            this.removeEventListeners();
             document.body.removeChild(this.homeScreenElement);
             this.homeScreenElement = null;
 
-            // Remove the style element
-            /*
-            const style = document.querySelector('style');
-            if (style) {
-                document.head.removeChild(style);
-            }
-            */
+            // Clean up style element if needed
+            const styles = document.querySelectorAll('style');
+            styles.forEach(style => {
+                if (style.textContent.includes('.instruction-sections')) {
+                    document.head.removeChild(style);
+                }
+            });
         }
     }
 }
