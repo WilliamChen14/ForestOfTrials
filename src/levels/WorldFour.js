@@ -197,7 +197,7 @@ export class WorldFour extends BaseLevel {
         this.addMob(Ghost, arenaStartX + 6, bridgeHeight + 1, 2);
 
         // Add exit behind boss arena
-        await this.addMemory(arenaStartX + 13, bridgeHeight + 1, 0, "Memory Fragment\nThe truth crashes back - Birdman's ritual went wrong. The arcane energy transformed him into the first of the slimes. His consciousness fractured, spreading corruption through the forest. The Boss Slime before you... it's him. What remains of the wizard who betrayed us all.");
+        await this.addMemory(arenaStartX + 13, bridgeHeight + 1, 0, "Memory Fragment\nThe truth crashes back - Birdman's ritual went wrong. The energy transformed him into the first of the slimes. Since then, he has spread darkness throughout the forest. The Boss Slime before you... it's him. What remains of the wizard who betrayed us all.");
         this.addExit(arenaStartX + 14, bridgeHeight + 1, 0);
 
         return this.getLevelData();

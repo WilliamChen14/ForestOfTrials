@@ -13,7 +13,7 @@ export class WorldOne extends BaseLevel {
         const floorSize = 10;
 
         // Add initial sign and exit
-        await this.addMemory(0, 1, 0, "Memory #1\nYou awaken in a mysterious forest, your mind clouded. Something compels you forward, though you can't remember what. The trees whisper ancient secrets...");
+        await this.addMemory(0, 1, 0, "Memory #1\nYou awaken in a mysterious forest, your mind clouded. Something compels you forward, though you can't remember what...");
         
         // Tutorial and story progression
         await this.addSign(2, 1, 2, "Strange symbols appear in your mind... 'K' to grab objects, 'J' to defend yourself...");
@@ -72,7 +72,7 @@ export class WorldOne extends BaseLevel {
         this.addWater(7,.01,3);
         this.addWater(7,.01,2);
 
-        await this.addMemory(9, 1, 8, "Memory Fragment\nThe path ahead beckons. Each trial will reveal more of who you are... and why you were chosen.");
+        await this.addMemory(9, 1, 8, "Memory Fragment\nThe path ahead beckons. Each trial will reveal more of who you are...");
 
         // Add an extra sign explaining fire
         await this.addSign(4, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
