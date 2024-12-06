@@ -48,8 +48,8 @@ export class WorldFour extends BaseLevel {
             this.addInvisWall(x, 1, -7);
             // Only add trees if not in stone floor area
             if (x !== 8) { // Since stone floor is at x=8
-                this.addTree(x, 1, 8);
-                this.addTree(x, 1, -7);
+                this.addTree(x, 0, 8);
+                this.addTree(x, 0, -7);
             }
         }
         
@@ -109,7 +109,7 @@ export class WorldFour extends BaseLevel {
         this.addMob(Slime, stairStart + 3, 4, 1);
         this.addMob(Ghost, stairStart + 4, 5, 0);
 
-        // Create bridge section with hazards
+        // Create bridge section with 
         const bridgeHeight = 5;
         const bridgeLength = 31;
         const platformSpacing = 3;
@@ -123,10 +123,18 @@ export class WorldFour extends BaseLevel {
                 }
             }
 
+            const centerX = x + 0.5; // Assuming each platform spans x to x+1
+            const centerZLeft = -2;   // Adjust based on desired side placement
+            const centerZRight = 1;   // Adjust based on desired side placement
+
+            this.addTree(centerX, bridgeHeight+0.8, centerZLeft+2.25);
+            this.addTree(centerX, bridgeHeight+0.8, centerZRight-2.25);
+
+
             // Add hazards and decoration
-            if (x % 2 === 0) {
-                this.addFire(x, bridgeHeight + 1, -2);
-                this.addFire(x + 1, bridgeHeight + 1, 1);
+            if (x % 4 === 0) {
+                this.addFire(x, bridgeHeight+0.5, -1);
+                this.addFire(x, bridgeHeight+0.5, 0);
             }
             
             // Add floating ghosts along bridge
@@ -150,19 +158,19 @@ export class WorldFour extends BaseLevel {
         }
 
         // Add decorative elements in boss arena
-        this.addFireRing(arenaStartX + 7, bridgeHeight + 1, 0, 6, 12);
+        this.addFireRing(arenaStartX + 7, bridgeHeight + 1, 0, 3, 5);
         
         // Add corner fireplaces
-        await this.addFireplace(arenaStartX + 2, bridgeHeight + 1, -7);
-        await this.addFireplace(arenaStartX + 2, bridgeHeight + 1, 8);
-        await this.addFireplace(arenaStartX + 8, bridgeHeight + 1, -7);
-        await this.addFireplace(arenaStartX + 8, bridgeHeight + 1, 8);
+        await this.addFireplace(arenaStartX + 2, bridgeHeight + 1, -1);
+        await this.addFireplace(arenaStartX + 2, bridgeHeight + 1, 2);
+        await this.addFireplace(arenaStartX + 4, bridgeHeight + 1, -1);
+        await this.addFireplace(arenaStartX + 4, bridgeHeight + 1, 2);
 
         // Add rock formations in corners
-        await this.addRocks(arenaStartX + 3, bridgeHeight + 1, -6, Math.PI / 4);
-        await this.addRocks(arenaStartX + 3, bridgeHeight + 1, 7, -Math.PI / 4);
-        await this.addRocks(arenaStartX + 10, bridgeHeight + 1, -6, Math.PI / 2);
-        await this.addRocks(arenaStartX + 10, bridgeHeight + 1, 7, -Math.PI / 2);
+        await this.addRocks(arenaStartX + 1, bridgeHeight + 1, -1, Math.PI / 4);
+        await this.addRocks(arenaStartX + 1, bridgeHeight + 1, 2, -Math.PI / 4);
+        await this.addRocks(arenaStartX + 8, bridgeHeight + 1, -1, Math.PI / 2);
+        await this.addRocks(arenaStartX + 8, bridgeHeight + 1, 2, -Math.PI / 2);
 
         // Add walls around boss arena
         for (let x = arenaStartX; x <= arenaStartX + 15; x++) {
@@ -183,10 +191,10 @@ export class WorldFour extends BaseLevel {
         // Add mini-bosses and regular enemies in arena
         this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, -5);
         this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, 5);
-        this.addMob(Slime, arenaStartX + 8, bridgeHeight + 1, -3);
-        this.addMob(Slime, arenaStartX + 8, bridgeHeight + 1, 3);
-        this.addMob(Ghost, arenaStartX + 12, bridgeHeight + 1, -4);
-        this.addMob(Ghost, arenaStartX + 12, bridgeHeight + 1, 4);
+        this.addMob(Slime, arenaStartX + 3, bridgeHeight + 1, -3);
+        this.addMob(Slime, arenaStartX + 3, bridgeHeight + 1, 3);
+        this.addMob(Ghost, arenaStartX + 6, bridgeHeight + 1, -2);
+        this.addMob(Ghost, arenaStartX + 6, bridgeHeight + 1, 2);
 
         this.addMob(BigSlime, arenaStartX + 7, bridgeHeight + 1, 0);
 
