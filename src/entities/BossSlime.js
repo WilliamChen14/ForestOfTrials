@@ -48,9 +48,9 @@ export class BossSlime {
         // Position the entire group
         this.mobMesh.position.set(x, y, z);
 
-        // Add hopping animation properties
-        this.jumpHeight = 0.5;
-        this.jumpSpeed = 2;
+        // Add animation properties
+        this.jumpHeight = 0.3; // Reduced from 0.5
+        this.jumpSpeed = 1.5;  // Reduced from 2
         this.baseY = y;
         this.animationOffset = Math.random() * Math.PI * 2;
 
@@ -62,30 +62,33 @@ export class BossSlime {
             }
         });
 
-        this.scene.add(this.mobMesh); // Add the slime to the scene
+        this.scene.add(this.mobMesh);
 
-        // Collision and movement properties
-        this.collisionDistance = 1.8; // Set collision distance for proximity detection
-        this.moveSpeed = 0.03; // Movement speed of the slime
+        // Movement and collision properties
+        this.collisionDistance = 1.8;
+        this.moveSpeed = 0.01; // Reduced from 0.03
         this.direction = new THREE.Vector3(
             (Math.random() - 0.5) * 2,
             0,
             (Math.random() - 0.5) * 2
-        ).normalize(); // Random initial direction
+        ).normalize();
 
+        // Position control
+        this.startPosition = new THREE.Vector3(x, y, z);
+        this.maxDistance = 3; // Maximum distance from start position
+
+        // Movement timing
+        this.directionChangeInterval = 5000; // Change direction every 5 seconds
+        this.lastDirectionChange = Date.now();
         this.lastCollisionTime = 0;
-
-        // Bind methods
-        this.checkCollision = this.checkCollision.bind(this);
-        this.getLastCollisionTime = this.getLastCollisionTime.bind(this);
-        this.loseLife = this.loseLife.bind(this);
         this.lastLostLife = 0;
-
-        this.health = 10;
-
         this.lastSpawnSlime = 0;
 
-        // Collision raycaster
+        // Combat properties
+        this.health = 10;
+        this.isDead = false;
+
+        // Collision detection
         this.raycaster = new THREE.Raycaster();
         this.collisionVectors = [
             new THREE.Vector3(1, 0, 0),    // Right
@@ -94,10 +97,12 @@ export class BossSlime {
             new THREE.Vector3(0, 0, -1)    // Backward
         ];
 
-        this.isDead = false;
+        // Bind methods
+        this.checkCollision = this.checkCollision.bind(this);
+        this.getLastCollisionTime = this.getLastCollisionTime.bind(this);
+        this.loseLife = this.loseLife.bind(this);
     }
 
-    // Method to check collision with the character, called every 500ms
     checkCollision(characterMesh) {
         const distance = this.mobMesh.position.distanceTo(characterMesh.position);
         if(distance <= this.collisionDistance){
@@ -110,14 +115,11 @@ export class BossSlime {
         const collisionDetected = this.collisionVectors.some(direction => {
             this.raycaster.set(this.mobMesh.position, direction);
             const intersects = this.raycaster.intersectObjects(levelData);
-
-            // Check if any wall is within the collision distance
             return intersects.length > 0 && intersects[0].distance <= this.collisionDistance;
         });
 
         if (collisionDetected) {
-            // Reverse direction or pick a new random direction
-            this.direction.negate(); // Invert direction for a simple bounce effect
+            this.direction.negate();
         }
     }
 
@@ -130,45 +132,59 @@ export class BossSlime {
         this.lastLostLife = Date.now();
     }
 
-    // Update method to move the slime randomly
     update(levelData, Mobs) {
         if(this.isDead){
             return;
         }
 
-        // Randomly change direction
-        if (Math.random() < 0.02) {
-            this.direction = new THREE.Vector3(
-                (Math.random() - 0.5) * 2,
-                0,
-                (Math.random() - 0.5) * 2
-            ).normalize();
+        const currentTime = Date.now();
+
+        // Change direction less frequently and more deliberately
+        if (currentTime - this.lastDirectionChange > this.directionChangeInterval) {
+            const distanceFromStart = this.mobMesh.position.distanceTo(this.startPosition);
+            
+            if (distanceFromStart > this.maxDistance) {
+                // Move back toward start position
+                this.direction = new THREE.Vector3()
+                    .subVectors(this.startPosition, this.mobMesh.position)
+                    .normalize();
+            } else {
+                // Random direction but with smaller variations
+                this.direction = new THREE.Vector3(
+                    (Math.random() - 0.5),
+                    0,
+                    (Math.random() - 0.5)
+                ).normalize();
+            }
+            
+            this.lastDirectionChange = currentTime;
         }
 
         this.checkWallCollision(levelData);
 
-        // Update slime position based on direction and speed
+        // More controlled movement
         this.mobMesh.position.add(this.direction.clone().multiplyScalar(this.moveSpeed));
 
-        // Minecraft-style hopping animation
-        const time = Date.now() * 0.001;
+        // Slower animation
+        const time = currentTime * 0.001;
         this.mobMesh.position.y = this.baseY + Math.abs(Math.sin(time * this.jumpSpeed + this.animationOffset)) * this.jumpHeight;
 
-        // Rotate slightly during jump
-        this.mobMesh.rotation.y = Math.sin(time * this.jumpSpeed + this.animationOffset) * 0.1;
+        // Reduced rotation
+        this.mobMesh.rotation.y = Math.sin(time * this.jumpSpeed + this.animationOffset) * 0.05;
 
-        // Squash and stretch effect
-        const squashStretch = 1 + Math.sin(time * this.jumpSpeed + this.animationOffset) * 0.2;
+        // Gentler squash and stretch
+        const squashStretch = 1 + Math.sin(time * this.jumpSpeed + this.animationOffset) * 0.15;
         this.mobMesh.scale.y = 1 / squashStretch;
         this.mobMesh.scale.x = this.mobMesh.scale.z = squashStretch;
 
-        // Spawn baby slimes under certain conditions
-        if(this.lastLostLife > Date.now() - 600 && Date.now() - this.lastSpawnSlime > 600){
+        // Spawn baby slimes when hit
+        if(this.lastLostLife > currentTime - 600 && currentTime - this.lastSpawnSlime > 600){
             const babySlimeThree = new Slime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
             Mobs.push(babySlimeThree);
-            this.lastSpawnSlime = Date.now();
+            this.lastSpawnSlime = currentTime;
         }
 
+        // Death and spawning big slimes
         if(this.health <= 0){
             const babySlimeOne = new BigSlime(this.scene, this.mobMesh.position.x, this.mobMesh.position.y, this.mobMesh.position.z);
             Mobs.push(babySlimeOne);
@@ -183,7 +199,6 @@ export class BossSlime {
         return this.isDead;
     }
 
-    // Method to remove the slime from the scene if needed
     remove() {
         this.scene.remove(this.mobMesh);
     }

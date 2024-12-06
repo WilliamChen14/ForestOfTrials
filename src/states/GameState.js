@@ -119,7 +119,7 @@ export class GameState {
             case 4:
                 this.level = new WorldFour(this.stateManager.scene);
             case 5:
-                this.level = new WorldFour(this.stateManager.scene);
+                this.level = new WorldFive(this.stateManager.scene);
                 break;
             default:
                 console.log("Invalid level");
@@ -162,7 +162,7 @@ export class GameState {
         // Create new level
         if (this.currentLevel === 1) {
             console.log("Creating WorldOneWorldThree");
-            this.level = new WorldFive(this.stateManager.scene);
+            this.level = new WorldOne(this.stateManager.scene, this.character);
         } else if (this.currentLevel === 2) {
             console.log("Creating WorldOneWorldFour");
             this.level = new WorldTwo(this.stateManager.scene);
@@ -175,7 +175,7 @@ export class GameState {
         }
         else if (this.currentLevel === 5){
             console.log("Creating default WorldTwoWorldThree");
-            this.level = new WorldFour(this.stateManager.scene);
+            this.level = new WorldFive(this.stateManager.scene);
         }
         else {
             console.log("Game has been won");

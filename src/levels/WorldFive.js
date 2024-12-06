@@ -8,140 +8,211 @@ import { BossSlime } from '../entities/BossSlime.js';
 
 export class WorldFive extends BaseLevel {
     async build() {
-        // Start the player at a safe position
-        await this.addSign(1, 1, 1, "Welcome to Level 3!\nUse planks to cross the lava pools and watch out for the fire rings!");
+        // Starting platform with sign
+        await this.addSign(0, 1, 0, "Welcome! Complete three trials to face the boss.\nCollect planks to build your path!");
         
-        // Create starting platform with volcanic theme (slightly smaller than before for better performance)
-        for (let x = -8; x <= 8; x++) {
-            for (let z = -8; z <= 8; z++) {
-                // Create pattern suggesting hot/cold zones
-                if (Math.abs(x) + Math.abs(z) < 8) {
-                    this.addStoneFloor(x, 0, z);  // Inner "hot" zone
-                } else {
-                    this.addDirtFloor(x, 0, z);   // Outer "cool" zone
+        // Starting area (3x3)
+        for (let x = -1; x <= 1; x++) {
+            for (let z = -1; z <= 1; z++) {
+                this.addStoneFloor(x, 0, z);
+            }
+        }
+
+        // Main bridge to central platform
+        const bridgeStart = 2;
+        const bridgeLength = 6;
+        
+        for (let x = bridgeStart; x < bridgeStart + bridgeLength; x++) {
+            this.addPlank(x, 0, 0);
+        }
+        
+        // Lava beneath bridge
+        for (let x = bridgeStart; x < bridgeStart + bridgeLength; x++) {
+            for (let z = -3; z <= 3; z++) {
+                if (z !== 0) {
+                    this.addLava(x, -2, z);
                 }
             }
         }
 
-        // Add decorative elements in starting area - reduced number for performance
-        for (let i = 0; i < 4; i++) {
-            const angle = (i * Math.PI) / 2;
-            const x = Math.cos(angle) * 6;
-            const z = Math.sin(angle) * 6;
-            await this.addFireplace(x, 1, z);
-            // Only add rocks at alternating positions
-            if (i % 2 === 0) {
-                await this.addRocks(x + 1, 1, z + 1, angle);
-            }
-        }
-
-        // Add fire ring in center - reduced number of fires
-        this.addFireRing(0, 1, 0, 3, 4);
-
-        // Create boundary walls and decoration
-        for (let x = -8; x <= 8; x++) {
-            this.addInvisWall(x, 1, 8);
-            this.addInvisWall(x, 1, -8);
-            // Add trees at intervals instead of every position
-            if (x % 2 === 0) {
-                this.addTree(x, 1, 8);
-                this.addTree(x, 1, -8);
-            }
-        }
-        
-        for (let z = -8; z <= 8; z++) {
-            this.addInvisWall(-8, 1, z);
-            this.addInvisWall(8, 1, z);
-            // Add trees at intervals
-            if (z % 2 === 0) {
-                this.addTree(-8, 1, z);
-                this.addTree(8, 1, z);
-            }
-        }
-
-        // Create lava challenge section - optimized spacing
-        const lavaStart = 9;
-        const lavaWidth = 16; // Reduced from 20
-        
-        // Create platforms over lava
-        
-        
-        for (let x = lavaStart; x < lavaStart + lavaWidth; x += 4) {
-            // Create safe platforms
-            this.addStoneFloor(x, 0, 0);
-            this.addStoneFloor(x, 0, 1);
-            
-            // Add lava pools between platforms - reduced area
-            for (let z = -3; z <= 4; z++) {
-                if (z !== 0 && z !== 1) {
-                    
-                    //this.addLava(x, 0, z);
-                    //this.addLava(x + 1, 0, z);
-                    this.addLava(x + 2, 0, z);
-                    
-                }
-            }
-            
-            // Add planks for crossing
-            if (x < lavaStart + lavaWidth - 4) {
-                this.addPlank(x + 1, 1, 0);
-            }
-            
-            // Add ghosts as obstacles - reduced number
-            if (x % 8 === 0) {
-                this.addMob(Ghost, x + 2, 2, -2);
-            }
-        }
-            
-        
-
-        // Create combat arena after lava section
-        const arenaStart = lavaStart + lavaWidth;
-        const arenaSize = 12; // Reduced from 15
-        
-        // Create elevated arena platform
-        for (let x = arenaStart; x < arenaStart + arenaSize; x++) {
-            for (let z = -6; z <= 6; z++) {
+        // Central hub platform (5x5)
+        const centerX = bridgeStart + bridgeLength;
+        for (let x = -2; x <= 2; x++) {
+            for (let z = -2; z <= 2; z++) {
                 if ((x + z) % 2 === 0) {
-                    this.addStoneFloor(x, 0, z);
+                    this.addStoneFloor(centerX + x, 0, z);
                 } else {
-                    this.addDirtFloor(x, 0, z);
+                    this.addDirtFloor(centerX + x, 0, z);
                 }
             }
         }
-            
 
-        // Add decorative fire rings - reduced number of fires
-        this.addFireRing(arenaStart + arenaSize/2, 1, 0, 4, 6);
-        this.addFireRing(arenaStart + arenaSize/2, 1, 0, 2, 4);
-
-        // Add rock formations in corners - reduced to two
-        await this.addRocks(arenaStart + 2, 1, -5, Math.PI/4);
-        await this.addRocks(arenaStart + arenaSize - 2, 1, 5, -Math.PI/2);
-
-        // Add enemies in arena - balanced number
-        this.addMob(BigSlime, arenaStart + 5, 1, -3);
-        this.addMob(Ghost, arenaStart + 8, 1, -4);
-        this.addMob(Slime, arenaStart + 10, 1, 2);
-
-        // Add final boss
-        this.addMob(BigSlime, arenaStart + arenaSize/2, 1, 0);
-
-        // Add walls around arena with optimized decorations
-        for (let x = arenaStart; x < arenaStart + arenaSize; x++) {
-            this.addInvisWall(x, 1, -6);
-            this.addInvisWall(x, 1, 6);
-            if (x % 3 === 0) {  // Reduced frequency of decorations
-                await this.addFireplace(x, 1, -6);
-                await this.addFireplace(x, 1, 6);
-            }
-        }
-            
-
-        // Add exit behind boss arena
-        this.addExit(arenaStart + arenaSize - 1, 1, 0);
+        // Build three challenge platforms
+        // North challenge - Fire Ring
+        await this.buildFireChallenge(centerX, -6);
         
+        // East challenge - Ghost
+        await this.buildGhostChallenge(centerX, 0);
+        
+        // South challenge - Slime
+        await this.buildSlimeChallenge(centerX, 6);
+
+        // Gap and boss arena setup
+        const wallX = centerX + 10;
+        await this.buildPlankGapChallenge(wallX);
+        
+        // Boss arena moved further back to require plank bridging
+        await this.buildBossArena(wallX + 8);
 
         return this.getLevelData();
+    }
+
+    async buildFireChallenge(x, z) {
+        // Bridge to fire challenge
+        for (let i = -2; i >= -4; i--) {
+            this.addPlank(x, 0, i);
+        }
+
+        // Platform (4x4)
+        for (let dx = -1; dx <= 2; dx++) {
+            for (let dz = -8; dz <= -5; dz++) {
+                this.addStoneFloor(x + dx, 0, dz);
+            }
+        }
+
+        await this.addSign(x, 1, z - 1, "Fire Ring Trial\nReward: Building Plank");
+        this.addMob(Slime, x + 1, 1, z - 1);
+        this.addMob(Slime, x, 1, z - 1);
+        this.addMob(Slime, x, 1, z + 1);
+        this.addMob(Slime, x + 1, 1, z);
+        this.addPlank(x + 1, 1, z - 1);
+
+        // Add lava around platform
+        for (let dx = -2; dx <= 3; dx++) {
+            for (let dz = -9; dz <= -4; dz++) {
+                if (dx < -1 || dx > 2 || dz < -8 || dz > -5) {
+                    this.addLava(x + dx, -2, dz);
+                }
+            }
+        }
+    }
+
+    async buildGhostChallenge(x, z) {
+        // Bridge to ghost challenge
+        for (let i = 1; i <= 4; i++) {
+            this.addPlank(x + i, 0, 0);
+        }
+
+        const ghostPlatformX = x + 6;
+
+        // Checkerboard platform (4x4)
+        for (let dx = 0; dx <= 3; dx++) {
+            for (let dz = -1; dz <= 2; dz++) {
+                if ((dx + dz) % 2 === 0) {
+                    this.addStoneFloor(ghostPlatformX + dx, 0, dz);
+                } else {
+                    this.addDirtFloor(ghostPlatformX + dx, 0, dz);
+                }
+            }
+        }
+
+        await this.addSign(ghostPlatformX, 1, z - 1, "Ghost's Trial\nReward: Building Plank");
+        this.addMob(Ghost, ghostPlatformX + 1, 1, z);
+        this.addMob(Ghost, ghostPlatformX + 2, 1, z + 1);
+        this.addPlank(ghostPlatformX + 3, 1, z);
+
+        // Add lava around platform
+        for (let dx = -1; dx <= 4; dx++) {
+            for (let dz = -2; dz <= 3; dz++) {
+                this.addLava(ghostPlatformX + dx, -2, dz);
+            }
+        }
+    }
+
+    async buildSlimeChallenge(x, z) {
+        // Bridge to slime challenge
+        for (let i = 1; i <= 4; i++) {
+            this.addPlank(x, 0, i);
+        }
+
+        // Elevated platform
+        for (let dx = -1; dx <= 2; dx++) {
+            for (let dz = 5; dz <= 8; dz++) {
+                this.addStoneFloor(x + dx, 0, dz);
+            }
+        }
+
+        await this.addSign(x, 1, z + 2, "Slime's Trial\nReward: Building Plank");
+        this.addMob(BigSlime, x + 1, 1, z + 1);
+        this.addPlank(x + 1, 1, z + 2);
+
+        // Add lava around platform
+        for (let dx = -2; dx <= 3; dx++) {
+            for (let dz = 4; dz <= 9; dz++) {
+                this.addLava(x + dx, -2, dz);
+            }
+        }
+    }
+
+    async buildPlankGapChallenge(x) {
+        // Platform before gap
+        for (let z = -1; z <= 1; z++) {
+            this.addStoneFloor(x - 1, 0, z);
+            this.addStoneFloor(x - 2, 0, z);
+        }
+        
+        await this.addSign(x - 2, 1, 0, "Stack your planks to reach the boss!");
+        
+        // Small support platform in the middle (single block)
+        const midPoint = x + 3;
+        //this.addStoneFloor(midPoint, 0, 0);
+        
+        // Add lava under the gap, avoiding the support platform area
+        for (let dx = x; dx < x + 7; dx++) {
+            for (let z = -3; z <= 3; z++) {
+                // Skip lava placement at the support platform position
+                if (!(dx === midPoint && z === 0)) {
+                    this.addLava(dx, -2, z);
+                }
+            }
+        }
+    }
+
+    async buildBossArena(x) {
+        // Larger boss arena (10x10)
+        for (let dx = -4; dx <= 5; dx++) {
+            for (let dz = -5; dz <= 4; dz++) {
+                if (Math.abs(dx) + Math.abs(dz) <= 8) {
+                    if ((dx + dz) % 2 === 0) {
+                        this.addStoneFloor(x + dx, 0, dz);
+                    } else {
+                        this.addDirtFloor(x + dx, 0, dz);
+                    }
+                }
+            }
+        }
+
+        // Dramatic fire rings
+        this.addFireRing(x, 1, 0, 4, 3);  // Outer ring
+        this.addFireRing(x, 1, 0, 2, 3);  // Inner ring
+        
+        // Boss in center
+        this.addMob(BossSlime, x, 1, 0);
+
+        // Exit behind boss
+        this.addExit(x + 4, 1, 0);
+        
+        // Back wall with fires
+        for (let z = -5; z <= 4; z++) {
+            this.addInvisWall(x + 6, 1, z);
+            this.addTree(x + 5, 0, z);
+        }
+
+        // Add lava around arena
+        for (let dx = -5; dx <= 6; dx++) {
+            for (let dz = -6; dz <= 5; dz++) {
+                this.addLava(x + dx, -2, dz);
+            }
+        }
     }
 }
