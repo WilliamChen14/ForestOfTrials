@@ -105,6 +105,14 @@ export class InstructionState {
         `;
     }
 
+    // New Icon Generator for Jump + Attack
+    getJumpAttackIcon() {
+        return `
+            <svg viewBox="0 0 100 100" width="40" height="40">
+            </svg>
+        `;
+    }
+
     // Main content generator
     getInstructionsContent() {
         return `
@@ -162,6 +170,15 @@ export class InstructionState {
                     <div class="section-content">
                         <h3>Pause Game</h3>
                         <p>Press <span class="key">Escape</span> to pause the game.</p>
+                    </div>
+                </div>
+
+                <!-- New Instruction Section for Jump + Attack -->
+                <div class="instruction-section">
+                    <div class="section-icon">${this.getJumpAttackIcon()}</div>
+                    <div class="section-content">
+                        <h3>Jump + Attack</h3>
+                        <p>Press <span class="key">Z</span> to perform a combined jump and attack action.</p>
                     </div>
                 </div>
             </div>
