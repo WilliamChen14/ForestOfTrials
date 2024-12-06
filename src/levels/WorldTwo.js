@@ -36,9 +36,9 @@ export class WorldTwo extends BaseLevel {
 
         this.addMob(Slime, 6, 1, 6);
         this.addMob(Slime, 8, 1, 2);
-        this.addMob(Slime, 10, 1, 4);
-        this.addMob(Slime, 12, 1, 2);
-        this.addMob(BigSlime, 13, 1, 2);
+        this.addMob(Slime, 6, 1, 4);
+        this.addMob(Slime, 8, 1, 2);
+        this.addMob(BigSlime, 9, 1, 2);
         this.addBox(3,1,3);
         this.addExit(20,1,5);
 

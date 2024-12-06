@@ -323,7 +323,7 @@ export class Character {
         this.Hazards.forEach(hazard => {
             if (currentTime - hazard.getLastCollisionTime() > 1200 && hazard.checkCollision(this.characterMesh)) {
                 this.audio.playDamageSound();
-                this.updateHealth(this.health - 2);  //tentative, we can change this
+                this.updateHealth(this.health - 1);  //tentative, we can change this
                 console.log("collided with lava");
             }
             
