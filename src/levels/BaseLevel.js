@@ -16,6 +16,7 @@ import { Plank } from '../entities/Plank.js';
 import { Memory } from '../entities/Memory.js';
 import { House } from '../entities/House.js';
 import { Npc } from '../entities/Npc.js';
+import { Lava } from '../entities/Lava.js';
 
 export class BaseLevel {
     constructor(scene) {
@@ -29,6 +30,12 @@ export class BaseLevel {
         this.Waters = [];
         this.Updatables = [];
     }
+
+    addLava(x, y, z) {
+        const lava = new Lava(this.scene, x, y, z);
+        this.Hazards.push(lava);
+        return lava;
+    }    
 
     addInvisWall(x, y, z) {
         const invisWall = new InvisWall(this.scene, x, y, z);

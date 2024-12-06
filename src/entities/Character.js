@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { Model } from '../Models.js';
 import { Water } from './Water.js';
 import { AudioPlayer } from '/src/Audio.js';
+import { Lava } from './Lava.js';
 
 import CHARACTER from '/assets/models/character.glb'
 const clock = new THREE.Clock();
@@ -318,11 +319,17 @@ export class Character {
         this.Waters.forEach(obj=> {
             obj.update();
         });
+
         this.Hazards.forEach(hazard => {
-            if (currentTime - hazard.getLastCollisionTime() > 800 && hazard.checkCollision(this.characterMesh)) {
+            if (currentTime - hazard.getLastCollisionTime() > 1200 && hazard.checkCollision(this.characterMesh)) {
                 this.audio.playDamageSound();
-                this.updateHealth(this.health - 1);
-                console.log("collided with fire");
+                if (hazard instanceof Lava) {
+                    this.updateHealth(this.health - 2);  //tentative, we can change this
+                    console.log("collided with lava");
+                } else {
+                    this.updateHealth(this.health - 1);
+                    console.log("collided with fire");
+                }
             }
             
             if (hazard.update) {

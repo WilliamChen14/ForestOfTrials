@@ -12,6 +12,8 @@ export class WorldOne extends BaseLevel {
     async build() {
         const floorSize = 10;
 
+        this.addLava(1, 1, 0);
+
         // Add initial sign and exit
         await this.addMemory(0,1,0, "Memory #1 \n You wake up in this forest unsure of how you got here. You recall some sort of purpose or reason you must continue forward.");
         this.addBox(4,1,0.5);
