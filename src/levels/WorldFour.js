@@ -10,8 +10,9 @@ import { BossSlime } from '../entities/BossSlime.js';
 
 export class WorldFour extends BaseLevel {
     async build() {
-        await this.addSign(0, 1, 0, "Welcome to Level 2!\nWatch out for ghosts and collect boxes to unlock the gate ahead.");
-        
+        await this.addNpc(1, 1, 0, "Guardian! Thank you for coming here! The ancient scrolls were stolen by Birdman, our court wizard. He disappeared into the temple... but something dark followed. These creatures - they're unlike anything we've seen.");
+        await this.addMemory(1, 1, 1, "You remember this place. There's fire on the bridge...you need to be careful and make sure you have enough lives");
+
         // Create starting platform with mixed floor types for visual interest
         for (let x = -7; x <= 8; x++) {
             for (let z = -7; z <= 8; z++) {
@@ -29,6 +30,8 @@ export class WorldFour extends BaseLevel {
         await this.addFireplace(-6, 1, 7);
         await this.addFireplace(7, 1, -6);
         await this.addFireplace(7, 1, 7);
+
+        this.addHouse(-2, 1, 1, Math.PI / 2);
 
         // Add rock formations for atmosphere
         await this.addRocks(-5, 1, -5, Math.PI / 4);
@@ -62,10 +65,7 @@ export class WorldFour extends BaseLevel {
             }
         }
         
-        // Add boxes for puzzle solving
-        this.addBox(-2, 1, 2);
         this.addBox(3, 1, 2);
-        this.addBox(0, 1, -3);
 
         // Add initial enemies in starting area
         this.addMob(Ghost, -4, 1, -4);
@@ -134,7 +134,6 @@ export class WorldFour extends BaseLevel {
             // Add hazards and decoration
             if (x % 4 === 0) {
                 this.addFire(x, bridgeHeight+0.5, -1);
-                this.addFire(x, bridgeHeight+0.5, 0);
             }
             
             // Add floating ghosts along bridge
@@ -172,6 +171,8 @@ export class WorldFour extends BaseLevel {
         await this.addRocks(arenaStartX + 8, bridgeHeight + 1, -1, Math.PI / 2);
         await this.addRocks(arenaStartX + 8, bridgeHeight + 1, 2, -Math.PI / 2);
 
+        await this.addMemory(stairStart + 15, bridgeHeight + 1, 0, "Memory Fragment\nNow you remember that night - racing to stop Birdman at the temple gates. He was attempting a forbidden ritual with the scrolls. There was a blast of energy... then darkness.");
+
         // Add walls around boss arena
         for (let x = arenaStartX; x <= arenaStartX + 15; x++) {
             this.addInvisWall(x, bridgeHeight + 1, -9);
@@ -190,15 +191,13 @@ export class WorldFour extends BaseLevel {
 
         // Add mini-bosses and regular enemies in arena
         this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, -5);
-        this.addMob(BigSlime, arenaStartX + 5, bridgeHeight + 1, 5);
         this.addMob(Slime, arenaStartX + 3, bridgeHeight + 1, -3);
         this.addMob(Slime, arenaStartX + 3, bridgeHeight + 1, 3);
         this.addMob(Ghost, arenaStartX + 6, bridgeHeight + 1, -2);
         this.addMob(Ghost, arenaStartX + 6, bridgeHeight + 1, 2);
 
-        this.addMob(BigSlime, arenaStartX + 7, bridgeHeight + 1, 0);
-
         // Add exit behind boss arena
+        await this.addMemory(arenaStartX + 13, bridgeHeight + 1, 0, "Memory Fragment\nThe truth crashes back - Birdman's ritual went wrong. The arcane energy transformed him into the first of the slimes. His consciousness fractured, spreading corruption through the forest. The Boss Slime before you... it's him. What remains of the wizard who betrayed us all.");
         this.addExit(arenaStartX + 14, bridgeHeight + 1, 0);
 
         return this.getLevelData();

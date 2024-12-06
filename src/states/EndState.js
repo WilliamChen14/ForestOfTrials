@@ -187,7 +187,7 @@ export class EndState {
                         <div class="chain"></div>
                         <div class="chain"></div>
                     </div>
-                    <h1 class="title">Congratulations! You have won the game.</h1>
+                    <h1 class="title">Congratulations! You have won the game. You have freed the village from Birdman!</h1>
                 </div>
 
                 <div class="mushroom-container">

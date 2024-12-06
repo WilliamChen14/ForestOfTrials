@@ -13,9 +13,13 @@ export class WorldOne extends BaseLevel {
         const floorSize = 10;
 
         // Add initial sign and exit
-        await this.addMemory(0,1,0, "Memory #1 \n You wake up in this forest unsure of how you got here. You recall some sort of purpose or reason you must continue forward.");
-        this.addBox(4,1,0.5);
+        await this.addMemory(0, 1, 0, "Memory #1\nYou awaken in a mysterious forest, your mind clouded. Something compels you forward, though you can't remember what. The trees whisper ancient secrets...");
+        
+        // Tutorial and story progression
+        await this.addSign(2, 1, 2, "Strange symbols appear in your mind... 'K' to grab objects, 'J' to defend yourself...");
+        
         this.addExit(10, 1, 9);
+        this.addBox(3, 1, 5);
 
         await this.addNpc(5,1,5, "Help traveller! The slimes are invading our village! Use k to grab that box to help you get over this dreaded fence!");
 
@@ -42,7 +46,7 @@ export class WorldOne extends BaseLevel {
         // Add a single fire near the exit as a final challenge
         this.addFire(8, 1, 4);
         await this.addFireplace(8, 1, 4);
-        await this.addRocks(1, 1, 8, 0);
+        await this.addRocks(1, 1, 6, 0);
         await this.addHouse(6,1,1, 0.5);
 
         await this.addFence(5, 1, 7, Math.PI * 0.1);
@@ -53,6 +57,7 @@ export class WorldOne extends BaseLevel {
         this.addInvisWall(7, -1.2, 6.5);
         this.addInvisWall(8, -1.2, 6.5);
         this.addInvisWall(9, -1.2, 6.5);
+        await this.addFence(2, 1, 8.5, Math.PI * 0.2);
 
         //this.addMob(Ghost, 4, 1, 4);
 
@@ -67,8 +72,10 @@ export class WorldOne extends BaseLevel {
         this.addWater(7,.01,3);
         this.addWater(7,.01,2);
 
+        await this.addMemory(9, 1, 8, "Memory Fragment\nThe path ahead beckons. Each trial will reveal more of who you are... and why you were chosen.");
+
         // Add an extra sign explaining fire
-        await this.addSign(8, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
+        await this.addSign(4, 1, 2, 'Careful! Fire will hurt you.\nTry to avoid it!');
 
         return this.getLevelData();
     }

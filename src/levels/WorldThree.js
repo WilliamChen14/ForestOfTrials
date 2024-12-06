@@ -6,16 +6,19 @@ import { StoneFLoor } from '../entities/StoneFloor.js';
 import { Tree } from '../entities/Tree.js';
 import { InvisWall } from '../entities/InvisWall.js';
 import { Exit } from '../entities/Exit.js';
-import { BossSlime } from '../entities/BossSlime.js';
+import { BigSlime } from '../entities/BigSlime.js';
 import { Box } from '../entities/Box.js';
 import { DirtFloor } from '../entities/DirtFloor.js';
+import { Ghost } from '../entities/Ghost.js';
 
 export class WorldThree extends BaseLevel {
     async build() {
         const floorSize = 15;
 
         // Add initial sign and exit
-        await this.addSign(-7, 1, 9, 'You can reset the level by pressing "r"');
+        await this.addMemory(-7, 1, 9, "Memory #3\nThe forest's magic grows stronger. You remember being part of an ancient order, sworn to protect these grounds. The corruption began at the heart...");
+        
+        await this.addSign(-5, 1, 9, 'The corruption touches everything! Press "r" to reset if you become trapped. And rescue the villager ahead, who has been imprisoned by the slimes...');
         this.addExit(0, 1, 30);
 
         // Add initial floor and walls
@@ -83,6 +86,7 @@ export class WorldThree extends BaseLevel {
         for (let x = 0; x < 20; x++) {
             this.addStoneFloor(3 + x, 6, 7);
         }
+        await this.addMemory(12, 7, 7, "Memory Fragment\nThe corruption's source... it is at the end of the trials!.");
         
         // Secret path 2
         for (let x = 0; x < 22; x++) {
@@ -118,6 +122,8 @@ export class WorldThree extends BaseLevel {
         this.addMob(Slime, 0, 1, 16);
         this.addMob(Slime, -6, 1, 16);
 
+        this.addNpc(7, 1, 16, "Thank you for rescuing me from the slimes! Watch out for the ghost in the next trial...they are intelligent unlike the slimes!");
+
         // nah its  a skill issue if they need this this.addBox(8, 1, 16); // can jump
 
         // Add final tree line
@@ -125,6 +131,12 @@ export class WorldThree extends BaseLevel {
             this.addTree(x, 1, 17);
             this.addInvisWall(x, 1, 17);
         }
+
+        this.addMob(Slime, 0, 1, 24);
+        this.addMob(Slime, 0, 1, 24);
+        this.addMob(BigSlime, 0, 1, 20);
+
+        await this.addMemory(0, 1, 29, "Memory Fragment\nNow you remember - you were the guardian of the village, tasked with keeping the village safe! But what happened? The corruption didn't just appear... it was unleashed. Someone tampered with dark magic. But where were you when it happened? The next trial may hold the answer...");
 
         return this.getLevelData();
     }

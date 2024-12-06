@@ -118,6 +118,7 @@ export class GameState {
                 break;
             case 4:
                 this.level = new WorldFour(this.stateManager.scene);
+                break;
             case 5:
                 this.level = new WorldFive(this.stateManager.scene);
                 break;

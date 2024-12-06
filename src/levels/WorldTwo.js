@@ -15,7 +15,7 @@ export class WorldTwo extends BaseLevel {
         const floorWidth = 20;
 
         // Add initial sign and exit
-        await this.addSign(5, 1, 5, 'You can attack with the j key and pick up some objects with the k key. \nWhen you are ready make your way to the Yellow Exit');
+        await this.addSign(5, 1, 5, "Your body remembers... 'Z' to jump and attack, 'M' to dash and attack. The ancient techniques return slowly.");
         await this.addMemory(0,1,0, "Memory #2 \n You see some enemies ahead of you, but why are you here? Who put you in this forest of trials?");
         await this.addHouse(3,1,0,0);
         await this.addHouse(7,1,1,0);
@@ -59,6 +59,8 @@ export class WorldTwo extends BaseLevel {
             this.addTree(-1, 1, z);
             this.addTree(20 + 1, 1, z);
         }
+
+        await this.addMemory(19, 1, 5, "Memory Fragment\nThe corruption grows stronger. You must reach the heart of the forest before all is lost...");
 
         return this.getLevelData();
     }
