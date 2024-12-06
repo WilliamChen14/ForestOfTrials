@@ -8,6 +8,7 @@ import * as THREE from 'three';
 import { WorldTwo } from '../levels/WorldTwo.js';
 import { EndState } from './EndState.js';
 import { AudioPlayer } from '/src/Audio.js';
+import { WorldFive } from '../levels/WorldFive.js';
 
 const clock = new THREE.Clock();
 
@@ -161,7 +162,7 @@ export class GameState {
         // Create new level
         if (this.currentLevel === 1) {
             console.log("Creating WorldOneWorldThree");
-            this.level = new WorldOne(this.stateManager.scene);
+            this.level = new WorldFive(this.stateManager.scene);
         } else if (this.currentLevel === 2) {
             console.log("Creating WorldOneWorldFour");
             this.level = new WorldTwo(this.stateManager.scene);
