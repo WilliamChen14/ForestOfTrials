@@ -111,9 +111,7 @@ export class BaseLevel {
     }
 
     addBox(x, y, z) {
-        let randomX = x + (Math.random() * 4 - 2);
-        let randomZ = z + (Math.random() * 4 - 2);
-        const box = new Box(this.scene, randomX, y, randomZ);
+        const box = new Box(this.scene, x, y, z);
         this.Tools.push(box);
         this.MapLayout.push(box.MapLayoutMesh);
         return box;

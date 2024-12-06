@@ -16,8 +16,7 @@ export class WorldFive extends BaseLevel {
                 this.addStoneFloor(x, 0, z);
                 // Add pillars at corners
                 if ((Math.abs(x) === 2 && Math.abs(z) === 2)) {
-                    await this.addRocks(x, 1, z, Math.PI * 0.25);
-                    this.addFire(x, 1, z);
+                    this.addTree(x, 1, z, Math.PI * 0.25);
                 }
             }
         }
@@ -105,7 +104,7 @@ export class WorldFive extends BaseLevel {
             for (let dz = -1; dz <= 2; dz++) {
                 this.addStoneFloor(platformX + dx, 0, dz);
                 if ((dx === 0 || dx === 3) && (dz === -1 || dz === 2)) {
-                    await this.addRocks(platformX + dx, 1, dz, Math.PI * 0.5);
+                    this.addTree(platformX + dx, 1, dz, Math.PI * 0.5);
                 }
             }
         }
@@ -204,15 +203,23 @@ export class WorldFive extends BaseLevel {
             }
         }
         
-        // Inner fire rings
-        this.addFireRing(x, 1, 0, 4, 4);
-        this.addFireRing(x, 1, 0, 2, 3);
+        await this.addFireplace(x - 3, 1, -3);
+        await this.addFireplace(x + 3, 1, -3);
+        await this.addFireplace(x - 3, 1, 3);
+        await this.addFireplace(x + 3, 1, 3);
 
-        // Corner braziers
-        await this.addFireplace(x - 4, 1, -4);
-        await this.addFireplace(x + 4, 1, -4);
-        await this.addFireplace(x - 4, 1, 4);
-        await this.addFireplace(x + 4, 1, 4);
+        this.addFire(x - 3, 1.5, -3);
+        this.addFire(x + 3, 1.5, -3);
+        this.addFire(x - 3, 1.5, 3);
+        this.addFire(x + 3, 1.5, 3);
+
+        this.addFire(x - 2, 1, 0);
+        this.addFire(x + 2, 1, 0);
+        this.addFire(x, 1, 2);
+
+        this.addFire(x - 4, 1, 0);
+        this.addFire(x + 2, 1, 0);
+        this.addFire(x, 1, 4);
         
         this.addMob(BossSlime, x + 1, 1, 0);
         this.addExit(x + 4, 1, 0);
