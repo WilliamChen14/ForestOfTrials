@@ -444,15 +444,15 @@ export class InstructionState {
                             ${Array(3).fill('<div class="chain"></div>').join('')}
                         </div>
                         <h1 class="title">Instructions</h1>
+                        <div class="instructions-box">
+                            ${this.getInstructionsContent()}
+                        </div>
                         <div class="return-button">
                             <a href="#" class="mushroom">
                                 <span class="mushroom-top play">Return to Home</span>
                                 <span class="mushroom-stem"></span>
                             </a>
                         </div>
-                    </div>
-                    <div class="instructions-box">
-                        ${this.getInstructionsContent()}
                     </div>
                 </div>
             `;
